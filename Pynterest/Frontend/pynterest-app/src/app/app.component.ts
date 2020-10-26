@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
