@@ -1,12 +1,13 @@
 package com.paw.pynterest.entity.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Entity
@@ -31,7 +32,8 @@ public class User {
     @NotNull
     private boolean admin;
 
-    @Past
+    @Past(message = "Birthdate should be in the past")
+    @JsonFormat(pattern="dd-mm-yyyy")
     private Date birthDate;
 
     private String description;
