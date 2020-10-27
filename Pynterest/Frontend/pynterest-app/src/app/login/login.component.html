@@ -1,0 +1,27 @@
+<div id="background"></div>
+
+<div class="login-container">
+    
+    <form class="login-form" [formGroup]="loginForm" (submit)="submitForm()">
+        <img class="pynterest-logo" src="assets\images\pynterestLogoResized.png">
+        <mat-form-field class="email-input">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" placeholder="Ex. mail@gmail.com" />
+            <mat-error *ngIf="loginForm.get('email').hasError('email')&&!loginForm.get('email').hasError('required')">
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('email').hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="password-input">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" />
+            <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                Password is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <button class="submit-button" [disabled]="!loginForm.valid" type="submit">Submit</button>
+    </form>
+</div>
