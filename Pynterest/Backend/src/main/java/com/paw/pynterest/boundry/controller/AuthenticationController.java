@@ -27,14 +27,7 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@Valid @RequestBody User user)
     {
         User newUser = userService.save(user);
-
-        //TODO
-        //verify if location header is needed for register
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("location", newUser.getUserId().toString());
-
-        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }
