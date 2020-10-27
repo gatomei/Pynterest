@@ -4,6 +4,7 @@
     
     <form *ngIf="!createNewAccount"  class="login-form" [formGroup]="loginForm" (submit)="submitLoginForm()">
         <img class="pynterest-logo" src="assets\images\pynterestLogoResized.png">
+        <h3 class = "login-label"><strong>Login:</strong></h3>
 
         <!-- Email -->
         <mat-form-field class="email-input">
@@ -37,6 +38,7 @@
 
     <form *ngIf="createNewAccount"  class="login-form" [formGroup]="registerForm" (submit)="submitRegisterForm()">
         <img class="pynterest-logo" src="assets\images\pynterestLogoResized.png">
+        <h3 class = "login-label"><strong>Create new account:</strong></h3>
 
         <!-- Username -->
         <mat-form-field *ngIf = "createNewAccount" class="username-input">
