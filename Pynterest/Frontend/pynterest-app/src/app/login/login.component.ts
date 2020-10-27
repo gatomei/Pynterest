@@ -19,8 +19,8 @@ export class LoginComponent implements OnInit {
   }
 
   submitForm(){
-    console.log("Email: " + this.loginForm.get("email"));
-    console.log("Password: " + this.loginForm.get("password"));
+    console.log("Email: " + this.loginForm.get("email").value);
+    console.log("Password: " + this.loginForm.get("password").value);
   }
 
 }
