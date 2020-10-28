@@ -1,14 +1,11 @@
 package com.paw.pynterest.boundry.controller;
 
 import com.paw.pynterest.entity.model.User;
+import com.paw.pynterest.jwt.JwtGenerator;
 import com.paw.pynterest.service.interfaces.UserService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -17,17 +14,31 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     private UserService userService;
+    private JwtGenerator jwtGenerator;
 
-    public AuthenticationController(UserService userService)
+    public AuthenticationController(JwtGenerator jwtGenerator, UserService userService)
     {
         this.userService = userService;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user)
-    {
+    public ResponseEntity<?> register(@Valid @RequestBody User user){
         User newUser = userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticate(@RequestParam(value = "username") String username,
+                                           @RequestParam(value = "password") String password){
+
+        final User user = userService.findUserByLoginCredentials(username, password);
+
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        else{
+            return new ResponseEntity<>(jwtGenerator.generate(user), HttpStatus.OK);
+        }
+    }
 }

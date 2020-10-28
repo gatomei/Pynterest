@@ -6,6 +6,8 @@ import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -18,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) throws AlreadyExistsException{
+
         User existingUser = userRepository.findByEmail(user.getEmail());
 
         if(existingUser!=null)
@@ -30,4 +33,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findUserByLoginCredentials(String username, String password) {
+
+        User user = this.findAll()
+                        .stream()
+                        .filter(user_->user_.getUsername().equals(username) && user_.getPassword().equals(password))
+                        .findAny()
+                        .orElse(null);
+
+        return user;
+    }
 }
