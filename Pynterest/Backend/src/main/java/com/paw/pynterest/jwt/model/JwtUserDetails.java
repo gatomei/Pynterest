@@ -1,4 +1,4 @@
-package com.paw.pynterest.entity.model;
+package com.paw.pynterest.jwt.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

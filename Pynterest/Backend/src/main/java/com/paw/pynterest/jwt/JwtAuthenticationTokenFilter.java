@@ -1,6 +1,6 @@
 package com.paw.pynterest.jwt;
 
-import com.paw.pynterest.boundry.dto.JwtAuthenticationToken;
+import com.paw.pynterest.jwt.model.JwtAuthenticationToken;
 import com.paw.pynterest.boundry.exceptions.MissingTokenException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

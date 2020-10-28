@@ -1,4 +1,4 @@
-package com.paw.pynterest.boundry.dto;
+package com.paw.pynterest.jwt.model;
 
 import lombok.Data;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

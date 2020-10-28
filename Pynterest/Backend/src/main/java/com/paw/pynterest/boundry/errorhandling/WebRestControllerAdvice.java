@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class WebRestControllerAdvice {
 
-    private ErrorDTO generateErrorDTO(HttpStatus httpStatus, Exception ex){
+    private ErrorDTO generateErrorDTO(HttpStatus httpStatus, Exception ex) {
         return new ErrorDTO(httpStatus.value(), ex.getMessage());
     }
 
@@ -41,7 +41,7 @@ public class WebRestControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     protected ErrorDTO handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-    //Get all errors
+        //Get all errors
         String errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -53,6 +53,7 @@ public class WebRestControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorDTO defaultHandler(Exception ex){
+    public ErrorDTO defaultHandler(Exception ex) {
         return this.generateErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
+}
