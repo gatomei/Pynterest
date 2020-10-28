@@ -1,8 +1,9 @@
 package com.paw.pynterest.boundry.controller;
 
+import com.paw.pynterest.boundry.dto.UserDTO;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.service.interfaces.UserService;
-import org.springframework.http.HttpHeaders;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,16 +18,20 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     private UserService userService;
+    private ModelMapper modelMapper;
 
-    public AuthenticationController(UserService userService)
+    public AuthenticationController(UserService userService,
+                                    ModelMapper modelMapper)
     {
         this.userService = userService;
+        this.modelMapper=modelMapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user)
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO user)
     {
-        User newUser = userService.save(user);
+
+        User newUser = userService.save(modelMapper.map(user, User.class));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

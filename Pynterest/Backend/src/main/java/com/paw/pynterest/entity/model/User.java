@@ -3,9 +3,7 @@ package com.paw.pynterest.entity.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import java.util.Date;
 
 @Data
@@ -16,7 +14,6 @@ public class User {
     private Long userId;
 
     @NotNull
-    @Email(message = "Email should be valid")
     @Column(unique = true, length = 100)
     private String email;
 
@@ -32,10 +29,8 @@ public class User {
     @Column(length = 50)
     private String password;
 
-    @NotNull
     private boolean admin;
 
-    @Past(message = "Birthdate should be in the past")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
