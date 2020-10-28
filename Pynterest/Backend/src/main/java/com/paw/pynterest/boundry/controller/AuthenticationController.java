@@ -1,8 +1,10 @@
 package com.paw.pynterest.boundry.controller;
 
+import com.paw.pynterest.boundry.dto.UserDTO;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.jwt.JwtGenerator;
 import com.paw.pynterest.service.interfaces.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +16,17 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     private UserService userService;
+    private ModelMapper modelMapper;
     private JwtGenerator jwtGenerator;
 
-    public AuthenticationController(JwtGenerator jwtGenerator, UserService userService)
-    {
+    public AuthenticationController(JwtGenerator jwtGenerator, UserService userService, ModelMapper modelMapper){
         this.userService = userService;
+        this.modelMapper = modelMapper;
         this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user){
+    public ResponseEntity<?> register(@Valid @RequestBody User user) {
         User newUser = userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -38,6 +41,7 @@ public class AuthenticationController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         else{
+            System.out.println(jwtGenerator.generate(user));
             return new ResponseEntity<>(jwtGenerator.generate(user), HttpStatus.OK);
         }
     }
