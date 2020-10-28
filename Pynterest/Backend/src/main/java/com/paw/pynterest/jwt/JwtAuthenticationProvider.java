@@ -1,8 +1,8 @@
 package com.paw.pynterest.jwt;
 
-import com.paw.pynterest.boundry.dto.JwtAuthenticationToken;
+import com.paw.pynterest.jwt.model.JwtAuthenticationToken;
 import com.paw.pynterest.boundry.exceptions.IncorrectTokenException;
-import com.paw.pynterest.entity.model.JwtUserDetails;
+import com.paw.pynterest.jwt.model.JwtUserDetails;
 import com.paw.pynterest.entity.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
