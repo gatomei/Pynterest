@@ -41,7 +41,6 @@ public class AuthenticationController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         else{
-            System.out.println(jwtGenerator.generate(user));
             return new ResponseEntity<>(jwtGenerator.generate(user), HttpStatus.OK);
         }
     }
