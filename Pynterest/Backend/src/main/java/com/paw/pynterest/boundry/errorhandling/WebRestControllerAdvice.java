@@ -27,8 +27,6 @@ public class WebRestControllerAdvice {
         return this.generateErrorDTO(HttpStatus.BAD_REQUEST, ex);
     }
 
-
-
     @ExceptionHandler(MissingTokenException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleMissingToken(MissingTokenException ex) {

@@ -35,16 +35,9 @@ public class UserController {
         if(jwtUserDetails.getUserId() == userId) {
 
             User updatedUser = userService.updateUser(userId, modelMapper.map(user, User.class));
-
-            if (updatedUser == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else {
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
         }
         else{
             return new ResponseEntity<>("You are not authorized to modify this user's data!",HttpStatus.UNAUTHORIZED);
         }
-
     }
 }
