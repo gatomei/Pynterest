@@ -1,13 +1,15 @@
 package com.paw.pynterest.boundry.controller;
 
+import com.paw.pynterest.boundry.dto.ForgotPasswordDTO;
+import com.paw.pynterest.boundry.dto.ResetPasswordDTO;
 import com.paw.pynterest.boundry.dto.UserDTO;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.jwt.JwtGenerator;
+import com.paw.pynterest.service.interfaces.EmailService;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,31 +21,45 @@ public class AuthenticationController {
     private UserService userService;
     private ModelMapper modelMapper;
     private JwtGenerator jwtGenerator;
+    private EmailService emailService;
 
     public AuthenticationController(JwtGenerator jwtGenerator, UserService userService,
-                                    ModelMapper modelMapper){
+                                    ModelMapper modelMapper, EmailService emailService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.jwtGenerator = jwtGenerator;
+        this.emailService=emailService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO) {
-        userService.save( modelMapper.map(userDTO, User.class));
+        userService.save(modelMapper.map(userDTO, User.class));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestParam(value = "username") String username,
-                                           @RequestParam(value = "password") String password){
+                                          @RequestParam(value = "password") String password) {
 
         final User user = userService.findUserByLoginCredentials(username, password);
 
-        if(user == null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(jwtGenerator.generate(user), HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+        User user = userService.forgotPassword(forgotPasswordDTO.getEmail());
+        emailService.sendResetPasswordEmail(user);
+        return new ResponseEntity<>("A password reset link has been sent to you!", HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPasword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
+        userService.resetPassword(resetPasswordDTO.getResetToken(), resetPasswordDTO.getNewPassword());
+        return new ResponseEntity<>("You have successfully reset your password.  You may now login.", HttpStatus.OK);
     }
 }

@@ -1,6 +1,8 @@
 package com.paw.pynterest.service.implementation;
 
 import com.paw.pynterest.boundry.exceptions.AlreadyExistsException;
+import com.paw.pynterest.boundry.exceptions.InvalidResetTokenException;
+import com.paw.pynterest.boundry.exceptions.NotFoundException;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.UserService;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,4 +56,30 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public User forgotPassword(String email) throws NotFoundException{
+        User user = userRepository.findByEmail(email);
+        if(user==null)
+            throw new NotFoundException("User with email "+ email+" not found!");
+
+        user.setResetToken(UUID.randomUUID().toString());
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public void resetPassword(String token, String newPassword) {
+
+        User user=userRepository.findByResetToken(token);
+        if(user==null)
+            throw new InvalidResetTokenException("Oops! This is an invalid password reset link!");
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        
+        userRepository.save(user);
+    }
+
+
 }

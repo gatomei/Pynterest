@@ -35,4 +35,6 @@ public class User {
 
     @Column(length = 500)
     private String description;
+
+    String resetToken;
 }
