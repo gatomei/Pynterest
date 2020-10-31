@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
 @Data
@@ -37,4 +38,7 @@ public class User {
     private String description;
 
     String resetToken;
+
+    @Lob
+    private byte[] profilePicture;
 }
