@@ -4,6 +4,7 @@ import com.paw.pynterest.boundry.exceptions.AlreadyExistsException;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +13,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository)
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder)
     {
         this.userRepository=userRepository;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
@@ -24,12 +27,13 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findByEmail(user.getEmail());
 
         if(existingUser!=null)
-            throw new AlreadyExistsException("Email-ul este deja folosit");
+            throw new AlreadyExistsException("Email is already in use!");
         existingUser=userRepository.findByUsername(user.getUsername());
 
         if(existingUser!=null)
-            throw new AlreadyExistsException("Numele de utilizator este deja folosit");
+            throw new AlreadyExistsException("Username is already in use!");
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -40,10 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByLoginCredentials(String username, String password) {
-
         User user = this.findAll()
                         .stream()
-                        .filter(user_->user_.getUsername().equals(username) && user_.getPassword().equals(password))
+                        .filter(user_->user_.getUsername().equals(username) &&
+                                passwordEncoder.matches( password, user_.getPassword()))
                         .findAny()
                         .orElse(null);
 

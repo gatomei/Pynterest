@@ -26,7 +26,6 @@ public class User {
     private String fullname;
 
     @NotNull
-    @Column(length = 50)
     private String password;
 
     private boolean admin;

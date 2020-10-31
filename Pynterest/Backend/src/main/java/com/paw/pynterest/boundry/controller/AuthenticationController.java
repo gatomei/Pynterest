@@ -7,6 +7,7 @@ import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,15 +20,16 @@ public class AuthenticationController {
     private ModelMapper modelMapper;
     private JwtGenerator jwtGenerator;
 
-    public AuthenticationController(JwtGenerator jwtGenerator, UserService userService, ModelMapper modelMapper){
+    public AuthenticationController(JwtGenerator jwtGenerator, UserService userService,
+                                    ModelMapper modelMapper){
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user) {
-        User newUser = userService.save(user);
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO) {
+        userService.save( modelMapper.map(userDTO, User.class));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
