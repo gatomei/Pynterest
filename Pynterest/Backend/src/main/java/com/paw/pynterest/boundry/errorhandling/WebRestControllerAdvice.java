@@ -4,6 +4,7 @@ import com.paw.pynterest.boundry.dto.ErrorDTO;
 import com.paw.pynterest.boundry.exceptions.AlreadyExistsException;
 import com.paw.pynterest.boundry.exceptions.IncorrectTokenException;
 import com.paw.pynterest.boundry.exceptions.MissingTokenException;
+import com.paw.pynterest.boundry.exceptions.UserDoesNotExistException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,6 +27,8 @@ public class WebRestControllerAdvice {
         return this.generateErrorDTO(HttpStatus.BAD_REQUEST, ex);
     }
 
+
+
     @ExceptionHandler(MissingTokenException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleMissingToken(MissingTokenException ex) {
@@ -36,6 +39,12 @@ public class WebRestControllerAdvice {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleIncorrectToken(IncorrectTokenException ex) {
         return this.generateErrorDTO(HttpStatus.UNAUTHORIZED, ex);
+    }
+
+    @ExceptionHandler(UserDoesNotExistException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorDTO handleUserDoesNotExist(UserDoesNotExistException ex) {
+        return this.generateErrorDTO(HttpStatus.NOT_FOUND, ex);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

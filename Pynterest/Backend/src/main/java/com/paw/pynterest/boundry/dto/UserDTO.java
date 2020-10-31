@@ -1,5 +1,6 @@
 package com.paw.pynterest.boundry.dto;
 
+import com.paw.pynterest.boundry.CustomValidators.Constraints.PictureConstraint;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -34,4 +35,7 @@ public class UserDTO {
 
     @Size(max=500, message = "Description shouldn't be bigger than 500 characters")
     private String description;
+
+    @PictureConstraint(message="The bytes array should be a valid picture")
+    private byte[] profilePicture;
 }

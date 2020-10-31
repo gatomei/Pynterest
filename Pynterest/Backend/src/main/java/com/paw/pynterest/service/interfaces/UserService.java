@@ -9,5 +9,5 @@ public interface UserService {
     User save(User user);
     List<User> findAll();
     User findUserByLoginCredentials(String username, String password);
-
+    User updateUser(Long userId, User newUser);
 }
