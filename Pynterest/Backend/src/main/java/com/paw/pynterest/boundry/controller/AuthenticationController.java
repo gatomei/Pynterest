@@ -1,5 +1,6 @@
 package com.paw.pynterest.boundry.controller;
 
+import com.paw.pynterest.boundry.dto.LoginCredentialsDTO;
 import com.paw.pynterest.boundry.dto.UserDTO;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.jwt.JwtGenerator;
@@ -26,22 +27,26 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user) {
-        User newUser = userService.save(user);
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO user) {
+        User newUser = userService.save(modelMapper.map(user, User.class));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestParam(value = "username") String username,
-                                           @RequestParam(value = "password") String password){
+    public ResponseEntity<?> authenticate(@RequestBody LoginCredentialsDTO loginCredentials){
 
-        final User user = userService.findUserByLoginCredentials(username, password);
+        String email = loginCredentials.getEmail();
+        String password = loginCredentials.getPassword();
 
-        if(user == null){
+        final User findUser = userService.findUserByLoginCredentials(email, password);
+
+        if(findUser == null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         else{
-            return new ResponseEntity<>(jwtGenerator.generate(user), HttpStatus.OK);
+            return new ResponseEntity<>(jwtGenerator.generate(findUser), HttpStatus.OK);
         }
     }
+
+
 }
