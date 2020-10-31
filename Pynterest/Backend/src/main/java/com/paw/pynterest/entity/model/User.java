@@ -27,7 +27,6 @@ public class User {
     private String fullname;
 
     @NotNull
-    @Column(length = 50)
     private String password;
 
     private boolean admin;
@@ -37,6 +36,8 @@ public class User {
 
     @Column(length = 500)
     private String description;
+
+    String resetToken;
 
     @Lob
     private byte[] profilePicture;

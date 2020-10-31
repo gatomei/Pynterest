@@ -26,7 +26,7 @@ public class JwtGenerator {
         claims.put("fullname", user.getFullname());
         claims.put("password", user.getPassword());
         claims.put("admin", user.isAdmin());
-        claims.put("birthDate", user.getBirthDate().toString());
+        claims.put("birthDate", user.getBirthDate());
         claims.put("description", user.getDescription());
 
         return Jwts.builder()
