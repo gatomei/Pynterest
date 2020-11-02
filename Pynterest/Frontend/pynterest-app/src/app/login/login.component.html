@@ -2,7 +2,7 @@
 
 <div class="login-container">
     
-    <form *ngIf="!createNewAccount"  class="login-form" [formGroup]="loginForm" (submit)="submitLoginForm()">
+    <form *ngIf="formOpened === 0"  class="login-form" [formGroup]="loginForm" (submit)="submitLoginForm()">
         <img class="pynterest-logo" src="assets\images\pynterestLogoResized.png">
         <h3 class = "login-label"><strong>Login:</strong></h3>
 
@@ -36,12 +36,12 @@
        
     </form>
 
-    <form *ngIf="createNewAccount"  class="login-form" [formGroup]="registerForm" (submit)="submitRegisterForm()">
+    <form *ngIf="formOpened === 1"  class="login-form" [formGroup]="registerForm" (submit)="submitRegisterForm()">
         <img class="pynterest-logo" src="assets\images\pynterestLogoResized.png">
         <h3 class = "login-label"><strong>Create new account:</strong></h3>
 
         <!-- Username -->
-        <mat-form-field *ngIf = "createNewAccount" class="username-input">
+        <mat-form-field class="username-input">
             <mat-label>Username</mat-label>
             <input type="text" matInput formControlName="username" placeholder="Ex. Hossein Mousavi"/>
             <mat-error *ngIf="registerForm.get('username').hasError('required')">
@@ -84,6 +84,22 @@
             <mat-label>Description</mat-label>
             <input type="text" matInput formControlName="description" />
         </mat-form-field>
+
+        <!-- DatePicker -->
+        <mat-form-field class="date-input">
+            <mat-label>Choose a date</mat-label>
+            <input matInput formControlName="datepicker" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- DatePicker -->
+        <mat-form-field class="photo-input">
+            <app-material-file-upload formControlName="photo" ></app-material-file-upload>
+        </mat-form-field>
+
+
+        
         
         <button class="submit-button" [disabled]="!registerForm.valid" type="submit">Submit</button>
 
@@ -92,4 +108,30 @@
         </div>
 
     </form>
+
+    <form *ngIf="formOpened === 2"  class="login-form" [formGroup]="resetPasswordForm" (submit)="submitPasswordForm()">
+    
+        <img class="pynterest-logo" src="assets\images\pynterestLogoResized.png">
+        <h3 class = "login-label"><strong>Reset password:</strong></h3>
+
+        <!-- Email -->
+        <mat-form-field class="email-input">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" placeholder="Ex. mail@gmail.com" />
+            <mat-error *ngIf="registerForm.get('email').hasError('email')&&!registerForm.get('email').hasError('required')">
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('email').hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <button class="submit-button" [disabled]="!resetPasswordForm.valid" type="submit">Submit</button>
+        <div class = "bottom-links">
+            <p>Are you done resetting password? Go back to <a href="javascript:void(0)" (click)="changeLoginForm()">Login</a></p>
+        </div>
+
+    </form>
+
+    
 </div>
