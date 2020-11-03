@@ -1,5 +1,6 @@
 package com.paw.pynterest.boundry.controller;
 
+import com.paw.pynterest.boundry.dto.LoginCredentialsDTO;
 import com.paw.pynterest.boundry.dto.ForgotPasswordDTO;
 import com.paw.pynterest.boundry.dto.ResetPasswordDTO;
 import com.paw.pynterest.boundry.dto.UserDTO;
@@ -38,15 +39,18 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestParam(value = "username") String username,
-                                          @RequestParam(value = "password") String password) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginCredentialsDTO loginCredentials){
 
-        final User user = userService.findUserByLoginCredentials(username, password);
+        String email = loginCredentials.getEmail();
+        String password = loginCredentials.getPassword();
 
-        if (user == null) {
+        final User findUser = userService.findUserByLoginCredentials(email, password);
+
+        if(findUser == null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } else {
-            return new ResponseEntity<>(jwtGenerator.generate(user), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(jwtGenerator.generate(findUser), HttpStatus.OK);
         }
     }
 
