@@ -14,17 +14,15 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
 
-  login(emailAddress: string, password:string): Observable<User> {
-    const params = new HttpParams()
-      .set('username', emailAddress)
-      .set('password', password);
+  login(email: string, password:string): Observable<string> {
     const authenticateEnpoint = `${environment.baseAPI}/pynterest/authentication/login`;
     return this.http
-      .post<User>(authenticateEnpoint, { params })
+      .post<string>(authenticateEnpoint, { email, password})
       .pipe(
-        tap(user => {
-          this.localStorageService.set('user', user)
-          return user;
+        tap(userToken => {
+          console.log(userToken)
+          this.localStorageService.set('userToken', userToken)
+          return userToken;
         })
       );
   }

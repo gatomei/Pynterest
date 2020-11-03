@@ -1,9 +1,6 @@
 package com.paw.pynterest.boundry.controller;
 
-import com.paw.pynterest.boundry.dto.LoginCredentialsDTO;
-import com.paw.pynterest.boundry.dto.ForgotPasswordDTO;
-import com.paw.pynterest.boundry.dto.ResetPasswordDTO;
-import com.paw.pynterest.boundry.dto.UserDTO;
+import com.paw.pynterest.boundry.dto.*;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.jwt.JwtGenerator;
 import com.paw.pynterest.service.interfaces.EmailService;
@@ -50,7 +47,9 @@ public class AuthenticationController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         else{
-            return new ResponseEntity<>(jwtGenerator.generate(findUser), HttpStatus.OK);
+            JwtDTO jwtDTO=new JwtDTO();
+            jwtDTO.setJwt(jwtGenerator.generate(findUser));
+            return new ResponseEntity<>(jwtDTO, HttpStatus.OK);
         }
     }
 

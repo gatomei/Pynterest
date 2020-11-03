@@ -47,15 +47,12 @@ export class LoginComponent implements OnInit {
   }
 
   submitLoginForm(){
-    console.log("Email: " + this.loginForm.get("email").value);
-    console.log("Password: " + this.loginForm.get("password").value);
-
     this.authService.login(this.loginForm.get("email").value,this.loginForm.get("password").value).subscribe(
-      (u) => {
-        this.router.navigate(['home']);
+      res => {
+        this.router.navigate(['home-page']);
       },
-      (e) => {
-        if (e.status === 404) {
+      error => {
+        if (error.status === 401) {
           this.notifications.showError('This user does not exist!' , 'Login Error' , 5000);
         }
         else{

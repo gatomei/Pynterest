@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 public class UserDTO {
-    private Long userId;
+    private Long userIdx;
 
     @NotEmpty(message = "Please provide an email")
     @Email(message = "Please provide a valid e-mail")
