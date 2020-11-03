@@ -93,9 +93,13 @@
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
-        <!-- DatePicker -->
-        <mat-form-field class="photo-input">
-            <app-material-file-upload formControlName="photo" ></app-material-file-upload>
+       
+        <!-- Photo -->
+        <mat-form-field>
+            <ngx-mat-file-input #removableInput formControlName="photo" accept="image/*" placeholder="Insert Profile Photo"></ngx-mat-file-input>
+            <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+                <img src="assets/images/delete_24px.svg">
+            </button>
         </mat-form-field>
 
 

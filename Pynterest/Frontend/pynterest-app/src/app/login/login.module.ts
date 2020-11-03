@@ -8,6 +8,7 @@ import { MatRadioModule } from "@angular/material/radio"
 import { MatCardModule } from "@angular/material/card"
 import { MatInputModule } from "@angular/material/input"
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 
 
@@ -24,7 +25,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     LoginRoutingModule, FormsModule,
     ReactiveFormsModule, MatRadioModule, MatCardModule,
-    MatInputModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule
+    MatInputModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule,
+    MaterialFileInputModule
   ]
 })
 export class LoginModule { }
