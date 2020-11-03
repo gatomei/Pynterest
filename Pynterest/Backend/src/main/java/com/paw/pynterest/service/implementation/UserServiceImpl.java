@@ -45,14 +45,37 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+
     @Override
-    public User findUserByLoginCredentials(String username, String password) {
+    public User updateUser(Long userId, User newUser) throws NotFoundException {
+
+        User user = userRepository.getOne(userId);
+
+        if(user == null){
+            throw new NotFoundException("Nu exista niciun utilizator cu id-ul "+ userId);
+        }
+
+        user.setUsername(newUser.getUsername());
+        user.setEmail(newUser.getEmail());
+        user.setFullname(newUser.getFullname());
+        user.setPassword(newUser.getPassword());
+        user.setAdmin(newUser.isAdmin());
+        user.setBirthDate(newUser.getBirthDate());
+        user.setDescription(newUser.getDescription());
+        user.setProfilePicture(newUser.getProfilePicture());
+        return userRepository.save(user);
+
+    }
+
+    @Override
+    public User findUserByLoginCredentials(String email, String password) {
+
         User user = this.findAll()
-                        .stream()
-                        .filter(user_->user_.getUsername().equals(username) &&
-                                passwordEncoder.matches( password, user_.getPassword()))
-                        .findAny()
-                        .orElse(null);
+                .stream()
+                .filter(user_->user_.getEmail().equals(email) &&
+                        passwordEncoder.matches( password, user_.getPassword()))
+                .findAny()
+                .orElse(null);
 
         return user;
     }
@@ -77,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetToken(null);
-        
+
         userRepository.save(user);
     }
 
