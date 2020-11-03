@@ -6,6 +6,8 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+
 @Component
 public class JwtValidator {
 
@@ -32,7 +34,7 @@ public class JwtValidator {
             user.setFullname(body.get("fullname").toString());
             user.setPassword(body.get("password").toString());
             user.setAdmin(Boolean.parseBoolean(body.get("admin").toString()));
-            //user.setBirthDate(new SimpleDateFormat("dd-MM-yyyy").parse(body.get("birthDate").toString()));
+            user.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse(body.get("birthDate").toString()));
             user.setDescription(body.get("description").toString());
         }
         catch (Exception exception) {
