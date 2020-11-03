@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
+enum formType{
+  login,
+  createNewAccount,
+  resetPassword
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { }
 
-  createNewAccount = false;
+  formOpened = formType.login;
 
   loginForm: FormGroup = this.formBuilder.group({
     email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}],
@@ -22,8 +28,18 @@ export class LoginComponent implements OnInit {
     fullname: [, { validators: [Validators.required], updateOn: "change" }],
     email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}],
     password: [, { validators: [Validators.required], updateOn: "change" }],
-    description: [, { updateOn: "change" }]
+    description: [, { updateOn: "change" }],
+    datepicker: [, { updateOn: "change" }],
+    photo: [, { updateOn: "change" }]
   });
+
+  
+
+  resetPasswordForm: FormGroup = this.formBuilder.group({
+    email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}]
+  })
+
+
 
   ngOnInit(): void {
   }
@@ -33,25 +49,40 @@ export class LoginComponent implements OnInit {
     console.log("Password: " + this.loginForm.get("password").value);
   }
 
-  submitRegisterForm(){
+  async submitRegisterForm(){
     console.log("Username: " + this.registerForm.get("username").value);
     console.log("Fullname: " + this.registerForm.get("fullname").value);
     console.log("Email: " + this.registerForm.get("email").value);
     console.log("Password: " + this.registerForm.get("password").value);
     console.log("Description: " + this.registerForm.get("description").value);
+    console.log("Date: " + this.registerForm.get("datepicker").value);
+    let photoInBytes = await this.toBase64(this.registerForm.get("photo").value.files[0]);
+    console.log(photoInBytes);
+  }
+
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
+
+  submitPasswordForm(){
+    console.log("Email: " + this.resetPasswordForm.get("email").value);
   }
 
   resetPassword(){
-    console.log("Ati apasat pe butonul de resetare a parolei")
+    this.formOpened = formType.resetPassword;
   }
 
   changeRegisterForm(){
-    this.createNewAccount = true;
+    this.formOpened = formType.createNewAccount;
 
   }
 
   changeLoginForm(){
-    this.createNewAccount = false;
+    this.formOpened = formType.login;
   }
 
 
