@@ -1,6 +1,0 @@
-export class InvalidUserFormatException extends Error {
-    constructor(message?: string) {
-        super(message);
-        Object.setPrototypeOf(this, InvalidUserFormatException.prototype);
-    }
-}
