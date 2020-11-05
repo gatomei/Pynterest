@@ -25,7 +25,7 @@ public class UserDTO {
     @NotEmpty(message = "Please provide a password")
     @Size(min=1, max=50, message = "Password should be between 1 and 50 characters")
     private String password;
-    
+
     @Past(message = "Birthdate should be in the past")
     private Date birthDate;
 
