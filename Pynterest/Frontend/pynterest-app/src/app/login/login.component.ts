@@ -68,24 +68,34 @@ export class LoginComponent implements OnInit {
   }
 
   async submitRegisterForm(){
-    let photoInBytes  = await this.toBase64(this.registerForm.get("photo").value.files[0]);
-    const user: UserForRegister = {
-      email : this.registerForm.get("email").value,
-      username : this.registerForm.get("username").value,
-      fullname : this.registerForm.get("fullname").value,
-      password : this.registerForm.get("password").value,
-      birthDate : this.registerForm.get("datepicker").value,
-      description : this.registerForm.get("description").value,
-      profilePicture : <BinaryType>photoInBytes    
-    }
-    this.authService.registerUser(user).subscribe(
-      () => {
-        this.notifications.showSuccess('Success', 'User Added');
-      },
-      (error) => {
-        this.notifications.showError(error.message, 'Error');
+    let photoInBytes  = <string>await this.toBase64(this.registerForm.get("photo").value.files[0]);
+    let fileType = photoInBytes.split(",")[0];
+    let photoToSend = photoInBytes.split(",")[1];
+    let regexp = new RegExp('(?<=\:)image(?=\/)');
+    if(regexp.test(fileType))
+    {
+      const user: UserForRegister = {
+        email : this.registerForm.get("email").value,
+        username : this.registerForm.get("username").value,
+        fullname : this.registerForm.get("fullname").value,
+        password : this.registerForm.get("password").value,
+        birthDate : this.registerForm.get("datepicker").value,
+        description : this.registerForm.get("description").value,
+        profilePicture : photoToSend
       }
-    )
+      this.authService.registerUser(user).subscribe(
+        () => {
+          this.notifications.showSuccess('Success', 'User Added');
+        },
+        (error) => {
+          this.notifications.showError(error.message, 'Error');
+        }
+      )
+    }
+    else{
+      this.notifications.showError("The file inserted is not a photo", 'Error');
+    }
+
 
   }
 
