@@ -25,16 +25,15 @@ import { CoreModule } from './core/core.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
       multi: true
-    },
-    HttpClientModule,
-    CoreModule
+    }
   ],
   bootstrap: [AppComponent]
 })
