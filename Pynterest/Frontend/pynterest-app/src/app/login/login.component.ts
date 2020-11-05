@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from '@angular/router';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { NotificationService } from '@app/core/services/notification.service';
+import { UserForRegister } from '@app/core/models/userForRegister';
 
 enum formType{
   login,
@@ -14,7 +18,7 @@ enum formType{
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,private authService:AuthenticationService,private notifications: NotificationService, private router: Router) { }
 
   formOpened = formType.login;
 
@@ -47,17 +51,42 @@ export class LoginComponent implements OnInit {
   submitLoginForm(){
     console.log("Email: " + this.loginForm.get("email").value);
     console.log("Password: " + this.loginForm.get("password").value);
+    this.authService.login(this.loginForm.get("email").value,this.loginForm.get("password").value).subscribe(
+      res => {
+        this.router.navigate(['home-page']);
+      },
+      error => {
+        if (error.status === 401) {
+          this.notifications.showError('This user does not exist!' , 'Login Error' , 5000);
+        }
+        else{
+          this.notifications.showError('Something bad happened. Please contact the administrator!' , 'Login Error' , 5000);
+
+        }
+      }
+    );
   }
 
   async submitRegisterForm(){
-    console.log("Username: " + this.registerForm.get("username").value);
-    console.log("Fullname: " + this.registerForm.get("fullname").value);
-    console.log("Email: " + this.registerForm.get("email").value);
-    console.log("Password: " + this.registerForm.get("password").value);
-    console.log("Description: " + this.registerForm.get("description").value);
-    console.log("Date: " + this.registerForm.get("datepicker").value);
-    let photoInBytes = await this.toBase64(this.registerForm.get("photo").value.files[0]);
-    console.log(photoInBytes);
+    let photoInBytes  = await this.toBase64(this.registerForm.get("photo").value.files[0]);
+    const user: UserForRegister = {
+      email : this.registerForm.get("email").value,
+      username : this.registerForm.get("username").value,
+      fullname : this.registerForm.get("fullname").value,
+      password : this.registerForm.get("password").value,
+      birthDate : this.registerForm.get("datepicker").value,
+      description : this.registerForm.get("description").value,
+      profilePicture : <BinaryType>photoInBytes    
+    }
+    this.authService.registerUser(user).subscribe(
+      () => {
+        this.notifications.showSuccess('Success', 'User Added');
+      },
+      (error) => {
+        this.notifications.showError(error.message, 'Error');
+      }
+    )
+
   }
 
   toBase64 = file => new Promise((resolve, reject) => {
@@ -86,6 +115,4 @@ export class LoginComponent implements OnInit {
   }
 
 
-
 }
-
