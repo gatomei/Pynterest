@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptor } from './interceptor/authorization.interceptor';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -19,6 +21,8 @@ import { AuthorizationInterceptor } from './interceptor/authorization.intercepto
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    RouterModule,
+    SharedModule
   ],
   providers: [
     {

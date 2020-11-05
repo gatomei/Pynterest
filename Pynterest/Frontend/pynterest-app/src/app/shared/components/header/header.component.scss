@@ -1,0 +1,181 @@
+@import '../../../../assets/styles/colors.scss';
+$container-shadow: 0.5rem 0.5rem 2rem 0 rgba(black, 0.2);
+$header-background: rgb(214, 214, 214);
+$icon-color: rgb(97, 97, 97);
+
+.header-container{
+    width: 100%;
+    padding: 0 3%;
+    margin-top: 20px;    
+}
+
+.header-content{
+    display: flex;
+    width: 100%;
+    background-color: $header-background;
+    border-radius: 30px;
+    padding: 20px 10px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+//logo
+.logo-container{
+    display: flexbox;
+    flex-grow: 0.3;
+    flex-basis: content;
+    padding: 0 10px;
+    border-radius: 30px;
+    padding: 3px;
+    margin-right: 10px;
+    margin-left: 40px;
+}
+
+
+//search bar
+.search-bar-container{
+    display: flexbox;
+    flex-grow: 10;
+}
+
+
+.input{
+    width: 85%;
+    border: 3px solid white;
+    background-color: white;
+    padding: 15px 30px;
+    border-radius: 70px;
+    font-size: 18px;
+    color: black;
+    outline: none;
+    margin-right: 13px;
+  }
+
+.input:focus {
+    border-color: red;
+}
+  
+  
+  .close-btn{
+    color: $logoColor;
+    background: #fff;
+    border: 3px white solid; 
+    width: 13%;
+    height: 55px;
+    border-radius: 70px;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+.close-btn:hover{
+    background-color: $logoColor;
+    color: white;
+    border-color: $logoColor;
+}
+
+//profile
+.profile-info-container{
+    display: flexbox;
+    flex-basis: content;
+    flex-grow: 0.8;
+}
+
+.profile-content{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile-item{
+    display: flexbox;
+    padding: 0 20px;
+}
+
+.profile-item mat-icon{
+    font-size: 35px;
+    width: 35px;
+    color: $icon-color;
+}
+
+.profile-item mat-icon:hover{
+    color: $logoColor;
+}
+
+.profile-photo{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding-top: 10px;
+    border: $icon-color 2px solid;
+    background-color: white;
+}
+
+.profile-photo:hover{
+    border-color: $logoColor;
+}
+
+.profile-photo img{
+    width: 100%;
+    height: auto;
+}
+
+.profile-item button.log-out{
+    font-size: 17px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color: $logoColor;
+    color: white;
+    border: 3px $logoColor solid;
+}
+
+.profile-item button.log-out:hover{
+    color: $logoColor;
+    background-color: white;
+}
+
+//icons
+.profile-item button.icon-button
+{
+    padding: 5px;
+    border-radius: 30px;
+    background-color: $header-background;
+    border:none;
+    outline: none;
+    width: 55px;
+}
+
+.profile-item button.button-pressed{
+    border: 3px solid $icon-color;
+}
+
+.front-cover{
+    cursor: default;
+    position: absolute;
+    z-index: 999;
+    margin-top: 10px;
+    margin-left: 75%;
+    width: 20%;
+    font-weight: 300;
+    background: white;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    box-shadow: $container-shadow;
+    display: flex;
+    justify-content: row;
+}
+
+.front-cover h3{
+    text-align: center;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.notifications, .messages{
+    //TO DO
+}

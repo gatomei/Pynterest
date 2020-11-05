@@ -1,0 +1,52 @@
+<div class="header-container">
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="../../../assets/images/pynterestLogoResized.png" alt="Logo">
+        </div>
+        <div class="search-bar-container">
+            <input type="text" class="input" placeholder="What are you looking for?">
+            <input type="button" value="search" class="close-btn">
+        </div>
+        <div class="profile-info-container">
+            <div class="profile-content">
+                <div class="profile-item">
+                    <button [class]="isNotificationPressed ? 'icon-button button-pressed' : 'icon-button'" (click)="toggleNotificationButton()">
+                        <mat-icon [matBadge]="notificationsUnseen" [matBadgeHidden]="isNotificationBadgeHidden()" matBadgeColor="warn">notifications</mat-icon>
+                    </button>
+                </div>
+                <div class="profile-item">
+                    <button [class]="isMessagesPressed ? 'icon-button button-pressed' : 'icon-button'" (click)="toggleMessageButton()">
+                        <mat-icon [matBadge]="messagesUnseen" [matBadgeHidden]="isMessageBadgeHidden()" matBadgeColor="warn">chat</mat-icon>
+                    </button>
+                </div>
+                <div class="profile-item">
+                    <a href="">
+                        <div class="profile-photo" alt="{username}">
+                            <img src="data:image/png;base64,{{ image }}" alt="profile"> 
+                        </div>
+                    </a>
+                </div>
+
+                <div class="profile-item">
+                    <button class="log-out" (click)="logOut()">Log out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="isNotificationPressed">
+        <div class="front-cover">
+            <h3>Notifications</h3>
+            <ul class="notifications">
+                <!--TODO: after we finish with notifications-->
+            </ul>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="isMessagesPressed">
+        <div class="front-cover">
+            <h3>Messages</h3>
+            <ul class="messages">
+                <!--TODO: after we finish with messages-->
+            </ul>
+        </div>
+    </ng-container>
+</div>
