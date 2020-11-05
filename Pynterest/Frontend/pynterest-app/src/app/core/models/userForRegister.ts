@@ -5,5 +5,5 @@ export interface UserForRegister {
     fullname: string;
     birthDate: Date;
     description: String;
-    profilePicture:  BinaryType;
+    profilePicture:  any;
 }
