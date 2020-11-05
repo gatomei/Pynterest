@@ -11,10 +11,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 
-
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NgxImageCompressService} from 'ngx-image-compress';
 
 
 
@@ -27,6 +27,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     ReactiveFormsModule, MatRadioModule, MatCardModule,
     MatInputModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule,
     MaterialFileInputModule
-  ]
+  ],
+  providers: [NgxImageCompressService],
 })
 export class LoginModule { }

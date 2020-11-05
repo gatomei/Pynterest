@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserForRegister } from '@app/core/models/userForRegister';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 enum formType{
   login,
@@ -18,7 +19,11 @@ enum formType{
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder,private authService:AuthenticationService,private notifications: NotificationService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder,
+              private authService:AuthenticationService,
+              private notifications: NotificationService, 
+              private router: Router,
+              private imageCompress: NgxImageCompressService) { }
 
   formOpened = formType.login;
 
@@ -37,13 +42,9 @@ export class LoginComponent implements OnInit {
     photo: [, { updateOn: "change" }]
   });
 
-  
-
   resetPasswordForm: FormGroup = this.formBuilder.group({
     email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}]
   })
-
-
 
   ngOnInit(): void {
   }
@@ -68,9 +69,17 @@ export class LoginComponent implements OnInit {
   }
 
   async submitRegisterForm(){
+    let imgResultAfterCompress:string;
     let photoInBytes  = <string>await this.toBase64(this.registerForm.get("photo").value.files[0]);
-    let fileType = photoInBytes.split(",")[0];
-    let photoToSend = photoInBytes.split(",")[1];
+
+    await this.imageCompress.compressFile(photoInBytes, -1 ,50, 50).then(
+      result => {
+        imgResultAfterCompress = result;
+      }
+    );
+    let fileType = imgResultAfterCompress.split(",")[0];
+    let photoToSend = imgResultAfterCompress.split(",")[1];
+
     let regexp = new RegExp('(?<=\:)image(?=\/)');
     if(regexp.test(fileType))
     {
