@@ -9,6 +9,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptor } from './interceptor/authorization.interceptor';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+
+
 
 
 @NgModule({
@@ -29,7 +32,9 @@ import { SharedModule } from './shared/shared.module';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
       multi: true
-    }
+    },
+    HttpClientModule,
+    CoreModule
   ],
   bootstrap: [AppComponent]
 })
