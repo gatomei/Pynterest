@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Data
 public class UserDTO {
-    private Long userIdx;
 
     @NotEmpty(message = "Please provide an email")
     @Email(message = "Please provide a valid e-mail")
@@ -26,9 +25,6 @@ public class UserDTO {
     @NotEmpty(message = "Please provide a password")
     @Size(min=1, max=50, message = "Password should be between 1 and 50 characters")
     private String password;
-
-    @NotNull(message = "Admin shouldn't be null")
-    private Boolean admin;
 
     @Past(message = "Birthdate should be in the past")
     private Date birthDate;

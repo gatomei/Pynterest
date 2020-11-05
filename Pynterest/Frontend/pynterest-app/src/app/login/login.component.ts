@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+<<<<<<< HEAD
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserForRegister } from '@app/core/models/userForRegister';
+=======
+>>>>>>> main
 
 enum formType{
   login,
@@ -18,10 +21,7 @@ enum formType{
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, 
-              private authService: AuthenticationService,
-              private router: Router,
-              private notifications: NotificationService) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   formOpened = formType.login;
 
@@ -40,28 +40,20 @@ export class LoginComponent implements OnInit {
     photo: [, { updateOn: "change" }]
   });
 
+  
+
   resetPasswordForm: FormGroup = this.formBuilder.group({
     email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}]
   })
+
+
 
   ngOnInit(): void {
   }
 
   submitLoginForm(){
-    this.authService.login(this.loginForm.get("email").value,this.loginForm.get("password").value).subscribe(
-      res => {
-        this.router.navigate(['home-page']);
-      },
-      error => {
-        if (error.status === 401) {
-          this.notifications.showError('This user does not exist!' , 'Login Error' , 5000);
-        }
-        else{
-          this.notifications.showError('Something bad happened. Please contact the administrator!' , 'Login Error' , 5000);
-         
-        }
-      }
-    );
+    console.log("Email: " + this.loginForm.get("email").value);
+    console.log("Password: " + this.loginForm.get("password").value);
   }
 
   async submitRegisterForm(){
@@ -87,6 +79,14 @@ export class LoginComponent implements OnInit {
 
   }
 
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
+
   submitPasswordForm(){
     console.log("Email: " + this.resetPasswordForm.get("email").value);
   }
@@ -103,13 +103,6 @@ export class LoginComponent implements OnInit {
   changeLoginForm(){
     this.formOpened = formType.login;
   }
-
-  toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
 
 
 }
