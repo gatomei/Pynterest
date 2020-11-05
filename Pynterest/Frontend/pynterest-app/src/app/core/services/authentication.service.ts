@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User } from '@app/core/models/user';
 import { InvalidUserFormatException } from '../exceptions/invalid-user-format.exception';
+import { UserForRegister } from '../models/userForRegister';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +26,11 @@ export class AuthenticationService {
           return userToken;
         })
       );
+  }
+
+  registerUser(user: UserForRegister){
+    const registerEndpoint = `${environment.baseAPI}/pynterest/authentication/register`;
+    return this.http.post(registerEndpoint, user);
   }
 
   public isLoggedIn(): boolean {
