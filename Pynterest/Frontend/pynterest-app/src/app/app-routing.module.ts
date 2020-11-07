@@ -10,6 +10,10 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module')
       .then(m => m.LoginModule) 
   },
+  { path: 'reset-password',
+    loadChildren: () => import('./reset-password/reset-password.module')
+    .then(m => m.ResetPasswordModule) 
+  },
   { path: '**', pathMatch: 'full', redirectTo: '/home-page' }
 ];
 
