@@ -95,6 +95,7 @@ export class LoginComponent implements OnInit {
       this.authService.registerUser(user).subscribe(
         () => {
           this.notifications.showSuccess('Success', 'User Added');
+          this.formOpened = formType.login;
         },
         (error) => {
           this.notifications.showError(error.message, 'Error');
@@ -124,6 +125,7 @@ export class LoginComponent implements OnInit {
     this.authService.sendEmailToRecoverPassword(forgotPassword).subscribe(
       () => {
         this.notifications.showSuccess('Success', 'Email sent');
+        this.formOpened = formType.login;
       },
       (error) => {
         this.notifications.showError(error.message, 'Error');
