@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NewPasswordModel } from '@app/core/models/newPasswordModel';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { NotificationService } from '@app/core/services/notification.service';
@@ -15,7 +15,8 @@ export class ResetPasswordComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private notifications: NotificationService,
               private activatedRoute: ActivatedRoute,
-              private authService:AuthenticationService) { }
+              private authService:AuthenticationService,
+              private router:Router) { }
   token: string;
 
   ngOnInit(): void {
@@ -43,6 +44,7 @@ export class ResetPasswordComponent implements OnInit {
         this.authService.sendNewPassword(newPassword).subscribe(
           () => {
             this.notifications.showSuccess('You have successfully reset your password.  You may now login.', 'Success');
+            this.router.navigate(['/login']);
           },
           (error) => {
             this.notifications.showError(error.message, 'Error');
