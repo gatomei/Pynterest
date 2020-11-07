@@ -58,12 +58,20 @@ public class AuthenticationController {
 
         User user = userService.forgotPassword(forgotPasswordDTO.getEmail());
         emailService.sendResetPasswordEmail(user);
-        return new ResponseEntity<>("A password reset link has been sent to you!", HttpStatus.OK);
+
+        HTTPResponseMessagesDTO message = new HTTPResponseMessagesDTO();
+        message.setMessage("A password reset link has been sent to you!");
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPasword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
         userService.resetPassword(resetPasswordDTO.getResetToken(), resetPasswordDTO.getNewPassword());
-        return new ResponseEntity<>("You have successfully reset your password.  You may now login.", HttpStatus.OK);
+
+        HTTPResponseMessagesDTO message = new HTTPResponseMessagesDTO();
+        message.setMessage("You have successfully reset your password.  You may now login.");
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

@@ -8,6 +8,8 @@ import { environment } from 'environments/environment';
 import { User } from '@app/core/models/user';
 import { InvalidUserFormatException } from '../exceptions/invalid-user-format.exception';
 import { UserForRegister } from '../models/userForRegister';
+import { ForgotPasswordModel } from '../models/forgotPasswordModel';
+import { NewPasswordModel } from '../models/newPasswordModel';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +23,7 @@ export class AuthenticationService {
       .post<string>(authenticateEnpoint, { email, password})
       .pipe(
         tap(userToken => {
-          console.log(userToken)
+          debugger;
           this.localStorageService.set('userToken', userToken)
           return userToken;
         })
@@ -32,22 +34,31 @@ export class AuthenticationService {
     const registerEndpoint = `${environment.baseAPI}/pynterest/authentication/register`;
     return this.http.post(registerEndpoint, user);
   }
-  
 
+  sendEmailToRecoverPassword(forgotPasswordModel: ForgotPasswordModel){
+    const forgotPasswordEndpoint = `${environment.baseAPI}/pynterest/authentication/forgot-password`;
+    return this.http.post(forgotPasswordEndpoint, forgotPasswordModel);
+  }
+
+  sendNewPassword(newPasswordModel: NewPasswordModel){
+    const resetPassEndpoint = `${environment.baseAPI}/pynterest/authentication/reset-password`;
+    return this.http.post(resetPassEndpoint, newPasswordModel);
+  }
+  
   public isLoggedIn(): boolean {
-    let user: User = null;
+    let userToken: string = null;
     try {
-      user = this.getUserFromLocalStorage();
+      userToken = this.getUserFromLocalStorage();
     }
     catch (err) {
 
     }
-    return user !== null;
+    return userToken !== null;
   }
 
-  getUserFromLocalStorage(): User {
+  getUserFromLocalStorage(): string {
     try {
-      return this.localStorageService.get<User>('user');
+      return this.localStorageService.get<string>('userToken');
     }
     catch (err) {
       if (err instanceof SyntaxError) {
@@ -58,6 +69,6 @@ export class AuthenticationService {
   }
 
   removeUserFromLocalStorage() {
-    this.localStorageService.remove('user');
+    this.localStorageService.remove('userToken');
   }
 }
