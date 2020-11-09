@@ -1,6 +1,13 @@
 @import '../../../assets/styles/colors.scss';
 
+#background{
+    background-color: $header-background;
+    min-height: 100%;
+    padding-top: 20px;
+}
+
 .profile-container{
+    margin-top: 25px;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -11,7 +18,6 @@
     width: 30%;
     padding: 20px;
 }
-
 
 .shaddow{
     box-shadow: $container-shadow;
@@ -39,7 +45,7 @@
     border-radius: 50%;
     overflow: hidden;
     border: $icon-color 2px solid;
-    background-color: white;
+    background-color: transparent;
 }
 
 #profile-photo img{
@@ -123,6 +129,7 @@
 
 .content-buttons{
     margin-left: 20px;
+    outline: none;
 }
 
 .content-buttons mat-icon{
