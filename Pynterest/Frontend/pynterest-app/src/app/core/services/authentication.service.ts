@@ -23,7 +23,6 @@ export class AuthenticationService {
       .post<string>(authenticateEnpoint, { email, password})
       .pipe(
         tap(userToken => {
-          debugger;
           this.localStorageService.set('userToken', userToken)
           return userToken;
         })
