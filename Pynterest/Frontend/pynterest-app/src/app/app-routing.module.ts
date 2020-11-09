@@ -8,16 +8,16 @@ const routes: Routes = [
       .then(m => m.LoginModule) 
   },
   {
-    path: 'user',
+    path: 'users',
     loadChildren: () =>
       import('./user/user.module').then((m) => m.UserModule),
       canActivate:[AuthGuard]
   },
-  { path: '**', pathMatch: 'full', redirectTo: '/' }
   { path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module')
     .then(m => m.ResetPasswordModule) 
-  }
+  },
+  { path: '**', pathMatch: 'full', redirectTo: '/login' }
 ];
 
 @NgModule({

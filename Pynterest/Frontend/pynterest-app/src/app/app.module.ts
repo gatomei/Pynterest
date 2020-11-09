@@ -6,12 +6,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthorizationInterceptor } from './interceptor/authorization.interceptor';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
+import { JwtModule } from '@auth0/angular-jwt';
 
-
+function tokenGetter():any
+{
+  let token = localStorage.getItem("userToken");
+  if(token)
+  {
+    return JSON.parse(token)["jwt"];
+  }
+  return null;
+}
 
 
 @NgModule({
@@ -26,14 +34,13 @@ import { CoreModule } from './core/core.module';
     BrowserAnimationsModule,
     RouterModule,
     SharedModule,
-    CoreModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthorizationInterceptor,
-      multi: true
-    }
+    CoreModule,
+    JwtModule.forRoot({
+      config:{
+        tokenGetter: tokenGetter,
+        allowedDomains:["localhost:8081"]
+      },
+    })
   ],
   bootstrap: [AppComponent]
 })

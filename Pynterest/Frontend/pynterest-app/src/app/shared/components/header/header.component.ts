@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '@app/core/models/user';
+import { AuthenticationService } from '@app/core/services/authentication.service';
+import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 
 @Component({
   selector: 'app-header',
@@ -11,27 +14,27 @@ export class HeaderComponent implements OnInit {
   public messagesUnseen:Number;
   public notificationsUnseen: Number;
   public username:string;
-  private readonly router:Router;
   public isNotificationPressed = false;
   public isMessagesPressed = false;
   public image = [];
+  public user: User;
 
-  constructor(router:Router) {
-    this.username = "florinache";
+  constructor(private router:Router,
+     private authenticationService: AuthenticationService) {
     this.router = router;
     this.notificationsUnseen = 0;
     this.messagesUnseen = 0;
    }
 
   ngOnInit(): void {
-
+    
   }
    
   public logOut() {
     // functia de log out, se duce pe pagina de log in
     // sterge din session storage informatiile memorate pentru utilizatorul actual
-    sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.authenticationService.removeUserFromLocalStorage();
+    this.router.navigate(['login']);
   }
 
   isNotificationBadgeHidden():boolean
