@@ -25,8 +25,8 @@ public class EmailServiceImpl implements EmailService {
         passwordResetEmail.setTo(user.getEmail());
         passwordResetEmail.setSubject("Password Reset Request");
         passwordResetEmail.setText("To reset your password, click the link below:\n" +
-                "localhost:4200//pynterest/reset-password"
-                + "/reset?token=" + user.getResetToken());
+                "localhost:4200/reset-password"
+                + "?token=" + user.getResetToken());
 
         mailSender.send(passwordResetEmail);
     }

@@ -5,6 +5,7 @@ import { AuthenticationService } from '@app/core/services/authentication.service
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserForRegister } from '@app/core/models/userForRegister';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { ForgotPasswordModel } from '@app/core/models/forgotPasswordModel';
 
 enum formType{
   login,
@@ -50,13 +51,12 @@ export class LoginComponent implements OnInit {
   }
 
   submitLoginForm(){
-    console.log("Email: " + this.loginForm.get("email").value);
-    console.log("Password: " + this.loginForm.get("password").value);
     this.authService.login(this.loginForm.get("email").value,this.loginForm.get("password").value).subscribe(
       res => {
         this.router.navigate(['home-page']);
       },
       error => {
+        console.log(error)
         if (error.status === 401) {
           this.notifications.showError('This user does not exist!' , 'Login Error' , 5000);
         }
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
 
   async submitRegisterForm(){
     let imgResultAfterCompress:string;
-    let photoInBytes  = <string>await this.toBase64(this.registerForm.get("photo").value.files[0]);
+    let photoInBytes  = <string>await this.toBase64(this.registerForm.get("photo").value?.files[0]);
 
     await this.imageCompress.compressFile(photoInBytes, -1 ,50, 50).then(
       result => {
@@ -95,6 +95,7 @@ export class LoginComponent implements OnInit {
       this.authService.registerUser(user).subscribe(
         () => {
           this.notifications.showSuccess('Success', 'User Added');
+          this.formOpened = formType.login;
         },
         (error) => {
           this.notifications.showError(error.message, 'Error');
@@ -117,7 +118,19 @@ export class LoginComponent implements OnInit {
 
 
   submitPasswordForm(){
-    console.log("Email: " + this.resetPasswordForm.get("email").value);
+    const forgotPassword:ForgotPasswordModel = {
+      email : this.resetPasswordForm.get("email").value
+    }
+
+    this.authService.sendEmailToRecoverPassword(forgotPassword).subscribe(
+      () => {
+        this.notifications.showSuccess('Success', 'Email sent');
+        this.formOpened = formType.login;
+      },
+      (error) => {
+        this.notifications.showError(error.message, 'Error');
+      }
+    )
   }
 
   resetPassword(){
