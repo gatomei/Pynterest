@@ -14,7 +14,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
 }
 
 //logo
@@ -30,9 +30,13 @@
 }
 
 
+
+
+
 //search bar
 .search-bar-container{
-    display: flexbox;
+    display: flex;
+    justify-content: center;
     flex-grow: 10;
 }
 
@@ -58,8 +62,7 @@
     color: $logoColor;
     background: white;
     border: 3px $icon-color solid; 
-    width: 13%;
-    height: 55px;
+    width: 130px;
     border-radius: 70px;
     outline: none;
     text-transform: uppercase;
@@ -72,23 +75,19 @@
     border-color: $logoColor;
 }
 
-//profile
-.profile-info-container{
-    display: flexbox;
-    flex-basis: content;
-    flex-grow: 0.8;
-}
 
+//profile
 .profile-content{
     display: flex;
     justify-content: center;
     flex-direction: row;
     align-items: center;
+    margin-left: 5px;
+    flex-grow: 1;
 }
 
 .profile-item{
-    display: flexbox;
-    padding: 0 20px;
+    padding: 0 6px;
 }
 
 .profile-item mat-icon{
@@ -139,6 +138,7 @@
 {
     padding: 5px;
     border-radius: 30px;
+    border: 3px solid $header-background;
     background-color: $header-background;
     border:none;
     outline: none;
@@ -154,7 +154,7 @@
     position: absolute;
     z-index: 999;
     margin-top: 10px;
-    margin-left: 75%;
+    margin-left: 78%;
     width: 20%;
     font-weight: 300;
     background: white;
@@ -170,4 +170,89 @@
     margin: 10px;
     font-weight: bold;
     font-size: 18px;
+}
+
+@media only screen and (max-width: 1026px) {
+    .logo-container img{
+        content: url("../../../../assets/images/pynterestLogoResizedShort.png");
+    }
+}
+
+@media only screen and (max-width: 882px) {
+    .logo-container img{
+        content: url("../../../../assets/images/pynterestLogoResized.png");
+    }
+
+    .header-content{
+        flex-wrap: wrap;
+    }
+
+    .search-bar-container{
+        order: 3;
+        margin: 10px 10%;
+    }
+
+    .logo-container{
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .profile-content{
+        flex-grow: 2;
+    }
+
+    .front-cover{
+        margin-top: -95px;
+        width: 40%;
+        margin-left: 58%;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .logo-container img{
+        content: url("../../../../assets/images/pynterestLogoResizedShort.png");
+    }
+
+    .profile-photo{
+        width: 40px;
+        height: 40px;
+    }
+
+    .profile-item{
+        padding: 0 10px;
+    }
+
+    .profile-item button.icon-button{
+        padding: 5px;
+    }
+
+    .profile-item mat-icon{
+        font-size: 24px;
+        width: 24px;
+    }
+
+    .profile-item button.log-out{
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    .input{
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+
+    .close-btn{
+        width: 65px;
+        font-size: 13px;
+    }
+
+    .search-bar-container{
+        margin: 10px 3%;
+    }
+
+    .logo-container img{
+        width: 45px;
+    }
+
 }

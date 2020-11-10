@@ -7,7 +7,6 @@
             <input type="text" class="input" placeholder="What are you looking for?">
             <input type="button" value="search" class="close-btn">
         </div>
-        <div class="profile-info-container">
             <div class="profile-content">
                 <div class="profile-item">
                     <button [class]="isNotificationPressed ? 'icon-button button-pressed' : 'icon-button'" (click)="toggleNotificationButton()">
@@ -30,7 +29,6 @@
                 <div class="profile-item">
                     <button class="log-out" (click)="logOut()">Log out</button>
                 </div>
-            </div>
         </div>
     </div>
     <ng-container *ngIf="isNotificationPressed">
