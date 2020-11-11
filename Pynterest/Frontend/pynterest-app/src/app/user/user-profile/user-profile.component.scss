@@ -11,12 +11,11 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    padding: 0px 40px;
+    padding: 0px 20px;
 }
 
 .profile-info-container{
     width: 30%;
-    padding: 20px;
 }
 
 .shaddow{
@@ -62,7 +61,7 @@
 }
 
 .sub-content{
-    width: 30%;
+    width: 40%;
     text-align: center;
     padding: 10px;
     display: inline-block;
@@ -70,7 +69,10 @@
     color: white;
     font-weight: bold;
     font-size: 14px;
-    font-style: Courier;
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 #personal-info{
@@ -79,6 +81,7 @@
     display: flex;
     flex-direction: column;
     font-family: 'Courier New', Courier, monospace;
+    align-items: center;
 }
 
 #name{
@@ -116,8 +119,8 @@
 }
 
 .profile-items-container{
-    padding: 20px;
     width: 70%;
+    padding-left: 20px;
 }
 
 .add-content-buttons{
@@ -125,6 +128,7 @@
     width: 100%;
     padding: 4px;
     flex-direction: row;
+    margin-bottom: 10px;
 }
 
 .content-buttons{
@@ -148,7 +152,7 @@
 }
 
 .change-content-buttons button{
-    width: 20%;
+    width: 30%;
     padding: 10px;
     border-radius: 20px;
     font-size: 17px;
@@ -162,3 +166,69 @@
     color: $logoColor;
     background-color: white;
 }
+
+@media only screen and (max-width:1024px){
+    #profile-photo{
+        width: 150px;
+        height: 150px;
+    }
+
+    .sub-content{
+        font-size: 12px;
+        width: 45%;
+    }
+
+
+    .content-buttons mat-icon{
+        font-size: 30px;
+        width: 30px;
+    }
+
+    .change-content-buttons button{
+        padding: 6px;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width:768px){
+    .profile-container{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-info-container{
+        width: 100%;
+    }
+
+    .profile-items-container{
+        width: 100%;
+        margin-top: 20px;
+        padding-left: 0;
+    }
+
+    .sub-content{
+        width: 30%;
+        font-size: 14px;
+    }
+
+    #description{
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width:425px){
+    #description{
+        width: 95%;
+    }
+
+    .sub-content{
+        width: 45%;
+        font-size: 12px;
+        padding: 3px;
+    }
+
+    .change-content-buttons button{
+        width: 40%;
+    }
+}
+
