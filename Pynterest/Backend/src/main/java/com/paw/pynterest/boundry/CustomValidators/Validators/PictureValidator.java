@@ -18,15 +18,18 @@ public class PictureValidator implements ConstraintValidator<PictureConstraint, 
     @Override
     public boolean isValid(byte[] profilePicture,
                            ConstraintValidatorContext cxt) {
+
+        if(profilePicture == null){
+            return true;
+        }
         ByteArrayInputStream bis = new ByteArrayInputStream(profilePicture);
-        BufferedImage bImage2 = null;
         try {
-            bImage2 = ImageIO.read(bis);
+            ImageIO.read(bis);
         } catch (IOException e) {
             return false;
         }
 
-        return bImage2 != null;
+        return true;
     }
 
 }
