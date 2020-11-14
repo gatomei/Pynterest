@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private JavaMailSender mailSender;
+    private final String frontEndUrl = "http://127.0.0.1:4200";
 
     public EmailServiceImpl(JavaMailSender mailSender)
     {
@@ -24,8 +25,8 @@ public class EmailServiceImpl implements EmailService {
         passwordResetEmail.setFrom("pynterest.app@gmail.com");
         passwordResetEmail.setTo(user.getEmail());
         passwordResetEmail.setSubject("Password Reset Request");
-        passwordResetEmail.setText("To reset your password, click the link below:\n" +
-                "localhost:4200/reset-password"
+        passwordResetEmail.setText("To reset your password, click the link below:\r\n" +
+                frontEndUrl+"/reset-password"
                 + "?token=" + user.getResetToken());
 
         mailSender.send(passwordResetEmail);

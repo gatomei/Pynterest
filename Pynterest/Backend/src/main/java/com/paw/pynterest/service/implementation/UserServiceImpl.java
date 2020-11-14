@@ -104,5 +104,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public User findUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if(user==null)
+            throw new NotFoundException("User with username '"+username+"' not found!");
+        return user;
+    }
 
 }

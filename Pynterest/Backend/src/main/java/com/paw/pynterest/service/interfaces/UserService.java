@@ -12,6 +12,7 @@ public interface UserService {
     User updateUser(Long userId, User newUser);
     User forgotPassword(String email);
     void resetPassword(String token, String newPassword);
+    User findUserByUsername(String username);
 
 
 }
