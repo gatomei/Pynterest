@@ -47,7 +47,7 @@ public class UserController {
         }
     }
     @GetMapping()
-    public ResponseEntity<?> getUserByUsername(@RequestParam String username)
+    public ResponseEntity<?> getUserByUsername(@RequestParam(value = "username", required = true) String username)
     {
         User u = userService.findUserByUsername(username);
         return new ResponseEntity<>(modelMapper.map(u, ReadUserDTO.class), HttpStatus.OK);

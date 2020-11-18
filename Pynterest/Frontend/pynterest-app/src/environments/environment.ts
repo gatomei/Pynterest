@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseAPI: 'http://localhost:8081/api'
+  baseAPI: 'http://localhost:8081/api',
+  baseAPIAuth: 'http://localhost:8081/authorize/api/pynterest'
 };
 
 /*

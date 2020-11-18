@@ -110,6 +110,11 @@
     background-color: transparent;
 }
 
+#toProfile{
+    outline: none;
+    border: none;
+}
+
 .profile-photo:hover{
     border-color: $logoColor;
 }

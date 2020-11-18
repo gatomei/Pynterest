@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserInfo } from '@app/shared/models/jwt/userInfoModel';
+import { UserInfo } from '@app/user/models/user-info';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { Subscription } from 'rxjs';
+import { UserInfoService } from '../services/user-info.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-profile',
@@ -19,38 +21,25 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private routeSub: Subscription;
 
   constructor(private jwtDecoder: JwtDecoderService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private userInfoService:UserInfoService) {}
 
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.user = {
-      id: "1",
-      email: "email",
-      username: "sub",
-      fullname: "ddd",
-      birthDate: new Date(),
-      description: "dd",
-      admin: true
-    };
     this.routeSub = this.activatedRoute.params.subscribe(params=>{
       this.username = params['username'];
-      let jetUsername = this.jwtDecoder.getUsername();
-      if(this.username == jetUsername)
-      {
-        this.user = this.jwtDecoder.getAllInfo();
-      }
-      else{
-        //make request for user info with id
-      }
+    });
+    this.userInfoService.getHey().subscribe((data)=>{
+      console.log(data);
     });
   }
 
   public isHisPage():boolean
   {
-    return this.username == this.user.username;
+    return true;
   }
 
   isSubscribed(id):boolean

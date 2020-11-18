@@ -20,7 +20,8 @@ export class HeaderComponent implements OnInit {
   public user: User;
 
   constructor(private router:Router,
-     private authenticationService: AuthenticationService) {
+     private authenticationService: AuthenticationService,
+     private JwtDecoderService: JwtDecoderService) {
     this.router = router;
     this.notificationsUnseen = 0;
     this.messagesUnseen = 0;
@@ -45,6 +46,10 @@ export class HeaderComponent implements OnInit {
   isMessageBadgeHidden():boolean
   {
     return this.messagesUnseen == 0;
+  }
+
+  public toUserProfile(){
+    this.router.navigate(['users', this.JwtDecoderService.getUsername(),'profile']);
   }
 
   toggleNotificationButton():void{

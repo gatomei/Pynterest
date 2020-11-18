@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { JwtModule } from '@auth0/angular-jwt';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 function tokenGetter():any
 {
@@ -38,10 +39,18 @@ function tokenGetter():any
     JwtModule.forRoot({
       config:{
         tokenGetter: tokenGetter,
-        allowedDomains:["localhost:8081"]
+        allowedDomains:[]
       },
     })
   ],
+  providers:[
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    }
+  ]
+  ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
