@@ -32,7 +32,6 @@ public class JwtValidator {
             user.setUserId(Long.parseLong(body.get("userId").toString()));
             user.setEmail(body.get("email").toString());
             user.setFullname(body.get("fullname").toString());
-            user.setPassword(body.get("password").toString());
             user.setAdmin(Boolean.parseBoolean(body.get("admin").toString()));
             user.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse(body.get("birthDate").toString()));
             user.setDescription(body.get("description").toString());
