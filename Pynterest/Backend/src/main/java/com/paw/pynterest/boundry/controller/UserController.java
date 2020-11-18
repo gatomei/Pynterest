@@ -1,6 +1,7 @@
 package com.paw.pynterest.boundry.controller;
 
-import com.paw.pynterest.boundry.dto.UserDTO;
+import com.paw.pynterest.boundry.dto.WriteUserDTO;
+import com.paw.pynterest.boundry.dto.ReadUserDTO;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.jwt.model.JwtUserDetails;
 import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/authorize/api/pynterest/")
+@RequestMapping("/authorize/api/pynterest/user")
 public class UserController {
 
     private UserService userService;
@@ -27,8 +28,8 @@ public class UserController {
         this.authenticatedJwtUserService = authenticatedJwtUserService;
     }
 
-    @PutMapping("/user/{userId}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDTO user, @PathVariable Long userId) {
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody WriteUserDTO user, @PathVariable Long userId) {
 
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
 
@@ -44,5 +45,11 @@ public class UserController {
         } else {
             return new ResponseEntity<>("You are not authorized to modify this user's data!", HttpStatus.UNAUTHORIZED);
         }
+    }
+    @GetMapping()
+    public ResponseEntity<?> getUserByUsername(@RequestParam String username)
+    {
+        User u = userService.findUserByUsername(username);
+        return new ResponseEntity<>(modelMapper.map(u, ReadUserDTO.class), HttpStatus.OK);
     }
 }

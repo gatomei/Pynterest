@@ -30,8 +30,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO) {
-        userService.save(modelMapper.map(userDTO, User.class));
+    public ResponseEntity<?> register(@Valid @RequestBody WriteUserDTO writeUserDTO) {
+        userService.save(modelMapper.map(writeUserDTO, User.class));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

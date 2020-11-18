@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 import java.util.Date;
 
 @Data
-public class UserDTO {
+public class WriteUserDTO {
 
     @NotEmpty(message = "Please provide an email")
     @Email(message = "Please provide a valid e-mail")
