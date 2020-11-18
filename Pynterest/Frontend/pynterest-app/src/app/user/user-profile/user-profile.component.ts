@@ -15,7 +15,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public subscriptions:number = 12;
   public user:UserInfo;
   public suscribedUser:boolean = true;
-  private userId: String;
+  private username: String;
   private routeSub: Subscription;
 
   constructor(private jwtDecoder: JwtDecoderService,
@@ -36,9 +36,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       admin: true
     };
     this.routeSub = this.activatedRoute.params.subscribe(params=>{
-      this.userId = params['id'];
-      let jwtUserId = this.jwtDecoder.getId();
-      if(this.userId == jwtUserId)
+      this.username = params['username'];
+      let jetUsername = this.jwtDecoder.getUsername();
+      if(this.username == jetUsername)
       {
         this.user = this.jwtDecoder.getAllInfo();
       }
@@ -50,7 +50,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   public isHisPage():boolean
   {
-    return this.userId == this.user.id;
+    return this.username == this.user.username;
   }
 
   isSubscribed(id):boolean

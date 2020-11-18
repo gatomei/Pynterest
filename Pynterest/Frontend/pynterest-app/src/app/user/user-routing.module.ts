@@ -5,7 +5,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   { 
-    path: ':id/profile', 
+    path: ':username/profile', 
     pathMatch:'full',
     component: UserProfileComponent,
     canActivate:[AuthGuard]
