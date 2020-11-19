@@ -1,7 +1,7 @@
 <div class="header-container">
     <div class="header-content">
         <div class="logo-container">
-            <img src="../../../assets/images/pynterestLogoResized.png" alt="Logo">
+            <img (click)="goToHomePage()" src="../../../assets/images/pynterestLogoResized.png" alt="Logo">
         </div>
         <div class="search-bar-container">
             <input type="text" class="input" placeholder="What are you looking for?">
@@ -21,7 +21,7 @@
                 <div class="profile-item">
                     <button (click)="toUserProfile()" id="toProfile">
                         <div class="profile-photo">
-                            <img src="assets/images/download.jpeg" alt="profile"> 
+                            <img [src]="imageUrl" alt="profile"> 
                         </div>
                     </button>
                 </div>

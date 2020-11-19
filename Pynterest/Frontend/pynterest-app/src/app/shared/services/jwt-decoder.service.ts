@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@app/core/services/local-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserInfo } from '../models/jwt/userInfoModel';
+import { JWTUserInfo } from '../models/jwt/userInfoModel';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class JwtDecoderService {
     this.decodeToken = this.jwtHelper.decodeToken(this.token);
   }
 
-  getAllInfo():UserInfo
+  getAllInfo():JWTUserInfo
   {
     return {
       id: this.decodeToken["userId"],

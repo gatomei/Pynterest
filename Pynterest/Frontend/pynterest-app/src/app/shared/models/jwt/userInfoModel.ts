@@ -1,4 +1,4 @@
-export interface UserInfo {
+export interface JWTUserInfo {
     id: string;
     email: string;
     username: string;

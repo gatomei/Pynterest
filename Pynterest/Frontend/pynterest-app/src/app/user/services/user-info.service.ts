@@ -15,9 +15,4 @@ export class UserInfoService {
     const userInfoEndPoint = `${environment.baseAPIAuth}/user?username=${username}`;
     return this.httpClient.get<UserInfo>(userInfoEndPoint);
   }
-  
-  getHey():Observable<HttpResponse<string>>{
-    const userInfoEndPoint = `${environment.baseAPIAuth}/user/hey`;
-    return this.httpClient.get<HttpResponse<string>>(userInfoEndPoint);
-  }
 }
