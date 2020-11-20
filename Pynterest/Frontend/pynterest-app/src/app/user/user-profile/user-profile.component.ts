@@ -52,19 +52,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     };
     this.routeSub = this.activatedRoute.params.subscribe((params) => {
       this.username = params['username'];
-<<<<<<< HEAD
-        this.subs.push(this.userInfoService.getInfo(this.username).subscribe((data)=>{
-          this.user = data;
-          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,'+ data.profilePicture);
-          this.user.profilePicture = []
-        },
-        (error) => {
-          console.log(error);
-        }));
-      }
-    );
-    
-=======
       this.subs.push(
         this.userInfoService.getInfo(this.username).subscribe(
           (data) => {
@@ -80,7 +67,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         )
       );
     });
->>>>>>> 7eda0c040e106fafe9c5e6312e68cc0b312dd5d3
   }
 
   public isHisPage(): boolean {
