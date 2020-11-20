@@ -12,30 +12,31 @@ import { LocalStorageService } from '@app/core/services/local-storage.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-
-  public subscribers:number = 10;
-  public subscriptions:number = 12;
-  public user:UserInfo;
-  public suscribedUser:boolean = true;
+  public subscribers: number = 10;
+  public subscriptions: number = 12;
+  public user: UserInfo;
+  public suscribedUser: boolean = true;
   private username: String;
   private routeSub: Subscription;
   private subs: Subscription[];
-  public imageUrl:SafeUrl = "";
+  public imageUrl: SafeUrl = '';
 
-  constructor(private jwtDecoder: JwtDecoderService,
+  constructor(
+    private jwtDecoder: JwtDecoderService,
     private activatedRoute: ActivatedRoute,
-    private userInfoService:UserInfoService,
+    private userInfoService: UserInfoService,
     private sanitizer: DomSanitizer,
-    private localstorageService:LocalStorageService) {
-      this.subs = new Array<Subscription>();
-    }
+    private localstorageService: LocalStorageService
+  ) {
+    this.subs = new Array<Subscription>();
+  }
 
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
-    this.subs.forEach(element => {
+    this.subs.forEach((element) => {
       element.unsubscribe();
     });
   }
@@ -43,14 +44,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.user = {
       birthDate: new Date(),
-      description: "",
-      email: "",
-      fullname: "",
-      username: "",
-      profilePicture: []
+      description: '',
+      email: '',
+      fullname: '',
+      username: '',
+      profilePicture: [],
     };
-    this.routeSub = this.activatedRoute.params.subscribe(params=>{
+    this.routeSub = this.activatedRoute.params.subscribe((params) => {
       this.username = params['username'];
+<<<<<<< HEAD
         this.subs.push(this.userInfoService.getInfo(this.username).subscribe((data)=>{
           this.user = data;
           this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,'+ data.profilePicture);
@@ -62,23 +64,38 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       }
     );
     
+=======
+      this.subs.push(
+        this.userInfoService.getInfo(this.username).subscribe(
+          (data) => {
+            this.user = data;
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(
+              'data:image/png;base64,' + data.profilePicture
+            );
+            this.user.profilePicture = [];
+          },
+          (error) => {
+            console.log(error);
+          }
+        )
+      );
+    });
+>>>>>>> 7eda0c040e106fafe9c5e6312e68cc0b312dd5d3
   }
 
-  public isHisPage():boolean
-  {
+  public isHisPage(): boolean {
     return this.user.username == this.jwtDecoder.getUsername();
   }
 
-  isSubscribed(id):boolean
-  {
+  isSubscribed(id): boolean {
     return this.suscribedUser;
   }
 
-  unsubscribe(){
+  unsubscribe() {
     this.suscribedUser = false;
   }
 
-  subscribe(){
+  subscribe() {
     this.suscribedUser = true;
   }
 }
