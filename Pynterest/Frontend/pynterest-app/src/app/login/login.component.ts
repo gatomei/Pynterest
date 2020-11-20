@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
               private imageCompress: NgxImageCompressService) { }
 
   formOpened = formType.login;
+  isSubmitPasswordFormButtonClicked:boolean = false;
 
   loginForm: FormGroup = this.formBuilder.group({
     email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}],
@@ -118,6 +119,9 @@ export class LoginComponent implements OnInit {
 
 
   submitPasswordForm(){
+
+    this.isSubmitPasswordFormButtonClicked = true;
+
     const forgotPassword:ForgotPasswordModel = {
       email : this.resetPasswordForm.get("email").value
     }
@@ -126,9 +130,11 @@ export class LoginComponent implements OnInit {
       () => {
         this.notifications.showSuccess('Success', 'Email sent');
         this.formOpened = formType.login;
+        this.isSubmitPasswordFormButtonClicked = false;
       },
       (error) => {
         this.notifications.showError(error.message, 'Error');
+        this.isSubmitPasswordFormButtonClicked = false;
       }
     )
   }

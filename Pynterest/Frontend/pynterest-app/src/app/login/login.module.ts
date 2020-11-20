@@ -9,25 +9,31 @@ import { MatCardModule } from "@angular/material/card"
 import { MatInputModule } from "@angular/material/input"
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
-
-
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 import { MatNativeDateModule } from '@angular/material/core';
-import { NgxImageCompressService} from 'ngx-image-compress';
-
-
-
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
   declarations: [LoginComponent],
   imports: [
     CommonModule,
-    LoginRoutingModule, FormsModule,
-    ReactiveFormsModule, MatRadioModule, MatCardModule,
-    MatInputModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule,
-    MaterialFileInputModule
+    LoginRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MaterialFileInputModule,
+    MatProgressBarModule,
+    SharedModule
   ],
   providers: [NgxImageCompressService],
 })
+
 export class LoginModule { }
