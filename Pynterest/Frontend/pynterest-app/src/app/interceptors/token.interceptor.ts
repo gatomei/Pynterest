@@ -19,7 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const userToken = this.localStorageService.get<string>("userToken");
-    if (userToken) {
+    if (userToken != null) {
       const jwt = userToken["jwt"];
       const authReq = req.clone({
         headers: req.headers.set('Authorization', 'Token ' + jwt),

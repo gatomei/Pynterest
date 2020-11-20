@@ -15,10 +15,6 @@ export class LocalStorageService {
   get<T>(key: string): T {
     try {
       const result = JSON.parse(localStorage.getItem(key));
-
-      if (result === null) {
-        throw new KeyNotFoundException(`${key} does not exist in the local storage or access is denied`);
-      }
       return result;
     }
     catch (err) {
