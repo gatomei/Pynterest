@@ -1,10 +1,10 @@
 @import '../../../assets/styles/colors.scss';
 
-#background{
-    background-color: $header-background;
-    min-height: 100%;
-    padding-top: 20px;
-}
+// #background{
+//     background-color: $header-background;
+//     min-height: 100%;
+//     padding-top: 20px;
+// }
 
 .profile-container{
     margin-top: 25px;
@@ -15,7 +15,8 @@
 }
 
 .profile-info-container{
-    width: 30%;
+    width: 25%;
+    padding: 15px;
 }
 
 .shaddow{
@@ -39,8 +40,8 @@
 }
 
 #profile-photo{
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
     border: $icon-color 2px solid;
@@ -60,14 +61,14 @@
 }
 
 .sub-content{
-    width: 40%;
+    width: 45%;
     text-align: center;
     padding: 10px;
     display: inline-block;
     background-color: $icon-color;
     color: white;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
     border-radius: 20px;
 
     display: flex;
@@ -119,7 +120,9 @@
 
 .profile-items-container{
     width: 70%;
-    padding-left: 20px;
+    padding-top: 15px;
+    padding-left: 50px;
+    //adding-right: 40px;
 }
 
 .add-content-buttons{

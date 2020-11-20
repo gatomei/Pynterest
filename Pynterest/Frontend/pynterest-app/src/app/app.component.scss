@@ -1,0 +1,17 @@
+#background{
+    background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    z-index: -1;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+}

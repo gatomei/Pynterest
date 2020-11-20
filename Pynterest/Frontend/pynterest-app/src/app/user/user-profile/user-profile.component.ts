@@ -53,8 +53,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.username = params['username'];
         this.subs.push(this.userInfoService.getInfo(this.username).subscribe((data)=>{
           this.user = data;
-          this.user.profilePicture = []
           this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,'+ data.profilePicture);
+          this.user.profilePicture = []
         },
         (error) => {
           console.log(error);
