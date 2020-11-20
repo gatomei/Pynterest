@@ -3,6 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
+import { LocalStorageService } from '@app/core/services/local-storage.service';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { UserInfoService } from '@app/user/services/user-info.service';
 import { Subscription } from 'rxjs';
@@ -26,7 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
      private authenticationService: AuthenticationService,
      private JwtDecoderService: JwtDecoderService,
      private userInfoService:UserInfoService,
-     private sanitizer:DomSanitizer) {
+     private sanitizer:DomSanitizer,
+     private localStorage:LocalStorageService) {
     this.router = router;
     this.notificationsUnseen = 0;
     this.messagesUnseen = 0;
@@ -37,11 +39,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.userInfoService.getInfo(this.JwtDecoderService.getUsername()).subscribe((data)=>{
+    let image = this.localStorage.get<string>("profilePicture");
+    if(image == null)
+    {
+      this.sub = this.userInfoService.getInfo(this.JwtDecoderService.getUsername()).subscribe((data)=>{
+        this.localStorage.set("profilePicture", data.profilePicture);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/json;base64,'+data.profilePicture);
-    },(error)=>{
-      console.log(error);
-    });
+      },(error)=>{
+        console.log(error);
+      });
+    }
+    else
+    {
+      console.log("Nu s-a facut call!");
+      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/json;base64,'+ image);
+    }
   }
    
   public logOut() {
