@@ -1,65 +1,65 @@
 <!-- <div id="background"> -->
 <app-header></app-header>
 <div class="profile-container">
-    <div class="profile-info-container">
-        <div class="profile-content shaddow">
-            <div id="profile-photo-container">
-                <div id="profile-photo">
-                    <img [src]="imageUrl">
-                </div>
-            </div>
-            <div id="personal-info">
-                <div id="name">
-                    {{user.fullname}}
-                </div>
-                <div id="username">
-                    {{user.username}}
-                </div>
-                <div id="network-content">
-                    <div class="sub-content">
-                        <div>{{subscribers}}</div> 
-                        <div>subscribers</div>
-                    </div>
-                    <div class="sub-content">
-                        <div>{{subscriptions}}</div> 
-                        <div>subscriptions</div>
-                    </div>
-                </div>
-                <div id="description">
-                   {{user.description}}
-                </div>
-            </div>
-            <ng-container *ngIf="!isHisPage()" >
-                <ng-container *ngIf="isSubscribed(1);else unsub">
-                    <button class="sub-button" (click)="unsubscribe()">
-                        Unsubscribe
-                    </button>
-                </ng-container>
-                <ng-template #unsub>
-                    <button class="sub-button" (click)="subscribe()">
-                        Subscribe
-                    </button>
-                </ng-template>
-            </ng-container>
+  <div class="profile-info-container">
+    <div class="profile-content shaddow">
+      <div id="profile-photo-container">
+        <div id="profile-photo">
+          <img [src]="imageUrl">
         </div>
-    </div>
-    <div class="profile-items-container">
-        <div class="profile-content shaddow">
-            <ng-container *ngIf="isHisPage()">
-                <div class="add-content-buttons">
-                    <button mat-icon-button class="content-buttons" aria-label="Add new photo">
-                        <mat-icon>add_a_photo</mat-icon>
-                    </button>
-                    <button mat-icon-button class="content-buttons" aria-label="Add a pin">
-                        <mat-icon>add_circle</mat-icon>
-                    </button>
-                </div>
-            </ng-container>
-            <div class="change-content-buttons">
-                <button>Photos</button>
-                <button>Panels</button>
-            </div>
+      </div>
+      <div id="personal-info">
+        <div id="name">
+          {{user.fullname}}
         </div>
+        <div id="username">
+          {{user.username}}
+        </div>
+        <div id="network-content">
+          <div class="sub-content">
+            <div>{{subscribers}}</div>
+            <div>subscribers</div>
+          </div>
+          <div class="sub-content">
+            <div>{{subscriptions}}</div>
+            <div>subscriptions</div>
+          </div>
+        </div>
+        <div id="description">
+          {{user.description}}
+        </div>
+      </div>
+      <ng-container *ngIf="!isHisPage()">
+        <ng-container *ngIf="isSubscribed(1);else unsub">
+          <button class="sub-button" (click)="unsubscribe()">
+            Unsubscribe
+          </button>
+        </ng-container>
+        <ng-template #unsub>
+          <button class="sub-button" (click)="subscribe()">
+            Subscribe
+          </button>
+        </ng-template>
+      </ng-container>
     </div>
+  </div>
+  <div class="profile-items-container">
+    <div class="profile-content shaddow">
+      <ng-container *ngIf="isHisPage()">
+        <div class="add-content-buttons">
+          <button mat-icon-button class="content-buttons" aria-label="Add new photo">
+            <mat-icon>add_a_photo</mat-icon>
+          </button>
+          <button mat-icon-button class="content-buttons" aria-label="Add a pin">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+      <div class="change-content-buttons">
+        <button>Photos</button>
+        <button>Panels</button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- </div> -->
