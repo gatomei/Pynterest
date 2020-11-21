@@ -1,265 +1,255 @@
 @import '../../../../assets/styles/colors.scss';
 
-
-.header-container{
-    margin-top: 10px;
-    margin-left: 1%;
-    width: 98%;  
+.header-container {
+  margin-top: 10px;
+  margin-left: 1%;
+  width: 98%;
 }
 
-.header-content{
-    display: flex;
-    width: 100%;
-    background-color:$header-background;
-    border-radius: 30px;
-    padding: 15px 5px;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
+.header-content {
+  display: flex;
+  width: 100%;
+  background-color: $header-background;
+  border-radius: 30px;
+  padding: 15px 5px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 //logo
-.logo-container{
-    display: flexbox;
-    flex-grow: 0.3;
-    flex-basis: content;
-    padding: 0 10px;
-    border-radius: 30px;
-    padding: 3px;
-    margin-right: 10px;
-    margin-left: 40px;
+.logo-container {
+  display: flexbox;
+  flex-grow: 0.3;
+  flex-basis: content;
+  padding: 0 10px;
+  border-radius: 30px;
+  padding: 3px;
+  margin-right: 10px;
+  margin-left: 40px;
 }
-
-
-
-
 
 //search bar
-.search-bar-container{
-    display: flex;
-    justify-content: center;
-    flex-grow: 10;
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  flex-grow: 10;
 }
 
-
-.input{
-    width: 85%;
-    border: 3px solid $icon-color;
-    background-color: white;
-    padding: 15px 30px;
-    border-radius: 70px;
-    font-size: 18px;
-    color: black;
-    outline: none;
-    margin-right: 13px;
-  }
+.input {
+  width: 85%;
+  border: 3px solid $icon-color;
+  background-color: white;
+  padding: 15px 30px;
+  border-radius: 70px;
+  font-size: 18px;
+  color: black;
+  outline: none;
+  margin-right: 13px;
+}
 
 .input:focus {
-    border-color: red;
-}
-  
-  
-  .close-btn{
-    color: $logoColor;
-    background: white;
-    border: 3px $icon-color solid; 
-    width: 130px;
-    border-radius: 70px;
-    outline: none;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-
-.close-btn:hover{
-    background-color: $logoColor;
-    color: white;
-    border-color: $logoColor;
+  border-color: red;
 }
 
+.close-btn {
+  color: $logoColor;
+  background: white;
+  border: 3px $icon-color solid;
+  width: 130px;
+  border-radius: 70px;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.close-btn:hover {
+  background-color: $logoColor;
+  color: white;
+  border-color: $logoColor;
+}
 
 //profile
-.profile-content{
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    margin-left: 5px;
-    flex-grow: 1;
+.profile-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5px;
+  flex-grow: 1;
 }
 
-.profile-item{
-    padding: 0 6px;
+.profile-item {
+  padding: 0 6px;
 }
 
-.profile-item mat-icon{
-    font-size: 35px;
-    width: 35px;
-    color: $icon-color;
+.profile-item mat-icon {
+  font-size: 35px;
+  width: 35px;
+  color: $icon-color;
 }
 
-.profile-item mat-icon:hover{
-    color: $logoColor;
+.profile-item mat-icon:hover {
+  color: $logoColor;
 }
 
-.profile-photo{
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: $icon-color 2px solid;
-    background-color: transparent;
+.profile-photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: $icon-color 2px solid;
+  background-color: transparent;
 }
 
-#toProfile{
-    outline: none;
-    border: none;
-    background: white;
+#toProfile {
+  outline: none;
+  border: none;
+  background: white;
 }
 
-.profile-photo:hover{
-    border-color: $logoColor;
+.profile-photo:hover {
+  border-color: $logoColor;
 }
 
-.profile-photo img{
-    width: 100%;
-    height: auto;
+.profile-photo img {
+  width: 100%;
+  height: auto;
 }
 
-.profile-item button.log-out{
-    font-size: 17px;
-    padding: 10px;
-    border-radius: 30px;
-    background-color: $logoColor;
-    color: $header-background;
-    border: 3px $logoColor solid;
+.profile-item button.log-out {
+  font-size: 17px;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
 }
 
-.profile-item button.log-out:hover{
-    color: $logoColor;
-    background-color: $header-background;
+.profile-item button.log-out:hover {
+  color: $logoColor;
+  background-color: $header-background;
 }
 
 //icons
-.profile-item button.icon-button
-{
-    padding: 5px;
-    border-radius: 30px;
-    border: 3px solid white;
-    background-color: $header-background;
-    border:none;
-    outline: none;
-    width: 55px;
+.profile-item button.icon-button {
+  padding: 5px;
+  border-radius: 30px;
+  border: 3px solid white;
+  background-color: $header-background;
+  border: none;
+  outline: none;
+  width: 55px;
 }
 
-.profile-item button.button-pressed{
-    border: 3px solid $icon-color;
+.profile-item button.button-pressed {
+  border: 3px solid $icon-color;
 }
 
-.front-cover{
-    cursor: default;
-    position: absolute;
-    z-index: 999;
-    margin-top: 10px;
-    margin-left: 78%;
-    width: 20%;
-    font-weight: 300;
-    background: $header-background;
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-    box-shadow: $container-shadow;
-    display: flex;
-    justify-content: row;
+.front-cover {
+  cursor: default;
+  position: absolute;
+  z-index: 999;
+  margin-top: 10px;
+  margin-left: 78%;
+  width: 20%;
+  font-weight: 300;
+  background: $header-background;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  box-shadow: $container-shadow;
+  display: flex;
+  justify-content: row;
 }
 
-.front-cover h3{
-    text-align: center;
-    margin: 10px;
-    font-weight: bold;
-    font-size: 18px;
+.front-cover h3 {
+  text-align: center;
+  margin: 10px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 @media only screen and (max-width: 1026px) {
-    .logo-container img{
-        content: url("../../../../assets/images/pynterestLogoResizedShort.png");
-    }
+  .logo-container img {
+    content: url('../../../../assets/images/pynterestLogoResizedShort.png');
+  }
 }
 
 @media only screen and (max-width: 882px) {
-    .logo-container img{
-        content: url("../../../../assets/images/pynterestLogoResized.png");
-    }
+  .logo-container img {
+    content: url('../../../../assets/images/pynterestLogoResized.png');
+  }
 
-    .header-content{
-        flex-wrap: wrap;
-    }
+  .header-content {
+    flex-wrap: wrap;
+  }
 
-    .search-bar-container{
-        order: 3;
-        margin: 10px 10%;
-    }
+  .search-bar-container {
+    order: 3;
+    margin: 10px 10%;
+  }
 
-    .logo-container{
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-    }
+  .logo-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+  }
 
-    .profile-content{
-        flex-grow: 2;
-    }
+  .profile-content {
+    flex-grow: 2;
+  }
 
-    .front-cover{
-        margin-top: -95px;
-        width: 40%;
-        margin-left: 58%;
-    }
+  .front-cover {
+    margin-top: -95px;
+    width: 40%;
+    margin-left: 58%;
+  }
 }
 
 @media only screen and (max-width: 425px) {
-    .logo-container img{
-        content: url("../../../../assets/images/pynterestLogoResizedShort.png");
-    }
+  .logo-container img {
+    content: url('../../../../assets/images/pynterestLogoResizedShort.png');
+  }
 
-    .profile-photo{
-        width: 40px;
-        height: 40px;
-    }
+  .profile-photo {
+    width: 40px;
+    height: 40px;
+  }
 
-    .profile-item{
-        padding: 0 10px;
-    }
+  .profile-item {
+    padding: 0 10px;
+  }
 
-    .profile-item button.icon-button{
-        padding: 5px;
-    }
+  .profile-item button.icon-button {
+    padding: 5px;
+  }
 
-    .profile-item mat-icon{
-        font-size: 24px;
-        width: 24px;
-    }
+  .profile-item mat-icon {
+    font-size: 24px;
+    width: 24px;
+  }
 
-    .profile-item button.log-out{
-        font-size: 13px;
-        padding: 5px;
-    }
+  .profile-item button.log-out {
+    font-size: 13px;
+    padding: 5px;
+  }
 
-    .input{
-        font-size: 13px;
-        padding: 5px 10px;
-    }
+  .input {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
 
-    .close-btn{
-        width: 65px;
-        font-size: 13px;
-    }
+  .close-btn {
+    width: 65px;
+    font-size: 13px;
+  }
 
-    .search-bar-container{
-        margin: 10px 3%;
-    }
+  .search-bar-container {
+    margin: 10px 3%;
+  }
 
-    .logo-container img{
-        width: 45px;
-    }
-
+  .logo-container img {
+    width: 45px;
+  }
 }

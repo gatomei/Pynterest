@@ -6,6 +6,10 @@ import { Subscription } from 'rxjs';
 import { UserInfoService } from '../services/user-info.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { LocalStorageService } from '@app/core/services/local-storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FollowDialogComponent } from '@app/shared/components/follow-dialog/follow-dialog.component';
+import { FollowDialogService } from '../../shared/services/follow-dialog.service';
+import { FollowDialogModel } from '@app/core/models/followDialogModel';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,6 +20,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public subscribers: number = 0;
   public subscriptions: number = 1;
   public user: UserInfo;
+  public subscribersDialogModels: FollowDialogModel[];
+  public subscriptionsDialogModels: FollowDialogModel[];
   public suscribedUser: boolean = true;
   private username: String;
   private routeSub: Subscription;
@@ -27,9 +33,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private userInfoService: UserInfoService,
     private sanitizer: DomSanitizer,
-    private localstorageService: LocalStorageService
+    private localstorageService: LocalStorageService,
+    private followDialogService: FollowDialogService
   ) {
     this.subs = new Array<Subscription>();
+    this.subscribersDialogModels = new Array<FollowDialogModel>();
+    this.subscriptionsDialogModels = new Array<FollowDialogModel>();
   }
 
   ngOnDestroy(): void {
@@ -40,6 +49,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    //de test
+    //////////////////////////////////////////////////////////////////////////////////////////
+    this.subscribersDialogModels.push({ userFullname: 'pufi', dialogTitle: "Subscribers" });
+    this.subscribersDialogModels.push({ userFullname: 'puficea', dialogTitle: "Subscribers" });
+
+    this.subscriptionsDialogModels.push({ userFullname: 'piki', dialogTitle: "Subscriptions" });
+    this.subscriptionsDialogModels.push({ userFullname: 'pikish', dialogTitle: "Subscriptions" });
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
     this.user = {
       birthDate: new Date(),
       description: '',
@@ -48,6 +67,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       username: '',
       profilePicture: [],
     };
+
     this.routeSub = this.activatedRoute.params.subscribe((params) => {
       this.username = params['username'];
       this.subs.push(
@@ -89,5 +109,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   hasSubscribers(): boolean {
     return this.subscribers != 0;
+  }
+
+  openSubscribersDialog() {
+    this.followDialogService.openDialog(this.subscribersDialogModels);
+  }
+
+
+  openSubscriptionsDialog() {
+    this.followDialogService.openDialog(this.subscriptionsDialogModels);
   }
 }

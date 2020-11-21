@@ -16,13 +16,17 @@
           {{user.username}}
         </div>
         <div id="network-content">
-          <button class="link" [disabled]='!hasSubscribers()'>
-            <div>{{subscribers}} subscribers</div>
-          </button>
+          <div id="sub-content">
+            <button class="link" [disabled]='!hasSubscribers()' (click)='openSubscribersDialog()'>
+              <div>{{subscribers}} subscribers</div>
+            </button>
+          </div>
           <div>.</div>
-          <button class="link" [disabled]='!hasSubscriptions()'>
-            <div>{{subscriptions}} subscriptions</div>
-          </button>
+          <div id="sub-content">
+            <button class="link" [disabled]='!hasSubscriptions()' (click)='openSubscriptionsDialog()'>
+              <div>{{subscriptions}} subscriptions</div>
+            </button>
+          </div>
         </div>
         <div id="description">
           {{user.description}}
