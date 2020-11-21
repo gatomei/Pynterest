@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProgressBarComponent as ProgressSpinnerComponent } from './progress-bar.component';
+import { ProgressSpinnerComponent as ProgressSpinnerComponent } from './progress-spinner.component';
 
 describe('ProgressBarComponent', () => {
   let component: ProgressSpinnerComponent;

@@ -15,21 +15,21 @@
                 <div id="username">
                     {{user.username}}
                 </div>
+                <div id="network-content">
+                    <div class="sub-content">
+                        <div>{{subscribers}}</div> 
+                        <div>subscribers</div>
+                    </div>
+                    <div class="sub-content">
+                        <div>{{subscriptions}}</div> 
+                        <div>subscriptions</div>
+                    </div>
+                </div>
                 <div id="description">
                    {{user.description}}
                 </div>
             </div>
-            <div id="network-content">
-                <div class="sub-content">
-                    <div>{{subscribers}}</div> 
-                    <div>subscribers</div>
-                </div>
-                <div class="sub-content">
-                    <div>{{subscriptions}}</div> 
-                    <div>subscriptions</div>
-                </div>
-            </div>
-            <ng-container *ngIf="isHisPage()" >
+            <ng-container *ngIf="!isHisPage()" >
                 <ng-container *ngIf="isSubscribed(1);else unsub">
                     <button class="sub-button" (click)="unsubscribe()">
                         Unsubscribe

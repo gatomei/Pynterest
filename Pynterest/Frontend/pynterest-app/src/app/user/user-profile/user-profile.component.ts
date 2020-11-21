@@ -4,8 +4,6 @@ import { UserInfo } from '@app/user/models/user-info';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { Subscription } from 'rxjs';
 import { UserInfoService } from '../services/user-info.service';
-import { HttpResponse } from '@angular/common/http';
-import { element } from 'protractor';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { LocalStorageService } from '@app/core/services/local-storage.service';
 
