@@ -13,8 +13,8 @@ import { LocalStorageService } from '@app/core/services/local-storage.service';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-  public subscribers: number = 10;
-  public subscriptions: number = 12;
+  public subscribers: number = 0;
+  public subscriptions: number = 1;
   public user: UserInfo;
   public suscribedUser: boolean = true;
   private username: String;
@@ -81,5 +81,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   subscribe() {
     this.suscribedUser = true;
+  }
+
+  hasSubscriptions(): boolean {
+    return this.subscriptions != 0;
+  }
+
+  hasSubscribers(): boolean {
+    return this.subscribers != 0;
   }
 }
