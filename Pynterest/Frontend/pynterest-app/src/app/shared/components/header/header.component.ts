@@ -60,6 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // functia de log out, se duce pe pagina de log in
     // sterge din session storage informatiile memorate pentru utilizatorul actual
     this.authenticationService.removeUserFromLocalStorage();
+    this.localStorage.remove("profilePicture");
     this.router.navigate(['login']);
   }
 
