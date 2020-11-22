@@ -4,8 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity(name="Users")
