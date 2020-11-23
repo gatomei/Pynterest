@@ -1,0 +1,82 @@
+@import '../../../../assets/styles/colors.scss';
+
+
+.custom-dialog-container .mat-dialog-container {
+  border-radius: 10%;
+}
+
+.dialog-title{
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.name-field, .private-field{
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+.create-button {
+  border-radius: 30px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 2px $logoColor solid;
+  font-size: 20px;
+  width: 105px;
+  height: 50px;
+  outline: none;
+}
+
+
+.close-button {
+  border-radius: 30px;
+  color:$logoColor;
+  border: 2px $icon-color solid;
+  background-color: $header-background;
+  font-size: 20px;
+  width: 105px;
+  height: 50px;
+  outline: none;
+}
+
+
+.form-inputs{
+  padding: 1% 7%;
+  width: 30rem;
+  text-align: left;
+  font-size: 20px;
+  align-self: center;
+  display: block;
+  box-sizing: border-box;
+  height: 50px;
+  border-radius: 20px;
+  margin:20px;
+  outline: none;
+}
+
+.name-label{
+  margin:20px;
+}
+
+.toggle-label{
+  margin:20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+.buttons{
+  padding-top: 5%;
+  padding-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+
+@media (max-width: 1024px) {
+
+  .form-inputs{
+    width: 80%;
+    font-size: 16px;
+  }
+}

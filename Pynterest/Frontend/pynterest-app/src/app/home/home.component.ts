@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  photos:[];
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  clickCard(){
+    console.log("s-a dat click");
+  }
+  onHover(){
+
+  }
 }

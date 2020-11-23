@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FollowDialogComponent } from '@app/shared/components/follow-dialog/follow-dialog.component';
 import { FollowDialogService } from '../../shared/services/follow-dialog.service';
 import { FollowDialogModel } from '@app/core/models/followDialogModel';
+import {BoardsService} from '../../shared/services/boards.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -34,7 +35,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private userInfoService: UserInfoService,
     private sanitizer: DomSanitizer,
     private localstorageService: LocalStorageService,
-    private followDialogService: FollowDialogService
+    private followDialogService: FollowDialogService,
+    private boardsService:BoardsService,
   ) {
     this.subs = new Array<Subscription>();
     this.subscribersDialogModels = new Array<FollowDialogModel>();
@@ -118,5 +120,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   openSubscriptionsDialog() {
     this.followDialogService.openDialog(this.subscriptionsDialogModels);
+  }
+
+  openAddBoardDialog(){
+    this.boardsService.openDialog();
   }
 }

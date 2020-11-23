@@ -1,0 +1,26 @@
+<h2 mat-dialog-title class="dialog-title">Create a new board</h2>
+
+<mat-dialog-content [formGroup]="boardForm">
+  <div class="name-field">
+    <mat-form-field >
+      <mat-label class="name-label">Name</mat-label>
+      <input matInput placeholder="Ex. Shoes/Quotes/Cars" formControlName="boardName" class="form-inputs" />
+    </mat-form-field>
+  </div>
+  <div class="private-field">
+    <mat-form-field>
+      <mat-label class="toggle-label">Make this board private</mat-label>
+      <mat-slide-toggle formControlName="privateToggle">Private</mat-slide-toggle>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+
+<div class="buttons">
+  <div>
+    <button class="close-button" mat-raised-button matDialogClose>Cancel</button>
+  </div>
+  <div>
+    <button class="create-button" mat-raised-button [disabled]="!boardForm.valid" (click)="addBoard()">Save</button>
+  </div>
+</div>

@@ -10,6 +10,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FollowDialogComponent } from './components/follow-dialog/follow-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { CreateBoardDialogComponent } from './components/create-board-dialog/create-board-dialog.component';
+import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -18,7 +21,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     PinComponent,
     PanelComponent,
     ProgressSpinnerComponent,
-    FollowDialogComponent
+    FollowDialogComponent,
+    CreateBoardDialogComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatBadgeModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSlideToggleModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     HeaderComponent,

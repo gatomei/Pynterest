@@ -1,0 +1,38 @@
+.photos-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 2%;
+  grid-row-gap: 2%;
+  margin: 4%;
+  margin-top: 2%;
+}
+
+.photo-card {
+  border-color: white;
+  border-radius: 7%;
+  padding:2%;
+}
+
+.photo-file {
+  width: 100%;
+  height: auto;
+  border-radius: 7%;
+}
+
+.photo-title {
+  padding-left: 5%;
+  font-size: 16.5px;
+  padding-top: 2%;
+}
+
+
+
+
+@media (max-width: 900px) {
+
+  .photos-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+}
