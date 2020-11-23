@@ -16,4 +16,8 @@ public class ReadUserDTO {
     private String description;
 
     private byte[] profilePicture;
+
+    private Integer numberFollowers;
+
+    private Integer numberFollowings;
 }

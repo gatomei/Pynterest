@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/authorize/api/pynterest/boards")
+@RequestMapping("/authorize/api/pynterest/panel")
 public class PanelController {
 
 
