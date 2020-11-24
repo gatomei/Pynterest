@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
                 "title",
                 "user_id"
             }
-    )
+        )
 )
 public class Board {
 

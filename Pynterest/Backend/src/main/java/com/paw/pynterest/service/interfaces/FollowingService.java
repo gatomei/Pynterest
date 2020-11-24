@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface FollowingService {
-    boolean addToFollowings(Long userId, Long followedUserId);
-    Set<User> getFollowers(Long userId);
-    Set<User> getFollowings(Long userId);
+    boolean addToFollowings(String username, String followedUsername);
+    Set<User> getFollowers(String username);
+    Set<User> getFollowings(String username);
+    void deleteFromFollowings(String username, String followedUsername);
 }
