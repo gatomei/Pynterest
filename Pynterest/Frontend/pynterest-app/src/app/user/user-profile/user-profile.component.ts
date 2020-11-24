@@ -48,6 +48,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    //de test
+    //////////////////////////////////////////////////////////////////////////////////////////
+    this.subscribersDialogModels.push({ userFullname: 'pufi', dialogTitle: "Subscribers" });
+    this.subscribersDialogModels.push({ userFullname: 'puficea', dialogTitle: "Subscribers" });
+
+    this.subscriptionsDialogModels.push({ userFullname: 'piki', dialogTitle: "Subscriptions" });
+    this.subscriptionsDialogModels.push({ userFullname: 'pikish', dialogTitle: "Subscriptions" });
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
     this.user = {
       birthDate: new Date(),
       description: '',
@@ -147,5 +157,22 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   openFollowingDialog() {
     var dialogTitle = 'Following'
     this.followDialogService.openDialog(this.followingModel, dialogTitle);
+  }
+
+  hasSubscriptions(): boolean {
+    return this.subscriptions != 0;
+  }
+
+  hasSubscribers(): boolean {
+    return this.subscribers != 0;
+  }
+
+  openSubscribersDialog() {
+    this.followDialogService.openDialog(this.subscribersDialogModels);
+  }
+
+
+  openSubscriptionsDialog() {
+    this.followDialogService.openDialog(this.subscriptionsDialogModels);
   }
 }
