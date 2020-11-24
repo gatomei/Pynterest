@@ -139,11 +139,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   openFollowersDialog() {
-    this.followDialogService.openFollowersDialog(this.followersModel);
+    var dialogTitle = 'Followers'
+    this.followDialogService.openDialog(this.followersModel, dialogTitle);
   }
 
 
   openFollowingDialog() {
-    this.followDialogService.openFollowingDialog(this.followingModel);
+    var dialogTitle = 'Following'
+    this.followDialogService.openDialog(this.followingModel, dialogTitle);
   }
 }

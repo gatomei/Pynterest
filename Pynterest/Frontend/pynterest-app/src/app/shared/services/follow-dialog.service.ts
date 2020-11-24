@@ -12,19 +12,10 @@ export class FollowDialogService {
 
   constructor(public dialog: MatDialog) { }
 
-  openFollowersDialog(followModel: FollowModel[]) {
+  openDialog(followModel: FollowModel[], dialogTitle: string) {
 
     var followDialogModel: FollowDialogModel = {
-      dialogTitle: 'Followers',
-      data: followModel
-    }
-
-    this.dialog.open(FollowDialogComponent, { data: { followDialogModel }, panelClass: 'custom-dialog-container' });
-  }
-  openFollowingDialog(followModel: FollowModel[]) {
-
-    var followDialogModel: FollowDialogModel = {
-      dialogTitle: 'Following',
+      dialogTitle: dialogTitle,
       data: followModel
     }
 
