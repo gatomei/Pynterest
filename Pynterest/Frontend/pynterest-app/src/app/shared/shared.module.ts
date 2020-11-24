@@ -7,20 +7,35 @@ import { PinComponent } from './components/pin/pin.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FollowDialogComponent } from './components/follow-dialog/follow-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [HeaderComponent, PinComponent, PanelComponent, ProgressSpinnerComponent],
-  imports: [    
+  declarations: [
+    HeaderComponent,
+    PinComponent,
+    PanelComponent,
+    ProgressSpinnerComponent,
+    FollowDialogComponent
+  ],
+  imports: [
     CommonModule,
     MatIconModule,
     MatBadgeModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
-  exports: [HeaderComponent, PinComponent, PanelComponent, ProgressSpinnerComponent],
-  schemas: [ 
+  exports: [
+    HeaderComponent,
+    PinComponent,
+    PanelComponent,
+    ProgressSpinnerComponent,
+    FollowDialogComponent
+  ],
+  schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ]
 })
