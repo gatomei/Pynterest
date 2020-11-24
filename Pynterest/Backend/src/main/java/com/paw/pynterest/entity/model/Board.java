@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table( name = "panels",
+@Table( name = "boards",
         uniqueConstraints = @UniqueConstraint(
             name = "uk_title_user_id",
             columnNames = {
@@ -17,12 +17,12 @@ import javax.validation.constraints.NotNull;
             }
     )
 )
-public class Panel {
+public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "panel_id")
-    private Long panelId;
+    @Column(name = "board_id")
+    private Long boardId;
 
     @NotNull
     @Column(length = 300, name = "title")
@@ -30,14 +30,14 @@ public class Panel {
     private String title;
 
     @NotNull
-    @Column(name = "private_panel")
-    private Boolean privatePanel;
+    @Column(name = "private_board")
+    private Boolean privateBoard;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(
             name = "user_id",
-            foreignKey = @ForeignKey(name = "fk_panels_user_id")
+            foreignKey = @ForeignKey(name = "fk_boards_user_id")
     )
     private User user;
 }
