@@ -11,12 +11,11 @@ import { CoreModule } from './core/core.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
+import { FollowDialogComponent } from './shared/components/follow-dialog/follow-dialog.component';
 
-function tokenGetter():any
-{
+function tokenGetter(): any {
   let token = localStorage.getItem("userToken");
-  if(token)
-  {
+  if (token) {
     return JSON.parse(token)["jwt"];
   }
   return null;
@@ -37,13 +36,13 @@ function tokenGetter():any
     SharedModule,
     CoreModule,
     JwtModule.forRoot({
-      config:{
+      config: {
         tokenGetter: tokenGetter,
-        allowedDomains:[]
+        allowedDomains: []
       },
     })
   ],
-  providers:[
+  providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

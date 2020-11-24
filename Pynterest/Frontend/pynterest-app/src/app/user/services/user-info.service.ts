@@ -9,9 +9,9 @@ import { Observable } from 'rxjs';
 })
 export class UserInfoService {
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-  getInfo(username:String){
+  getInfo(username: String) {
     const userInfoEndPoint = `${environment.baseAPIAuth}/user?username=${username}`;
     return this.httpClient.get<UserInfo>(userInfoEndPoint);
   }

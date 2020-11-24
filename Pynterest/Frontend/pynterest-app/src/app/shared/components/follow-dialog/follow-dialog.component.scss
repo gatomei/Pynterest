@@ -1,0 +1,75 @@
+@import '../../../../assets/styles/colors.scss';
+
+.dialog-title-content {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.dialog-title {
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
+}
+
+.close-button {
+  padding: 5px;
+  border-radius: 30px;
+  border: 3px solid white;
+  background-color: $header-background;
+  border: none;
+  outline: none;
+  width: 55px;
+  align-self: flex-end;
+  margin-bottom: 12px;
+  margin-left: 40px;
+}
+
+.mat-icon {
+  font-size: 28px;
+  font-weight: 800;
+  color: $icon-color;
+}
+
+.follow-dialog-item-content {
+  max-height: 100%;
+  max-width: 100%;
+  width: 250px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.user-profile-picture-content {
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.user-fullname-content {
+  flex: 3;
+  width: 2%;
+  word-wrap: break-word;
+  text-align: justify;
+}
+
+.user-full-name-text {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.follow-button {
+  align-self: flex-end;
+  flex-wrap: wrap;
+  font-size: 14px;
+  flex: 5;
+  border-radius: 30px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
+}
