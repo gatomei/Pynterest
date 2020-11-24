@@ -48,6 +48,18 @@ public class WebRestControllerAdvice {
         return this.generateErrorDTO(HttpStatus.BAD_REQUEST, ex);
     }
 
+    @ExceptionHandler(ServerErrorException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorDTO handleInternalServerError(ServerErrorException ex) {
+        return this.generateErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+    }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleUniqueKeyViolation(DataIntegrityViolationException ex) {
+        return this.generateErrorDTO(HttpStatus.BAD_REQUEST, ex);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)

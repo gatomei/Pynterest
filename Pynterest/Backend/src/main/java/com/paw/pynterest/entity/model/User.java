@@ -4,8 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.ByteArrayOutputStream;
-import java.util.Date;
+import java.util.*;
 
 @Data
 @Entity(name="Users")
@@ -41,4 +40,17 @@ public class User {
 
     @Lob
     private byte[] profilePicture;
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "followings",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private Set<User> followings = new HashSet<>();
+
+    public void followUser(User user)
+    {
+        followings.add(user);
+    }
 }
