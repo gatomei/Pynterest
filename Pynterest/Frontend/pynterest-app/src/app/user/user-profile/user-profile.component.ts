@@ -49,15 +49,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    //de test
-    //////////////////////////////////////////////////////////////////////////////////////////
-    this.subscribersDialogModels.push({ userFullname: 'pufi', dialogTitle: "Subscribers" });
-    this.subscribersDialogModels.push({ userFullname: 'puficea', dialogTitle: "Subscribers" });
-
-    this.subscriptionsDialogModels.push({ userFullname: 'piki', dialogTitle: "Subscriptions" });
-    this.subscriptionsDialogModels.push({ userFullname: 'pikish', dialogTitle: "Subscriptions" });
-    //////////////////////////////////////////////////////////////////////////////////////////////
-
     this.user = {
       birthDate: new Date(),
       description: '',
@@ -160,19 +151,19 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   hasSubscriptions(): boolean {
-    return this.subscriptions != 0;
+    return this.followingNumber != 0;
   }
 
   hasSubscribers(): boolean {
-    return this.subscribers != 0;
+    return this.followersNumber != 0;
   }
 
   openSubscribersDialog() {
-    this.followDialogService.openDialog(this.subscribersDialogModels);
+    //this.followDialogService.openDialog(this.followingModel);
   }
 
 
   openSubscriptionsDialog() {
-    this.followDialogService.openDialog(this.subscriptionsDialogModels);
+    //this.followDialogService.openDialog(this.subscriptionsDialogModels);
   }
 }
