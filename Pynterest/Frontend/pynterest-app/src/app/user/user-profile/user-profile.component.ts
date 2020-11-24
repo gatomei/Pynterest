@@ -123,6 +123,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   openAddBoardDialog(){
-    this.boardsService.openDialog();
-  }
+    this.boardsService.openDialog( {
+      userId: this.jwtDecoder.getId()
+  })
+
+}
 }

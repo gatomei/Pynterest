@@ -3,7 +3,7 @@
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 2%;
   grid-row-gap: 2%;
-  margin: 4%;
+  margin: 6%;
   margin-top: 2%;
 }
 
@@ -21,10 +21,13 @@
 
 .photo-title {
   padding-left: 5%;
-  font-size: 16.5px;
+  font-size: 18px;
   padding-top: 2%;
 }
 
+.content{
+  padding-bottom: 10%;
+}
 
 
 
