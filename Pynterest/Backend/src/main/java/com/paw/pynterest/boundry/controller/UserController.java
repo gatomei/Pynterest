@@ -62,13 +62,15 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping("/followings/{followedUser}")
-    public ResponseEntity<?> followUser(@PathVariable String followedUser)
+    @PutMapping("/{username}/followings/{followedUser}")
+    public ResponseEntity<?> followUser(@PathVariable String username, @PathVariable String followedUser)
     {
-        JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        String username = jwtUserDetails.getUsername();
         if(username.equals(followedUser))
             return new ResponseEntity<>("Can't follow yourself!", HttpStatus.BAD_REQUEST);
+
+        JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
+        if(!jwtUserDetails.getUsername().equals(username))
+            return new ResponseEntity<>("Your not allowed to add a new following for this user!", HttpStatus.UNAUTHORIZED);
         boolean created = followingService.addToFollowings(username, followedUser);
         if (created)
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -93,11 +95,13 @@ public class UserController {
         return new ResponseEntity<>(followings, HttpStatus.OK);
     }
 
-    @DeleteMapping("/followings/{followedUser}")
-    public ResponseEntity<?> deleteFollowing(@PathVariable String followedUser)
+    @DeleteMapping("/{username}/followings/{followedUser}")
+    public ResponseEntity<?> deleteFollowing(@PathVariable String username, @PathVariable String followedUser)
     {
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        followingService.deleteFromFollowings(jwtUserDetails.getUsername(), followedUser);
+        if(!jwtUserDetails.getUsername().equals(username))
+            return new ResponseEntity<>("Your not allowed to remove a following for this user!", HttpStatus.UNAUTHORIZED);
+        followingService.deleteFromFollowings(username, followedUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
