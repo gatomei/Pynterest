@@ -25,14 +25,15 @@ export class BoardsService {
 
 
   sendNewBoard(board:Board){
-    console.log(board);
-    const createBoardEndpoint = `${environment.baseAPIAuth}/panel`;
-    this.httpClient.post(createBoardEndpoint,board ).subscribe(
-      () => {
-        console.log("merge")
+
+    const createBoardEndpoint = `${environment.baseAPIAuth}/boards`;
+    this.httpClient.post<any>(createBoardEndpoint,board, { observe: 'response' } ).subscribe(
+      (response:any) => {
+        const header = response.headers.get('Location'); //header location=id of the new board
+        console.log(header);
       },
       (error) => {
-        console.log("eroare"+error)
+        console.log(error);
       }
     );
   }
