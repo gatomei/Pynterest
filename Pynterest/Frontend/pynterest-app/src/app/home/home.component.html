@@ -1,23 +1,35 @@
 <app-header></app-header>
 <div class="content">
   <div class="photos-container">
-    <div *ngFor="let number of [0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17 ]">
-      <mat-card class ="photo-card" (click)="clickCard()"
-    >
+    <!-- <div *ngFor="let photo of photos">
+      <mat-card class="photo-card" (click)="clickCard()">
         <img
           mat-card-md-image
           class="photo-file"
-          src="https://i.pinimg.com/474x/90/a9/c2/90a9c25d000b63f46dbe9ebc369c992f.jpg"
-
+          [src]="getImageUrl(photo)"
         />
-        <mat-card-content class="photo-title" >
-          <b><p >Title</p></b>
-        </mat-card-content>
-        <mat-card-actions>
-          <button>Pin</button>
-        </mat-card-actions>
-      </mat-card>
 
-    </div>
+        <mat-card-content>
+          <div class="photo-title">
+            <b><p>{{photo.title}}</p></b>
+          </div>
+          <div class="save-container">
+
+            <button mat-button class="board-button" >
+              <div>
+              Name
+              <mat-icon class="select-board-icon">expand_more</mat-icon>
+              </div>
+
+            </button>
+            <button mat-button class="pin-button">Save photo</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div> -->
+    <app-pin *ngFor="let photo of photos"
+    title="{{photo.title}}"
+    photo = "getImageUrl({{photo}})">
+    </app-pin>
   </div>
 </div>

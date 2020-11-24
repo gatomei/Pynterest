@@ -24,7 +24,7 @@ export class CreateBoardDialogComponent implements OnInit {
   ngOnInit(): void {
     this.boardForm = this.formBuilder.group(
       {boardTitle: [, { validators: [Validators.required], updateOn: "change" }],
-      privateBoard :[,{ validators: [Validators.required], updateOn: "change" }]});
+      privateBoard :[,{  updateOn: "change" }]});
   }
 
 
