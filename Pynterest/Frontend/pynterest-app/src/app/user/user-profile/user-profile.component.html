@@ -5,7 +5,7 @@
     <div class="profile-content shaddow">
       <div id="profile-photo-container">
         <div id="profile-photo">
-          <img [src]="imageUrl">
+          <img [src]="user.profilePicture">
         </div>
       </div>
       <div id="personal-info">
@@ -17,14 +17,14 @@
         </div>
         <div id="network-content">
           <div id="sub-content">
-            <button class="link" [disabled]='!hasSubscribers()' (click)='openSubscribersDialog()'>
-              <div>{{subscribers}} subscribers</div>
+            <button class="link" [disabled]='!hasFollowers()' (click)='openFollowersDialog()'>
+              <div>{{followersNumber}} followers</div>
             </button>
           </div>
           <div>.</div>
           <div id="sub-content">
-            <button class="link" [disabled]='!hasSubscriptions()' (click)='openSubscriptionsDialog()'>
-              <div>{{subscriptions}} subscriptions</div>
+            <button class="link" [disabled]='!hasFollowing()' (click)='openFollowingDialog()'>
+              <div>{{followingNumber}} following</div>
             </button>
           </div>
         </div>

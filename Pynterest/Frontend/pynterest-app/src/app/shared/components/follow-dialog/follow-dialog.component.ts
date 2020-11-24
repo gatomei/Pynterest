@@ -7,7 +7,12 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from '@angular/material/dialog';
-import { FollowDialogModel } from '../../../core/models/followDialogModel';
+
+import { DomSanitizer } from '@angular/platform-browser';
+import { FollowDialogModel } from '@app/shared/models/followDialogModel';
+import { FollowModel } from '@app/shared/models/followModel';
+
+
 
 @Component({
   selector: 'app-follow-dialog',
@@ -16,12 +21,17 @@ import { FollowDialogModel } from '../../../core/models/followDialogModel';
 })
 export class FollowDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: FollowDialogModel[]) { }
+  followModel: FollowModel[];
+  constructor(@Inject(MAT_DIALOG_DATA) public followDialogModel: FollowDialogModel,
+    private sanitizer: DomSanitizer
+  ) { }
 
 
   ngOnInit(): void {
+    this.followModel = this.followDialogModel.data;
+    this.followModel.forEach(user => {
+      user.profilePicture = this.sanitizer.bypassSecurityTrustUrl(
+        'data:image/png;base64,' + user.profilePicture);
+    })
   }
-
-
-
 }
