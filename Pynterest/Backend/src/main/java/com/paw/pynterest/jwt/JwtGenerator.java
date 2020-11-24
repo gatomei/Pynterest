@@ -27,7 +27,6 @@ public class JwtGenerator {
         claims.put("admin", user.isAdmin());
         claims.put("birthDate", user.getBirthDate()==null?null:user.getBirthDate().toString());
         claims.put("description", user.getDescription());
-
         return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
