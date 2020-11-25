@@ -7,6 +7,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FollowDialogService } from '../../shared/services/follow-dialog.service';
 import { UserInfoService } from '../services/user-info.service';
 import { UserFollowService } from '../services/user-follow.service';
+import { FollowModel } from '../../shared/models/followModel';
 
 @Component({
   selector: 'app-user-profile',
@@ -145,18 +146,19 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   openFollowersDialog() {
-    this.openDialog("Followers");
+    let currentUserFollowModel = this.userFollowService.followersModel.getValue();
+    this.openDialog("Followers", currentUserFollowModel);
   }
 
   openFollowingDialog() {
-    this.openDialog("Following");
+    let currentUserFollowModel = this.userFollowService.followingModel.getValue();
+    this.openDialog("Following", currentUserFollowModel);
   }
 
-  openDialog(dialogTitle: string) {
+  openDialog(dialogTitle: string, currentUserFollowModel: FollowModel[]) {
     this.userFollowService.getUsersFollowingMe(this.jwtDecoder.getUsername()).subscribe(
       (loggedInUserFollowingModel) => {
         let _dialogTitle = dialogTitle;
-        let currentUserFollowModel = this.userFollowService.followersModel.getValue();
         this.followDialogService.openDialog(currentUserFollowModel, loggedInUserFollowingModel, _dialogTitle)
       },
       (error) => {
@@ -164,7 +166,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       }
     )
   }
-
 }
 
 
