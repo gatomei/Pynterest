@@ -1,25 +1,41 @@
-<div class="dialog-title-content">
-  <div class="dialog-title">
-    <h2 mat-dialog-title>{{followDialogModel.dialogTitle}}</h2>
-  </div>
-  <button class="close-button" mat-raised-button matDialogClose>
-    <mat-icon>clear</mat-icon>
-  </button>
-</div>
-<div mat-dialog-content>
-  <mat-form-field>
-    <div *ngFor="let item of followModel">
-      <div class="follow-dialog-item-content">
-        <div class="user-profile-picture-content">
-          <!--<img [src]="user.profilePicture"> -->
-        </div> 
-        <div class="user-fullname-content">
-          <h4 class="user-full-name-text">{{item.username}}</h4>
-        </div>
-        <div class="follow-button-content">
-          <button class="follow-button">Follow</button>
-        </div>
+  <div class="container">
+    <div class="dialog-title-content">
+      <div class="dialog-title">
+        <h2 mat-dialog-title>{{followDialogModel.dialogTitle}}</h2>
       </div>
+      <button class="close-button" mat-raised-button matDialogClose>
+        <mat-icon>clear</mat-icon>
+      </button>
     </div>
-  </mat-form-field>
-</div>
+    <div mat-dialog-content>
+      <mat-form-field>
+
+        <div *ngFor="let followModel of currentUserFollowModel; let i = index">
+          <div class="follow-dialog-item-content">
+            <div
+              [class]="!isUserTheLoggedInUser(followModel.username)?'user-profile-picture-content':'logged-in-user-profile-picture-content'">
+              <img [src]="imgUrl[i]" alt="thumbnail" class="img-thumbnail" id="img-thumbnail">
+            </div>
+
+            <div
+              [class]="
+                !isUserTheLoggedInUser(followModel.username)?'user-username-content':'logged-in-user-username-content'">
+              <h4 class="user-username-text">{{followModel.username}}</h4>
+            </div>
+            <ng-container *ngIf="!isUserTheLoggedInUser(followModel.username); else loggedInUser">
+              <ng-container *ngIf="!isUserFollowed(followModel.username);else unsub">
+                <div class="follow-button-content">
+                  <button class="follow-button" (click)="onFollowClick(followModel.username)">Follow</button>
+                </div>
+              </ng-container>
+              <ng-template #unsub>
+                <div class="follow-button-content">
+                  <button class="follow-button" (click)="onUnfollowClick(followModel.username)">Unfollow</button>
+                </div>
+              </ng-template>
+            </ng-container>
+          </div>
+        </div>
+      </mat-form-field>
+    </div>
+  </div>

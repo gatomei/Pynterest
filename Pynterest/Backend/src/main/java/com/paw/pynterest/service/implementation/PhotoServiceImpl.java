@@ -14,9 +14,7 @@ import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.PhotoServiceInterface;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import org.apache.commons.lang.RandomStringUtils;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

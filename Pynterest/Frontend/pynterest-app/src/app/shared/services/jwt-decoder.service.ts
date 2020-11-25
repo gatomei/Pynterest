@@ -3,8 +3,6 @@ import { LocalStorageService } from '@app/core/services/local-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JWTUserInfo } from '../models/userInfoModel';
 
-
-
 @Injectable({
   providedIn: 'root'
 })

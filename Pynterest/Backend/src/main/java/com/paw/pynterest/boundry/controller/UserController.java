@@ -9,6 +9,7 @@ import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.FollowingService;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -62,15 +63,13 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping("/{username}/followings/{followedUser}")
-    public ResponseEntity<?> followUser(@PathVariable String username, @PathVariable String followedUser)
+    @PutMapping("/followings/{followedUser}")
+    public ResponseEntity<?> followUser(@PathVariable String followedUser)
     {
+        JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
+        String username = jwtUserDetails.getUsername();
         if(username.equals(followedUser))
             return new ResponseEntity<>("Can't follow yourself!", HttpStatus.BAD_REQUEST);
-
-        JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        if(!jwtUserDetails.getUsername().equals(username))
-            return new ResponseEntity<>("Your not allowed to add a new following for this user!", HttpStatus.UNAUTHORIZED);
         boolean created = followingService.addToFollowings(username, followedUser);
         if (created)
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -95,13 +94,11 @@ public class UserController {
         return new ResponseEntity<>(followings, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{username}/followings/{followedUser}")
-    public ResponseEntity<?> deleteFollowing(@PathVariable String username, @PathVariable String followedUser)
+    @DeleteMapping("/followings/{followedUser}")
+    public ResponseEntity<?> deleteFollowing(@PathVariable String followedUser)
     {
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        if(!jwtUserDetails.getUsername().equals(username))
-            return new ResponseEntity<>("Your not allowed to remove a following for this user!", HttpStatus.UNAUTHORIZED);
-        followingService.deleteFromFollowings(username, followedUser);
+        followingService.deleteFromFollowings(jwtUserDetails.getUsername(), followedUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

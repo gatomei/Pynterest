@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import { FollowModel } from '@app/shared/models/followModel';
+import { Injectable, ɵConsole } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
 import { FollowDialogComponent } from '../components/follow-dialog/follow-dialog.component';
-import { FollowModel } from '../models/followModel';
 import { FollowDialogModel } from '../models/followDialogModel';
 
 
@@ -13,13 +12,14 @@ export class FollowDialogService {
 
   constructor(public dialog: MatDialog) { }
 
-  openDialog(followModel: FollowModel[], dialogTitle: string) {
+  openDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
-    var followDialogModel: FollowDialogModel = {
-      dialogTitle: dialogTitle,
-      data: followModel
+    var data: FollowDialogModel = {
+      dialogTitle: _dialogTitle,
+      currentUserFollowModel: _currentUserFollowModel,
+      loggedInUserFollowingModel: _loggedInUserFollowingModel
     }
 
-    this.dialog.open(FollowDialogComponent, { data: { followDialogModel }, panelClass: 'custom-dialog-container' });
+    this.dialog.open(FollowDialogComponent, { data, panelClass: 'custom-dialog-container' });
   }
 }
