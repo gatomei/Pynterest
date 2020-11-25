@@ -9,6 +9,7 @@ import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.FollowingService;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -67,6 +68,8 @@ public class UserController {
     {
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
         String username = jwtUserDetails.getUsername();
+        System.out.println(username);
+        System.out.println(followedUser);
         if(username.equals(followedUser))
             return new ResponseEntity<>("Can't follow yourself!", HttpStatus.BAD_REQUEST);
         boolean created = followingService.addToFollowings(username, followedUser);

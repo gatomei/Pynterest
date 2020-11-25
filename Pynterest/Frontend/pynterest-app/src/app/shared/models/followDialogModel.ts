@@ -2,5 +2,6 @@ import { FollowModel } from './followModel';
 
 export interface FollowDialogModel {
     dialogTitle: string,
-    data: FollowModel[]
+    currentUserFollowModel: FollowModel[],
+    loggedInUserFollowingModel: FollowModel[];
 }
