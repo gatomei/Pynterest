@@ -15,7 +15,6 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { CreateBoardDialogComponent } from './components/create-board-dialog/create-board-dialog.component';
 import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 
-
 @NgModule({
   declarations: [
     HeaderComponent,

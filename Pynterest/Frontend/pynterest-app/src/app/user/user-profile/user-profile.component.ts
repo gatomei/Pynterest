@@ -3,12 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { UserInfo } from '@app/user/models/user-info';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { Subscription } from 'rxjs';
-import { UserInfoService } from '../services/user-info.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { LocalStorageService } from '@app/core/services/local-storage.service';
-import { MatDialog } from '@angular/material/dialog';
-import { FollowDialogComponent } from '@app/shared/components/follow-dialog/follow-dialog.component';
 import { FollowDialogService } from '../../shared/services/follow-dialog.service';
+import { UserInfoService } from '../services/user-info.service';
+import { UserFollowService } from '../services/user-follow.service';
+import { FollowModel } from '../../shared/models/followModel';
 import { FollowDialogModel } from '@app/core/models/followDialogModel';
 import {BoardsService} from '../../shared/services/boards.service';
 
@@ -18,29 +17,24 @@ import {BoardsService} from '../../shared/services/boards.service';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-  public subscribers: number = 0;
-  public subscriptions: number = 1;
+
   public user: UserInfo;
-  public subscribersDialogModels: FollowDialogModel[];
-  public subscriptionsDialogModels: FollowDialogModel[];
-  public suscribedUser: boolean = true;
   private username: String;
   private routeSub: Subscription;
   private subs: Subscription[];
-  public imageUrl: SafeUrl = '';
+  public imageUrl: SafeUrl
+  private subscribedUser;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
     private activatedRoute: ActivatedRoute,
     private userInfoService: UserInfoService,
+    private userFollowService: UserFollowService,
     private sanitizer: DomSanitizer,
-    private localstorageService: LocalStorageService,
-    private followDialogService: FollowDialogService,
+     private followDialogService: FollowDialogService,
     private boardsService:BoardsService,
   ) {
     this.subs = new Array<Subscription>();
-    this.subscribersDialogModels = new Array<FollowDialogModel>();
-    this.subscriptionsDialogModels = new Array<FollowDialogModel>();
   }
 
   ngOnDestroy(): void {
@@ -52,15 +46,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    //de test
-    //////////////////////////////////////////////////////////////////////////////////////////
-    this.subscribersDialogModels.push({ userFullname: 'pufi', dialogTitle: "Subscribers" });
-    this.subscribersDialogModels.push({ userFullname: 'puficea', dialogTitle: "Subscribers" });
-
-    this.subscriptionsDialogModels.push({ userFullname: 'piki', dialogTitle: "Subscriptions" });
-    this.subscriptionsDialogModels.push({ userFullname: 'pikish', dialogTitle: "Subscriptions" });
-    //////////////////////////////////////////////////////////////////////////////////////////////
-
     this.user = {
       birthDate: new Date(),
       description: '',
@@ -70,6 +55,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       profilePicture: [],
     };
 
+    this.getUserInfo();
+  }
+
+  getUserInfo() {
     this.routeSub = this.activatedRoute.params.subscribe((params) => {
       this.username = params['username'];
       this.subs.push(
@@ -79,7 +68,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(
               'data:image/png;base64,' + data.profilePicture
             );
-            this.user.profilePicture = [];
+            this.getFollowers();
+            this.getFollowing();
           },
           (error) => {
             console.log(error);
@@ -89,37 +79,95 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
   }
 
+  getFollowingNumber() {
+    var followingNumber = this.userFollowService.getFollowingNumber();
+    return followingNumber;
+  }
+
+  getFollowersNumber() {
+    var followersNumber = this.userFollowService.getFollowersNumber();
+    return followersNumber;
+  }
+
+  getFollowers() {
+    this.userFollowService.getFollowedUsers(this.user.username).subscribe(
+      (data) => {
+        this.userFollowService.followersModel.next(data);
+        this.setSubscribed();
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  getFollowing() {
+    this.userFollowService.getUsersFollowingMe(this.user.username).subscribe(
+      (data) => {
+        this.userFollowService.followingModel.next(data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
   public isHisPage(): boolean {
     return this.user.username == this.jwtDecoder.getUsername();
   }
 
-  isSubscribed(id): boolean {
-    return this.suscribedUser;
+  isSubscribed(): boolean {
+    return this.subscribedUser;
   }
 
-  unsubscribe() {
-    this.suscribedUser = false;
+  setSubscribed() {
+    this.subscribedUser = this.userFollowService.isSubscribedTo(this.jwtDecoder.getUsername());
   }
 
-  subscribe() {
-    this.suscribedUser = true;
+  unfollow() {
+    this.subscribedUser = false;
+    var subscribedUserUsername = this.user.username;
+    this.userFollowService.unfollowUser(subscribedUserUsername).subscribe(
+      (error) => { console.log(error); }
+    );
   }
 
-  hasSubscriptions(): boolean {
-    return this.subscriptions != 0;
+  follow() {
+    this.subscribedUser = true;
+    var subscribedUserUsername = this.user.username;
+    this.userFollowService.followUser(subscribedUserUsername).subscribe(
+      (error) => { console.log(error); }
+    );
   }
 
-  hasSubscribers(): boolean {
-    return this.subscribers != 0;
+  hasFollowers(): boolean {
+    return this.userFollowService.hasFollowers();
   }
 
-  openSubscribersDialog() {
-    this.followDialogService.openDialog(this.subscribersDialogModels);
+  hasFollowing(): boolean {
+    return this.userFollowService.hasFollowing();
   }
 
+  openFollowersDialog() {
+    let currentUserFollowModel = this.userFollowService.followersModel.getValue();
+    this.openDialog("Followers", currentUserFollowModel);
+  }
 
-  openSubscriptionsDialog() {
-    this.followDialogService.openDialog(this.subscriptionsDialogModels);
+  openFollowingDialog() {
+    let currentUserFollowModel = this.userFollowService.followingModel.getValue();
+    this.openDialog("Following", currentUserFollowModel);
+  }
+
+  openDialog(dialogTitle: string, currentUserFollowModel: FollowModel[]) {
+    this.userFollowService.getUsersFollowingMe(this.jwtDecoder.getUsername()).subscribe(
+      (loggedInUserFollowingModel) => {
+        let _dialogTitle = dialogTitle;
+        this.followDialogService.openDialog(currentUserFollowModel, loggedInUserFollowingModel, _dialogTitle)
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   openAddBoardDialog(){

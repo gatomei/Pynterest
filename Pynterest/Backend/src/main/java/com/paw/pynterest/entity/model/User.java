@@ -40,17 +40,4 @@ public class User {
 
     @Lob
     private byte[] profilePicture;
-
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "followings",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "follower_id")
-    )
-    private Set<User> followings = new HashSet<>();
-
-    public void followUser(User user)
-    {
-        followings.add(user);
-    }
 }

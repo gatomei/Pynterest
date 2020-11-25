@@ -12,7 +12,7 @@
 .dialog-title {
   justify-content: center;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
 .close-button {
@@ -25,6 +25,7 @@
   width: 55px;
   align-self: flex-end;
   margin-bottom: 12px;
+  margin-left: 40px;
 }
 
 .mat-icon {
@@ -48,16 +49,39 @@
 .user-profile-picture-content {
   flex: 1;
   flex-wrap: wrap;
+  margin-right: 20px;
+  overflow: hidden;
+  background-color: transparent;
 }
 
-.user-fullname-content {
+.logged-in-user-profile-picture-content {
+  flex: 0.6;
+  flex-wrap: wrap;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.img-thumbnail {
+  width: 30px;
+  border-radius: 30%;
+}
+
+.logged-in-user-username-content {
+  margin-left: 20px;
   flex: 3;
   width: 2%;
   word-wrap: break-word;
   text-align: justify;
 }
 
-.user-full-name-text {
+.user-username-content {
+  flex: 3;
+  width: 2%;
+  word-wrap: break-word;
+  text-align: justify;
+}
+
+.user-username-text {
   font-size: 15px;
   font-weight: 500;
 }

@@ -9,6 +9,7 @@ import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.FollowingService;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -57,41 +58,47 @@ public class UserController {
     {
         User u = userService.findUserByUsername(username);
         ReadUserDTO user = modelMapper.map(u, ReadUserDTO.class);
-        user.setNumberFollowers(followingService.getFollowers(u.getUserId()).size());
-        user.setNumberFollowings(u.getFollowings().size());
+        user.setNumberFollowers(followingService.getFollowers(u.getUsername()).size());
+        user.setNumberFollowings(followingService.getFollowings(u.getUsername()).size());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping("/{userId}/followings/{followedUserId}")
-    public ResponseEntity<?> addSubscriber(@PathVariable Long userId, @PathVariable Long followedUserId)
+    @PutMapping("/followings/{followedUser}")
+    public ResponseEntity<?> followUser(@PathVariable String followedUser)
     {
-        if(userId.equals(followedUserId))
-            return new ResponseEntity<>("Can't follow yourself!", HttpStatus.BAD_REQUEST);
-
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        if(!jwtUserDetails.getUserId().equals(userId))
-            return new ResponseEntity<>("Your not allowed to add a new following for this user!", HttpStatus.UNAUTHORIZED);
-        boolean created = followingService.addToFollowings(userId, followedUserId);
+        String username = jwtUserDetails.getUsername();
+        if(username.equals(followedUser))
+            return new ResponseEntity<>("Can't follow yourself!", HttpStatus.BAD_REQUEST);
+        boolean created = followingService.addToFollowings(username, followedUser);
         if (created)
             return new ResponseEntity<>(HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}/followers")
-    public ResponseEntity<?> getFollowers(@PathVariable Long userId)
+    @GetMapping("/{username}/followers")
+    public ResponseEntity<?> getFollowers(@PathVariable String username)
     {
-        Set<ReadFollowUserDTO> followers =  followingService.getFollowers(userId).stream().map(user ->
+        Set<ReadFollowUserDTO> followers =  followingService.getFollowers(username).stream().map(user ->
                 modelMapper.map(user, ReadFollowUserDTO.class)
         ).collect(Collectors.toSet());
         return new ResponseEntity<>(followers, HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}/followings")
-    public ResponseEntity<?> getFollowings(@PathVariable Long userId)
+    @GetMapping("/{username}/followings")
+    public ResponseEntity<?> getFollowings(@PathVariable String username)
     {
-        Set<ReadFollowUserDTO> followings =  followingService.getFollowings(userId).stream().map(user ->
+        Set<ReadFollowUserDTO> followings =  followingService.getFollowings(username).stream().map(user ->
                 modelMapper.map(user, ReadFollowUserDTO.class)
         ).collect(Collectors.toSet());
         return new ResponseEntity<>(followings, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/followings/{followedUser}")
+    public ResponseEntity<?> deleteFollowing(@PathVariable String followedUser)
+    {
+        JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
+        followingService.deleteFromFollowings(jwtUserDetails.getUsername(), followedUser);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

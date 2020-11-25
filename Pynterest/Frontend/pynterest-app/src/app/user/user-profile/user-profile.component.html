@@ -17,14 +17,14 @@
         </div>
         <div id="network-content">
           <div id="sub-content">
-            <button class="link" [disabled]='!hasSubscribers()' (click)='openSubscribersDialog()'>
-              <div>{{subscribers}} subscribers</div>
+            <button class="link" [disabled]="!hasFollowers()" (click)='openFollowersDialog()'>
+              <div>{{getFollowersNumber()}} followers</div>
             </button>
           </div>
           <div>.</div>
           <div id="sub-content">
-            <button class="link" [disabled]='!hasSubscriptions()' (click)='openSubscriptionsDialog()'>
-              <div>{{subscriptions}} subscriptions</div>
+            <button class="link" [disabled]="!hasFollowing()" (click)='openFollowingDialog()'>
+              <div>{{getFollowingNumber()}} following</div>
             </button>
           </div>
         </div>
@@ -33,14 +33,14 @@
         </div>
       </div>
       <ng-container *ngIf="!isHisPage()">
-        <ng-container *ngIf="isSubscribed(1);else unsub">
-          <button class="sub-button" (click)="unsubscribe()">
-            Unsubscribe
+        <ng-container *ngIf="isSubscribed();else unsub">
+          <button class="sub-button" (click)="unfollow()">
+            Unfollow
           </button>
         </ng-container>
         <ng-template #unsub>
-          <button class="sub-button" (click)="subscribe()">
-            Subscribe
+          <button class="sub-button" (click)="follow()">
+            Follow
           </button>
         </ng-template>
       </ng-container>

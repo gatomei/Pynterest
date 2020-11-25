@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@app/core/services/local-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { JWTUserInfo } from '../models/jwt/userInfoModel';
+import { JWTUserInfo } from '../models/userInfoModel';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,12 @@ export class JwtDecoderService {
 
   constructor(
     private jwtHelper: JwtHelperService,
-    private localstorageService:LocalStorageService
-    )
-  { 
+    private localstorageService: LocalStorageService
+  ) {}
+
+  getAllInfo(): JWTUserInfo {
     this.token = this.localstorageService.get("userToken")["jwt"];
     this.decodeToken = this.jwtHelper.decodeToken(this.token);
-  }
-
-  getAllInfo():JWTUserInfo
-  {
     return {
       id: this.decodeToken["userId"],
       email: this.decodeToken["email"],
@@ -32,16 +29,19 @@ export class JwtDecoderService {
     };
   }
 
-  isExpired():boolean
-  {
+  isExpired(): boolean {
     return this.jwtHelper.isTokenExpired(this.token);
   }
-  
-  getUsername():string{
+
+  getUsername(): string {
+    this.token = this.localstorageService.get("userToken")["jwt"];
+    this.decodeToken = this.jwtHelper.decodeToken(this.token);
     return this.decodeToken["sub"];
   }
 
-  getId():string{
+  getId(): string {
+    this.token = this.localstorageService.get("userToken")["jwt"];
+    this.decodeToken = this.jwtHelper.decodeToken(this.token);
     return this.decodeToken["userId"];
   }
 
