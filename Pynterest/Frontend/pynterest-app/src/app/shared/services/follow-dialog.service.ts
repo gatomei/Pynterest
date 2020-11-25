@@ -8,11 +8,11 @@ import { FollowDialogModel } from '../models/followDialogModel';
 @Injectable({
   providedIn: 'root'
 })
-export class FollowDialogService {
+export class DialogService {
 
   constructor(public dialog: MatDialog) { }
 
-  openDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
+  openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
     var data: FollowDialogModel = {
       dialogTitle: _dialogTitle,

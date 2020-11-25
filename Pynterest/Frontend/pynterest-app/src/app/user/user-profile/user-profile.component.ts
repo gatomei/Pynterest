@@ -4,10 +4,10 @@ import { UserInfo } from '@app/user/models/user-info';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { FollowDialogService } from '../../shared/services/follow-dialog.service';
 import { UserInfoService } from '../services/user-info.service';
 import { UserFollowService } from '../services/user-follow.service';
 import { FollowModel } from '../../shared/models/followModel';
+import { DialogService } from '@app/shared/services/follow-dialog.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -29,7 +29,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private userInfoService: UserInfoService,
     private userFollowService: UserFollowService,
     private sanitizer: DomSanitizer,
-    private followDialogService: FollowDialogService
+    private dialogService: DialogService
   ) {
     this.subs = new Array<Subscription>();
   }
@@ -159,7 +159,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userFollowService.getUsersFollowingMe(this.jwtDecoder.getUsername()).subscribe(
       (loggedInUserFollowingModel) => {
         let _dialogTitle = dialogTitle;
-        this.followDialogService.openDialog(currentUserFollowModel, loggedInUserFollowingModel, _dialogTitle)
+        this.dialogService.openFollowDialog(currentUserFollowModel, loggedInUserFollowingModel, _dialogTitle)
       },
       (error) => {
         console.log(error);
