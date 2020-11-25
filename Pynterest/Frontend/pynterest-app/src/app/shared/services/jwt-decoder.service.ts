@@ -13,12 +13,11 @@ export class JwtDecoderService {
   constructor(
     private jwtHelper: JwtHelperService,
     private localstorageService: LocalStorageService
-  ) {
-    this.token = this.localstorageService.get("userToken")["jwt"];
-    this.decodeToken = this.jwtHelper.decodeToken(this.token);
-  }
+  ) {}
 
   getAllInfo(): JWTUserInfo {
+    this.token = this.localstorageService.get("userToken")["jwt"];
+    this.decodeToken = this.jwtHelper.decodeToken(this.token);
     return {
       id: this.decodeToken["userId"],
       email: this.decodeToken["email"],
@@ -35,10 +34,14 @@ export class JwtDecoderService {
   }
 
   getUsername(): string {
+    this.token = this.localstorageService.get("userToken")["jwt"];
+    this.decodeToken = this.jwtHelper.decodeToken(this.token);
     return this.decodeToken["sub"];
   }
 
   getId(): string {
+    this.token = this.localstorageService.get("userToken")["jwt"];
+    this.decodeToken = this.jwtHelper.decodeToken(this.token);
     return this.decodeToken["userId"];
   }
 

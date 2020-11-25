@@ -41,6 +41,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.user = {
       birthDate: new Date(),
       description: '',

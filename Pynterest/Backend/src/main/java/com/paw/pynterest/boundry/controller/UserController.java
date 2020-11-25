@@ -68,8 +68,6 @@ public class UserController {
     {
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
         String username = jwtUserDetails.getUsername();
-        System.out.println(username);
-        System.out.println(followedUser);
         if(username.equals(followedUser))
             return new ResponseEntity<>("Can't follow yourself!", HttpStatus.BAD_REQUEST);
         boolean created = followingService.addToFollowings(username, followedUser);

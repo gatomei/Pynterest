@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FollowDialogComponent } from '../components/follow-dialog/follow-dialog.component';
 import { FollowDialogModel } from '../models/followDialogModel';
 
+
 @Injectable({
   providedIn: 'root'
 })

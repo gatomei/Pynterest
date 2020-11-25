@@ -10,6 +10,7 @@ import { FollowModel } from '@app/shared/models/followModel';
 import { UserFollowService } from '../../../user/services/user-follow.service';
 import { JwtDecoderService } from '../../services/jwt-decoder.service';
 
+
 @Component({
   selector: 'app-follow-dialog',
   templateUrl: './follow-dialog.component.html',
