@@ -50,7 +50,7 @@
     <div class="profile-content shaddow">
       <ng-container *ngIf="isHisPage()">
         <div class="add-content-buttons">
-          <button mat-icon-button class="content-buttons" aria-label="Add new photo">
+          <button mat-icon-button class="content-buttons" aria-label="Add new photo" (click)="openAddPinDialog()">
             <mat-icon>add_a_photo</mat-icon>
           </button>
           <button mat-icon-button class="content-buttons" aria-label="Add a pin">
@@ -65,4 +65,3 @@
     </div>
   </div>
 </div>
-<!-- </div> -->

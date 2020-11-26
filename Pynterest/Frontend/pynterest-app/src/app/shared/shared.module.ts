@@ -10,6 +10,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FollowDialogComponent } from './components/follow-dialog/follow-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AddPinDialogComponent } from './components/add-pin-dialog/add-pin-dialog.component';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -17,7 +25,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     PinComponent,
     PanelComponent,
     ProgressSpinnerComponent,
-    FollowDialogComponent
+    FollowDialogComponent,
+    AddPinDialogComponent
   ],
   imports: [
     CommonModule,
@@ -25,14 +34,26 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatBadgeModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MaterialFileInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   exports: [
     HeaderComponent,
     PinComponent,
     PanelComponent,
     ProgressSpinnerComponent,
-    FollowDialogComponent
+    FollowDialogComponent,
+    AddPinDialogComponent
+  ],
+  providers: [
+    FormBuilder,
+    NgxImageCompressService
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

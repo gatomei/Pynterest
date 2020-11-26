@@ -1,8 +1,10 @@
+import { SafeUrl } from '@angular/platform-browser';
 import { FollowModel } from '@app/shared/models/followModel';
 import { Injectable, ɵConsole } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FollowDialogComponent } from '../components/follow-dialog/follow-dialog.component';
 import { FollowDialogModel } from '../models/followDialogModel';
+import { AddPinDialogComponent } from '../components/add-pin-dialog/add-pin-dialog.component';
 
 
 @Injectable({
@@ -10,7 +12,7 @@ import { FollowDialogModel } from '../models/followDialogModel';
 })
 export class DialogService {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public followDialog: MatDialog, public addPinDialog: MatDialog) { }
 
   openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
@@ -20,6 +22,11 @@ export class DialogService {
       loggedInUserFollowingModel: _loggedInUserFollowingModel
     }
 
-    this.dialog.open(FollowDialogComponent, { data, panelClass: 'custom-dialog-container' });
+    this.followDialog.open(FollowDialogComponent, { data, panelClass: 'custom-dialog-container' });
+  }
+
+  openAddPinDialog() {
+
+    this.addPinDialog.open(AddPinDialogComponent, { panelClass: 'custom-dialog-container' });
   }
 }
