@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FollowDialogService } from './follow-dialog.service';
+import { BoardsService } from './boards.service';
 
-describe('FollowDialogService', () => {
-  let service: FollowDialogService;
+describe('BoardsService', () => {
+  let service: BoardsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FollowDialogService);
+    service = TestBed.inject(BoardsService);
   });
 
   it('should be created', () => {

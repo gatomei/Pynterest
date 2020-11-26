@@ -1,0 +1,229 @@
+@import '../../../../assets/styles/colors.scss';
+
+.container {
+  width: 500px;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  height: 385px;
+}
+
+.sub-content {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+
+.add-pin-content {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.add-pin-subcontent {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.dialog-title {
+  justify-content: center;
+  align-items: center;
+  margin-left: 120px;
+}
+
+.dialog-title-text {
+  font-weight: bolder;
+  color: $icon-color;
+}
+
+.profile-picture-thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+}
+
+.close-button {
+  border-radius: 30px;
+  border: 3px solid white;
+  background-color: $header-background;
+  border: none;
+  outline: none;
+  width: 55px;
+  align-self: flex-end;
+  margin-left: 100px;
+}
+
+.delete-button {
+  border: none;
+  outline: none;
+  background-color: #f2f2f2;
+  position: absolute;
+  left: 2px;
+  bottom: 20%;
+  border: none;
+  border-radius: 30%;
+  outline: none;
+}
+.img-thumbnail {
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  max-height: 400px;
+}
+
+.mat-icon {
+  font-size: 28px;
+  font-weight: 800;
+  color: $icon-color;
+}
+
+.mat-label {
+  color: $icon-color;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.file-input {
+  background-color: #f2f2f2;
+}
+
+.file-input-error {
+  background-color: #ffe6e6;
+  border: 2px solid $logoColor;
+}
+
+.file-input-error-green {
+  background-color: green;
+  border: 2px solid $logoColor;
+}
+
+.file-input-border {
+  border: 2px dashed #d9d9d9;
+  margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .mat-input-underline {
+  display: none;
+}
+
+.title-input {
+  color: $icon-color;
+  font-weight: bold;
+}
+
+.username-label {
+  margin-left: 5px;
+  color: $icon-color;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.title-label {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.file-input-text {
+  margin-top: 50px;
+  cursor: pointer;
+  color: $logoColor;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.upload-text {
+  display: flex;
+  color: $icon-color;
+  margin-left: 45px;
+  font-family: -webkit-pictograph;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.upload-icon {
+  display: flex;
+  color: $icon-color;
+  font-size: 30px;
+  padding-top: 40px;
+  margin-left: 75px;
+}
+
+.input-content {
+  padding: 5px;
+}
+
+.photo-mat-form-field {
+  margin-bottom: -19px;
+  cursor: pointer;
+}
+
+.photo-container {
+  position: relative;
+}
+
+.delete-icon {
+  align-self: center;
+  margin-left: -5px;
+}
+
+#uploaded-photo {
+  display: block;
+  width: 300px;
+  height: 200px;
+  border-radius: none;
+}
+
+.submit-button {
+  font-size: 14px;
+  flex: 1;
+  border-radius: 30px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
+  width: 100px;
+}
+
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.submit-button[disabled] {
+  cursor: no-drop;
+}
+
+.error-icon {
+  display: flex;
+  padding-top: 40px;
+  margin-left: 75px;
+  color: $logoColor;
+  font-size: 20px;
+}
+
+.error-text {
+  color: $logoColor;
+  font-weight: bold;
+  display: flex;
+  font-family: -webkit-pictograph;
+  margin-top: 20px;
+  font-size: 15px;
+  margin-left: 5px;
+  padding-bottom: 10px;
+}
