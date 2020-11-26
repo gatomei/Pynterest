@@ -53,15 +53,19 @@
           <button mat-icon-button class="content-buttons" aria-label="Add new photo" (click)="openAddPinDialog()">
             <mat-icon>add_a_photo</mat-icon>
           </button>
-          <button mat-icon-button class="content-buttons" aria-label="Add a pin">
+          <button mat-icon-button (click)="openAddBoardDialog()" matTooltip="Add a new board"
+            [matTooltipPosition]="'above'" class="content-buttons" aria-label="Add a new board">
             <mat-icon>add_circle</mat-icon>
           </button>
         </div>
       </ng-container>
       <div class="change-content-buttons">
         <button>Photos</button>
-        <button>Panels</button>
+        <button>Boards</button>
       </div>
+
     </div>
+
   </div>
+
 </div>

@@ -1,1 +1,26 @@
-<p>pin works!</p>
+<div>
+<mat-card class="photo-card" (click)="clickCard()">
+  <img
+    mat-card-md-image
+    class="photo-file"
+    [src]="getImageUrl(photo)"
+  />
+
+  <mat-card-content>
+    <div class="photo-title">
+      <b><p>{{title}}</p></b>
+    </div>
+    <div class="save-container">
+
+      <button mat-button class="board-button" (click)="openBoardViewDialog()">
+        <div>
+        Name
+        <mat-icon class="select-board-icon">expand_more</mat-icon>
+        </div>
+
+      </button>
+      <button mat-button class="pin-button">Save photo</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+</div>

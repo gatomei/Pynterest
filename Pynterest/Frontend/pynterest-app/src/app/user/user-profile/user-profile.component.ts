@@ -9,6 +9,7 @@ import { UserFollowService } from '../services/user-follow.service';
 import { FollowModel } from '../../shared/models/followModel';
 import { DialogService } from '@app/shared/services/dialog.service';
 
+import { BoardsService } from '../../shared/services/boards.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -30,7 +31,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private userInfoService: UserInfoService,
     private userFollowService: UserFollowService,
     private sanitizer: DomSanitizer,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private boardsService: BoardsService,
   ) {
     this.subs = new Array<Subscription>();
   }
@@ -172,9 +174,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.dialogService.openAddPinDialog();
   }
 
+  openAddBoardDialog() {
+    this.boardsService.openDialog({
+      userId: this.jwtDecoder.getId(),
+      boardNames: ["asa", "gigel"]
+    })
+
+  }
 }
-
-
-
-
-

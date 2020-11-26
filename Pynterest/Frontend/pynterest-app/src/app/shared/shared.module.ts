@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { MatBadgeModule } from '@angular/material/badge';
 import { PinComponent } from './components/pin/pin.component';
 import { PanelComponent } from './components/panel/panel.component';
@@ -18,6 +19,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CreateBoardDialogComponent } from './components/create-board-dialog/create-board-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +30,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PanelComponent,
     ProgressSpinnerComponent,
     FollowDialogComponent,
-    AddPinDialogComponent
+    AddPinDialogComponent,
+    CreateBoardDialogComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +46,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MaterialFileInputModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatCardModule,
+    MatSlideToggleModule,
   ],
   exports: [
     HeaderComponent,
