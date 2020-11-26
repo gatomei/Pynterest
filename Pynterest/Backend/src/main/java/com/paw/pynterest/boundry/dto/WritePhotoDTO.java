@@ -26,5 +26,4 @@ public class WritePhotoDTO {
     @PictureConstraint(message="The bytes array should be a valid picture")
     private byte[] pictureData;
 
-
 }

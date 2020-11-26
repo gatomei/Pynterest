@@ -1,23 +1,24 @@
 package com.paw.pynterest.boundry.controller;
 
 import com.paw.pynterest.boundry.dto.ReadFollowUserDTO;
-import com.paw.pynterest.boundry.dto.WriteUserDTO;
+import com.paw.pynterest.boundry.dto.ReadUserBoard;
 import com.paw.pynterest.boundry.dto.ReadUserDTO;
+import com.paw.pynterest.boundry.dto.WriteUserDTO;
 import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.jwt.model.JwtUserDetails;
 import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
+import com.paw.pynterest.service.interfaces.BoardServiceInterface;
 import com.paw.pynterest.service.interfaces.FollowingService;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 @RequestMapping("/authorize/api/pynterest/user")
@@ -27,12 +28,14 @@ public class UserController {
     private AuthenticatedJwtUserService authenticatedJwtUserService;
     private ModelMapper modelMapper;
     private final FollowingService followingService;
+    private final BoardServiceInterface boardService;
 
-    public UserController(UserService userService, AuthenticatedJwtUserService authenticatedJwtUserService, ModelMapper modelMapper, FollowingService followingService){
+    public UserController(UserService userService, AuthenticatedJwtUserService authenticatedJwtUserService, ModelMapper modelMapper, FollowingService followingService, BoardServiceInterface boardService){
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.authenticatedJwtUserService = authenticatedJwtUserService;
         this.followingService = followingService;
+        this.boardService = boardService;
     }
 
     @PutMapping("/{userId}")
@@ -40,7 +43,7 @@ public class UserController {
 
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
 
-        if (jwtUserDetails.getUserId() == userId) {
+        if (jwtUserDetails.getUserId().equals(userId)) {
 
             User updatedUser = userService.updateUser(userId, modelMapper.map(user, User.class));
 
@@ -94,11 +97,21 @@ public class UserController {
         return new ResponseEntity<>(followings, HttpStatus.OK);
     }
 
-    @DeleteMapping("/followings/{followedUser}")
-    public ResponseEntity<?> deleteFollowing(@PathVariable String followedUser)
+    @DeleteMapping("{username}/followings/{followedUser}")
+    public ResponseEntity<?> deleteFollowing(@PathVariable String username, @PathVariable String followedUser)
     {
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        followingService.deleteFromFollowings(jwtUserDetails.getUsername(), followedUser);
+        if(!jwtUserDetails.getUsername().equals(username))
+            return new ResponseEntity<>("You are not authorized to do this!", HttpStatus.UNAUTHORIZED);
+        followingService.deleteFromFollowings(username, followedUser);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}/boards")
+    public ResponseEntity<?> getUserBoards(@PathVariable String username)
+    {
+        JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
+        List<ReadUserBoard> boards = boardService.getUserBoard(username, jwtUserDetails.getUsername().equals(username));
+        return new ResponseEntity<>(boards, HttpStatus.OK);
     }
 }

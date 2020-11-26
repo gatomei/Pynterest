@@ -34,4 +34,13 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/{boardId}/photos/{photoId}")
+    public ResponseEntity<?> addPhotoToBoard(@PathVariable Long boardId, @PathVariable Long photoId)
+    {
+        Boolean created = boardService.addPhotoToBoard(boardId, photoId);
+        if (created)
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

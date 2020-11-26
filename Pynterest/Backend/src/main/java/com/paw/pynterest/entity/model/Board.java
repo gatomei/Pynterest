@@ -1,12 +1,17 @@
 package com.paw.pynterest.entity.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table( name = "boards",
         uniqueConstraints = @UniqueConstraint(
@@ -34,10 +39,12 @@ public class Board {
     private Boolean privateBoard;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
     @JoinColumn(
             name = "user_id",
             foreignKey = @ForeignKey(name = "fk_boards_user_id")
     )
     private User user;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "boards")
+    private Set<Photo> photos = new HashSet<>();
 }

@@ -18,6 +18,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -68,7 +69,6 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         photo.getCategories().add(categorySelected.get());
         photo.setPath("Categories/"+categorySelected.get().getName() + "/" + generatePhotoFileName("jpg"));
 
-
         try{
             convertAndSavaPhoto(writePhotoDTO.getPictureData(),photo.getPath());
             Photo savedPhoto = photoRepository.saveAndFlush(photo);
@@ -94,7 +94,22 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
     }
 
     private static String generatePhotoFileName(String fileExtension) {
-        String name = String.format("%s.%s", RandomStringUtils.randomAlphanumeric(8), fileExtension);
-        return name;
+        return String.format("%s.%s", RandomStringUtils.randomAlphanumeric(8), fileExtension);
+    }
+
+    public static byte[] getPhotoFromFile(String path){
+        File file = new File(path);
+        if (!file.exists())
+            return new byte[] {};
+        try {
+            BufferedImage image = ImageIO.read(file);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg",byteArrayOutputStream);
+            return byteArrayOutputStream.toByteArray();
+        }
+        catch (IOException e)
+        {
+            return new byte[]{};
+        }
     }
 }

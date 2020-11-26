@@ -1,6 +1,7 @@
 package com.paw.pynterest.entity.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -8,7 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "Photos")
 public class Photo {
     @Id
@@ -17,7 +19,6 @@ public class Photo {
     private Long photoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
     @JoinColumn(
             name = "user_id",
             foreignKey = @ForeignKey(name = "fk_photos_user_id")
@@ -46,4 +47,12 @@ public class Photo {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "board_photo",
+            joinColumns = @JoinColumn(name = "photo_id"),
+            inverseJoinColumns = @JoinColumn(name = "board_id")
+    )
+    private Set<Board> boards = new HashSet<>();
 }

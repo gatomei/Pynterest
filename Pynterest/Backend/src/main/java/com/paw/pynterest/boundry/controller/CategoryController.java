@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/pynterest/categories")
+@RequestMapping("authorize/api/pynterest/categories")
 public class CategoryController {
     private final CategoryServiceInterface categoryService;
     public CategoryController(CategoryServiceInterface categoryService){

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/pynterest/photos")
+@RequestMapping("/authorize/api/pynterest/photos")
 public class PhotoController {
     private final PhotoServiceInterface photoService;
 

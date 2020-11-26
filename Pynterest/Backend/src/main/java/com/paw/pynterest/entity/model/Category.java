@@ -1,6 +1,7 @@
 package com.paw.pynterest.entity.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -8,7 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "Categories")
 public class Category {
     @Id
@@ -22,6 +24,6 @@ public class Category {
     @Type(type = "nstring")
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Photo> photos = new HashSet<>();
 }
