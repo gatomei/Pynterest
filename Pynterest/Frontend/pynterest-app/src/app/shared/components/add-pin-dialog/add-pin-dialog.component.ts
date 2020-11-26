@@ -1,11 +1,11 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { JwtDecoderService } from '../../services/jwt-decoder.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserInfoService } from '@app/user/services/user-info.service';
 import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
-import { NgxImageCompressService } from 'ngx-image-compress';
+import { PhotoModel } from '../../models/photoModel';
+import { PhotosService } from '@app/shared/services/photos.service';
 
 @Component({
   selector: 'app-add-pin-dialog',
@@ -33,24 +33,25 @@ export class AddPinDialogComponent implements OnInit {
   public uploadedValidPhoto: boolean = true;
   public loggedInUserUsername: string;
   public imgUrl: SafeUrl;
-  public msg: string;
-  public imagePath;
-  public url = null;
+  public imagePath: string;
+  public url: any;
   public isPhotoSelected: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public profilePicture: [],
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
     private jwtDecoderService: JwtDecoderService,
     private userInfoService: UserInfoService,
-    private imageCompress: NgxImageCompressService
+    private photosService: PhotosService
   ) {
     this.loggedInUserUsername = this.jwtDecoderService.getUsername();
-    this.imgUrl = this.sanitizer.bypassSecurityTrustUrl(
-      'data:image/png;base64,' + profilePicture
-    );
+    this.setLoggedInUserImageUrl();
+  }
 
+  ngOnInit(): void {
+  }
+
+  setLoggedInUserImageUrl() {
     this.userInfoService.getInfo(this.loggedInUserUsername).subscribe(
       (data) => {
         this.imgUrl = this.sanitizer.bypassSecurityTrustUrl(
@@ -62,9 +63,6 @@ export class AddPinDialogComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-  }
-
   toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -72,15 +70,28 @@ export class AddPinDialogComponent implements OnInit {
     reader.onerror = error => reject(error);
   });
 
-  async submitAddPinForm(form) {
-    this.addPinForm = form
+  async submitAddPinForm(_addPinForm) {
 
-    let imgResultAfterCompress: string;
-    let photoInBytes = <string>await this.toBase64(this.addPinForm.get("photo").value?.files[0]);
-    console.log(photoInBytes)
+    this.addPinForm = _addPinForm;
+    let _photoInBytes = <string>await this.toBase64(this.addPinForm.get("photo").value?.files[0]);
+    let _categoryName = this.addPinForm.get("categoryName").value;
+
+    if (_categoryName == null) {
+      _categoryName = "Others/Everything";
+    }
+
+    let photo: PhotoModel = {
+      title: this.addPinForm.get("title").value,
+      description: this.addPinForm.get("description").value,
+      categoryName: _categoryName,
+      pictureData: _photoInBytes
+    }
+
+    this.photosService.addPhoto(photo).subscribe((error) => console.log(error));
   }
 
   onFileChanged(event) {
+
     const files = event.target.files;
     if (files.length === 0)
       return;
