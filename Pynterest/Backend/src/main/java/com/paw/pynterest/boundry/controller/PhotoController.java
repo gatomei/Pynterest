@@ -24,6 +24,7 @@ public class PhotoController {
     public ResponseEntity<?> addCategory(@RequestBody @Valid WritePhotoDTO newPhoto)
     {
         Long photoId = photoService.addPhoto(newPhoto);
+        System.out.println(photoId);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", photoId.toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);

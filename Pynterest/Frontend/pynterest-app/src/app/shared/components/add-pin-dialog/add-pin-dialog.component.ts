@@ -72,9 +72,11 @@ export class AddPinDialogComponent implements OnInit {
 
   async submitAddPinForm(_addPinForm) {
 
+    console.log("valid:" + this.uploadedValidPhoto)
+
     this.addPinForm = _addPinForm;
     let _photoInBytes = <string>await this.toBase64(this.addPinForm.get("photo").value?.files[0]);
-    let _categoryName = this.addPinForm.get("categoryName").value;
+    let _categoryName = this.addPinForm.get("category").value;
 
     if (_categoryName == null) {
       _categoryName = "Others/Everything";

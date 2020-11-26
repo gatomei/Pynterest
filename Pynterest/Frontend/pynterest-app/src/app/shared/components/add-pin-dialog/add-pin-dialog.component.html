@@ -84,7 +84,8 @@
       </div>
     </div>
     <div class="submit-button-container">
-      <button class="submit-button" [disabled]="!addPinForm.valid" type="submit">Save</button>
+      <button class="submit-button" [disabled]="!addPinForm.valid || !uploadedValidPhoto" type="submit"
+        matDialogClose>Save</button>
     </div>
   </div>
 </form>
