@@ -8,7 +8,6 @@ import { FollowDialogService } from '../../shared/services/follow-dialog.service
 import { UserInfoService } from '../services/user-info.service';
 import { UserFollowService } from '../services/user-follow.service';
 import { FollowModel } from '../../shared/models/followModel';
-import { FollowDialogModel } from '@app/core/models/followDialogModel';
 import {BoardsService} from '../../shared/services/boards.service';
 
 @Component({
@@ -172,7 +171,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   openAddBoardDialog(){
     this.boardsService.openDialog( {
-      userId: this.jwtDecoder.getId()
+      userId: this.jwtDecoder.getId(),
+      boardNames:["asa", "gigel"]
   })
 
 }

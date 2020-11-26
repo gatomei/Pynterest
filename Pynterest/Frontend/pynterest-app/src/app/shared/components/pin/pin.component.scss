@@ -1,13 +1,5 @@
 @import '../../../../assets/styles/colors.scss';
 
-.photos-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 2%;
-  grid-row-gap: 2%;
-  margin: 6%;
-  margin-top: 2%;
-}
 
 .photo-card {
   border-color: white;
@@ -28,9 +20,6 @@
   padding-top: 2%;
 }
 
-.content{
-  padding-bottom: 10%;
-}
 
 .pin-button{
   opacity: 0;
@@ -85,21 +74,9 @@
   flex-direction: row;
 }
 
-@media only screen and (max-width: 1024px) {
-  .photos-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
 
-}
 @media (max-width: 850px) {
 
-  .photos-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-row-gap: 30px;
-    grid-column-gap: 30px;
-  }
   .save-container{
     .pin-button, .board-button{
       width: 90px;
@@ -109,14 +86,3 @@
 
 }
 
-@media only screen and (max-width: 480px) {
-  .photos-container {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-row-gap: 30px;
-    grid-column-gap: 30px;
-    margin:10%;
-  }
-
-
-}

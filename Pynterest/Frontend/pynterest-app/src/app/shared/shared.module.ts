@@ -13,7 +13,7 @@ import { FollowDialogComponent } from './components/follow-dialog/follow-dialog.
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { CreateBoardDialogComponent } from './components/create-board-dialog/create-board-dialog.component';
-import { FormsModule,ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { FormsModule,ReactiveFormsModule } from "@angular/forms";
     MatCardModule,
     MatSlideToggleModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     HeaderComponent,
