@@ -5,6 +5,7 @@ import com.paw.pynterest.boundry.dto.WriteBoardDTO;
 import com.paw.pynterest.boundry.exceptions.NotFoundException;
 import com.paw.pynterest.boundry.exceptions.ServerErrorException;
 import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
+import com.paw.pynterest.boundry.exceptions.UnauthorizedOperationException;
 import com.paw.pynterest.entity.model.Board;
 import com.paw.pynterest.entity.model.Photo;
 import com.paw.pynterest.entity.model.User;
@@ -37,9 +38,9 @@ public class BoardServiceImp implements BoardServiceInterface {
     }
 
     @Override
-    public Long addBoard(WriteBoardDTO newBoard){
+    public Long addBoard(WriteBoardDTO newBoard,  Long loggedUserId){
         Board board = modelMapper.map(newBoard, Board.class);
-        Optional<User> user = userRepository.findById(newBoard.getUserId());
+        Optional<User> user = userRepository.findById(loggedUserId);
         if(!user.isPresent())
             throw new DataIntegrityViolationException("User id is not in database!");
         board.setUser(user.get());
@@ -78,16 +79,19 @@ public class BoardServiceImp implements BoardServiceInterface {
             ReadUserBoard readUserBoard = modelMapper.map(board, ReadUserBoard.class);
             readUserBoard.setNumberOfPictures(board.getPhotos().size());
             Photo fistPhoto = board.getPhotos().stream().findFirst().get();
-            readUserBoard.setLastPicture(PhotoServiceImpl.getPhotoFromFile(fistPhoto.getPath()));
+            readUserBoard.setFirstPicture(PhotoServiceImpl.getPhotoFromFile(fistPhoto.getPath()));
             return readUserBoard;
         })).collect(Collectors.toList());
     }
 
     @Override
-    public Boolean addPhotoToBoard(Long boardId, Long photoId) {
+    public Boolean addPhotoToBoard(Long boardId, Long photoId,  Long loggedUserId) {
         Optional<Board> board = boardRepository.findById(boardId);
         if(!board.isPresent())
             throw new NotFoundException("Board not found!");
+        Optional<User> user = userRepository.findById(loggedUserId);
+        if(user.isPresent() && !user.get().getBoards().contains(board.get()))
+            throw new UnauthorizedOperationException("Can't add photo to this board because is not yours!");
         Optional<Photo> photo = photoRepository.findById(photoId);
         if(!photo.isPresent())
             throw new NotFoundException("Photo not found!");
@@ -96,5 +100,20 @@ public class BoardServiceImp implements BoardServiceInterface {
         board.get().getPhotos().add(photo.get());
         boardRepository.flush();
         return true;
+    }
+
+    @Override
+    public void deletePhotoFromBoard(Long boardId, Long photoId, Long loggedUserId) {
+        Optional<Board> board = boardRepository.findById(boardId);
+        if(!board.isPresent())
+            throw new NotFoundException("Board not found!");
+        Optional<User> user = userRepository.findById(loggedUserId);
+        if(user.isPresent() && !user.get().getBoards().contains(board.get()))
+            throw new UnauthorizedOperationException("Can't remove photo from this board because is not yours!");
+        Optional<Photo> photo = photoRepository.findById(photoId);
+        if(!photo.isPresent())
+            throw new NotFoundException("Photo not found!");
+        board.get().getPhotos().remove(photo.get());
+        boardRepository.flush();
     }
 }

@@ -1,5 +1,6 @@
 package com.paw.pynterest.boundry.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.paw.pynterest.boundry.CustomValidators.Constraints.PictureConstraint;
 import lombok.Data;
 
@@ -27,6 +28,7 @@ public class WriteUserDTO {
     private String password;
 
     @Past(message = "Birthdate should be in the past")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthDate;
 
     @Size(max=500, message = "Description shouldn't be bigger than 500 characters")

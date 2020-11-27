@@ -45,6 +45,11 @@ public class Board {
     )
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "boards")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "board_photo",
+            joinColumns = @JoinColumn(name = "board_id"),
+            inverseJoinColumns = @JoinColumn(name = "photo_id")
+    )
     private Set<Photo> photos = new HashSet<>();
 }

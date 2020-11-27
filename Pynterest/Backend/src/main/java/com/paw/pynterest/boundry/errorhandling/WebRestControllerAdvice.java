@@ -30,6 +30,12 @@ public class WebRestControllerAdvice {
         return this.generateErrorDTO(HttpStatus.UNAUTHORIZED, ex);
     }
 
+    @ExceptionHandler(UnauthorizedOperationException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorDTO handleUnauthorizedOperation(UnauthorizedOperationException ex) {
+        return this.generateErrorDTO(HttpStatus.UNAUTHORIZED, ex);
+    }
+
     @ExceptionHandler(IncorrectTokenException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleIncorrectToken(IncorrectTokenException ex) {

@@ -1,6 +1,7 @@
 package com.paw.pynterest.boundry.controller;
 
 import com.paw.pynterest.boundry.dto.WriteBoardDTO;
+import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.BoardServiceInterface;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,15 +14,18 @@ import javax.validation.Valid;
 @RequestMapping("/authorize/api/pynterest/boards")
 public class BoardController {
     private final BoardServiceInterface boardService;
+    private final AuthenticatedJwtUserService authenticatedJwtUserService;
 
-    public BoardController(BoardServiceInterface boardService) {
+    public BoardController(BoardServiceInterface boardService, AuthenticatedJwtUserService authenticatedJwtUserService) {
         this.boardService = boardService;
+        this.authenticatedJwtUserService = authenticatedJwtUserService;
     }
 
     @PostMapping("")
     public ResponseEntity<?> addBoard(@RequestBody @Valid WriteBoardDTO newBoard)
     {
-        Long boardId = boardService.addBoard(newBoard);
+        Long loggedUserId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
+        Long boardId = boardService.addBoard(newBoard, loggedUserId);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", boardId.toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -37,9 +41,18 @@ public class BoardController {
     @PutMapping("/{boardId}/photos/{photoId}")
     public ResponseEntity<?> addPhotoToBoard(@PathVariable Long boardId, @PathVariable Long photoId)
     {
-        Boolean created = boardService.addPhotoToBoard(boardId, photoId);
+        Long loggedUserId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
+        Boolean created = boardService.addPhotoToBoard(boardId, photoId, loggedUserId);
         if (created)
             return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{boardId}/photos/{photoId}")
+    public ResponseEntity<?> removePhotoFromBoard(@PathVariable Long boardId, @PathVariable Long photoId)
+    {
+        Long loggedUserId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
+        boardService.deletePhotoFromBoard(boardId, photoId, loggedUserId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

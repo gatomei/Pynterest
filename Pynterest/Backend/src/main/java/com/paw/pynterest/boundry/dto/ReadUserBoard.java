@@ -6,7 +6,7 @@ import lombok.Data;
 public class ReadUserBoard {
     private Long boardId;
     private String title;
-    private byte[] lastPicture;
+    private byte[] firstPicture;
     private Integer numberOfPictures;
     private Boolean privateBoard;
 }
