@@ -1,0 +1,88 @@
+@import '../../../../assets/styles/colors.scss';
+
+
+.photo-card {
+  border-color: white;
+  border-radius: 7%;
+  padding:2%;
+  width: 100%;
+}
+
+.photo-file {
+  width: 100%;
+  height: auto;
+  border-radius: 7%;
+}
+
+.photo-title {
+  text-align: center;
+  font-size: 18px;
+  padding-top: 2%;
+}
+
+
+.pin-button{
+  opacity: 0;
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius:  0px 25px 25px 0px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
+  width: 105px;
+  height: 50px;
+
+}
+
+.board-button{
+  opacity: 0;
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px 0px 0px 25px;
+  color: $logoColor;
+  background: $header-background;
+  border: 3px $header-background solid;
+  width: 105px;
+  height: 50px;
+
+}
+
+.photo-card:hover{
+  cursor: zoom-in;
+}
+.photo-card:hover .pin-button, .photo-card:hover .board-button{
+  opacity: 0.8;
+}
+
+.photo-card:hover  .board-button:hover, .photo-card:hover .pin-button:hover{
+  opacity: 1;
+}
+
+.select-board-icon{
+  vertical-align: middle;
+}
+
+.save-container{
+  position: absolute;
+  top: 13%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;
+}
+
+
+@media (max-width: 850px) {
+
+  .save-container{
+    .pin-button, .board-button{
+      width: 90px;
+      font-size: 14px;
+    }
+  }
+
+}
+

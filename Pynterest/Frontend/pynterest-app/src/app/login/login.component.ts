@@ -7,7 +7,7 @@ import { UserForRegister } from '@app/core/models/userForRegister';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { ForgotPasswordModel } from '@app/core/models/forgotPasswordModel';
 
-enum formType{
+enum formType {
   login,
   createNewAccount,
   resetPassword
@@ -21,23 +21,23 @@ enum formType{
 export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
-              private authService:AuthenticationService,
-              private notifications: NotificationService, 
-              private router: Router,
-              private imageCompress: NgxImageCompressService) { }
+    private authService: AuthenticationService,
+    private notifications: NotificationService,
+    private router: Router,
+    private imageCompress: NgxImageCompressService) { }
 
   formOpened = formType.login;
-  isSubmitPasswordFormButtonClicked:boolean = false;
+  isSubmitPasswordFormButtonClicked: boolean = false;
 
   loginForm: FormGroup = this.formBuilder.group({
-    email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}],
+    email: [, { validators: [Validators.required, Validators.email], updateOn: "change", }],
     password: [, { validators: [Validators.required], updateOn: "change" }]
-    });
+  });
 
   registerForm: FormGroup = this.formBuilder.group({
     username: [, { validators: [Validators.required], updateOn: "change" }],
     fullname: [, { validators: [Validators.required], updateOn: "change" }],
-    email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}],
+    email: [, { validators: [Validators.required, Validators.email], updateOn: "change", }],
     password: [, { validators: [Validators.required], updateOn: "change" }],
     description: [, { updateOn: "change" }],
     datepicker: [, { updateOn: "change" }],
@@ -45,35 +45,35 @@ export class LoginComponent implements OnInit {
   });
 
   resetPasswordForm: FormGroup = this.formBuilder.group({
-    email: [,{validators: [Validators.required, Validators.email], updateOn: "change",}]
+    email: [, { validators: [Validators.required, Validators.email], updateOn: "change", }]
   })
 
   ngOnInit(): void {
   }
 
-  submitLoginForm(){
-    this.authService.login(this.loginForm.get("email").value,this.loginForm.get("password").value).subscribe(
+  submitLoginForm() {
+    this.authService.login(this.loginForm.get("email").value, this.loginForm.get("password").value).subscribe(
       res => {
         this.router.navigate(['home']);
       },
       error => {
         console.log(error)
         if (error.status === 401) {
-          this.notifications.showError('This user does not exist!' , 'Login Error' , 5000);
+          this.notifications.showError('This user does not exist!', 'Login Error', 5000);
         }
-        else{
-          this.notifications.showError('Something bad happened. Please contact the administrator!' , 'Login Error' , 5000);
+        else {
+          this.notifications.showError('Something bad happened. Please contact the administrator!', 'Login Error', 5000);
 
         }
       }
     );
   }
 
-  async submitRegisterForm(){
-    let imgResultAfterCompress:string;
-    let photoInBytes  = <string>await this.toBase64(this.registerForm.get("photo").value?.files[0]);
+  async submitRegisterForm() {
+    let imgResultAfterCompress: string;
+    let photoInBytes = <string>await this.toBase64(this.registerForm.get("photo").value?.files[0]);
 
-    await this.imageCompress.compressFile(photoInBytes, -1 ,50, 50).then(
+    await this.imageCompress.compressFile(photoInBytes, -1, 50, 50).then(
       result => {
         imgResultAfterCompress = result;
       }
@@ -82,16 +82,15 @@ export class LoginComponent implements OnInit {
     let photoToSend = imgResultAfterCompress.split(",")[1];
 
     let regexp = new RegExp('(?<=\:)image(?=\/)');
-    if(regexp.test(fileType))
-    {
+    if (regexp.test(fileType)) {
       const user: UserForRegister = {
-        email : this.registerForm.get("email").value,
-        username : this.registerForm.get("username").value,
-        fullname : this.registerForm.get("fullname").value,
-        password : this.registerForm.get("password").value,
-        birthDate : this.registerForm.get("datepicker").value,
-        description : this.registerForm.get("description").value,
-        profilePicture : photoToSend
+        email: this.registerForm.get("email").value,
+        username: this.registerForm.get("username").value,
+        fullname: this.registerForm.get("fullname").value,
+        password: this.registerForm.get("password").value,
+        birthDate: this.registerForm.get("datepicker").value,
+        description: this.registerForm.get("description").value,
+        profilePicture: photoToSend
       }
       this.authService.registerUser(user).subscribe(
         () => {
@@ -103,7 +102,7 @@ export class LoginComponent implements OnInit {
         }
       )
     }
-    else{
+    else {
       this.notifications.showError("The file inserted is not a photo", 'Error');
     }
 
@@ -118,12 +117,12 @@ export class LoginComponent implements OnInit {
   });
 
 
-  submitPasswordForm(){
+  submitPasswordForm() {
 
     this.isSubmitPasswordFormButtonClicked = true;
 
-    const forgotPassword:ForgotPasswordModel = {
-      email : this.resetPasswordForm.get("email").value
+    const forgotPassword: ForgotPasswordModel = {
+      email: this.resetPasswordForm.get("email").value
     }
 
     this.authService.sendEmailToRecoverPassword(forgotPassword).subscribe(
@@ -139,16 +138,16 @@ export class LoginComponent implements OnInit {
     )
   }
 
-  resetPassword(){
+  resetPassword() {
     this.formOpened = formType.resetPassword;
   }
 
-  changeRegisterForm(){
+  changeRegisterForm() {
     this.formOpened = formType.createNewAccount;
 
   }
 
-  changeLoginForm(){
+  changeLoginForm() {
     this.formOpened = formType.login;
   }
 
