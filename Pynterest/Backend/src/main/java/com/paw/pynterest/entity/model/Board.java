@@ -52,4 +52,14 @@ public class Board {
             inverseJoinColumns = @JoinColumn(name = "photo_id")
     )
     private Set<Photo> photos = new HashSet<>();
+
+    public void addPhoto(Photo photo)
+    {
+        photos.add(photo);
+    }
+
+    public void deletePhoto(Photo photo)
+    {
+        photos.remove(photo);
+    }
 }

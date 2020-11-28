@@ -14,6 +14,8 @@ import com.paw.pynterest.entity.repository.PhotoRepository;
 import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.BoardServiceInterface;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.bytebuddy.matcher.TypeSortMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -68,18 +70,23 @@ public class BoardServiceImp implements BoardServiceInterface {
     }
 
     @Override
-    public List<ReadUserBoard> getUserBoard(String username, Boolean isLoggedUser) {
-        User user = userRepository.findByUsername(username);
-        if(user == null)
+    public List<ReadUserBoard> getUserBoards(String username, Boolean isLoggedUser) {
+        Boolean isPresent = userRepository.existsByUsername(username);
+        if(!isPresent)
             throw new NotFoundException("User not found!");
-        List<Board> boards = new ArrayList<>(user.getBoards());
+        List<Board> boards;
         if(!isLoggedUser)
-            boards = boards.stream().filter(board -> !board.getPrivateBoard()).collect(Collectors.toList());
+            boards = boardRepository.getPublicBoards(username);
+        else
+            boards = boardRepository.getUserBoards(username);
         return boards.stream().map((board -> {
             ReadUserBoard readUserBoard = modelMapper.map(board, ReadUserBoard.class);
-            readUserBoard.setNumberOfPictures(board.getPhotos().size());
-            Photo fistPhoto = board.getPhotos().stream().findFirst().get();
-            readUserBoard.setFirstPicture(PhotoServiceImpl.getPhotoFromFile(fistPhoto.getPath()));
+            readUserBoard.setNumberOfPictures(photoRepository.countByBoardsContains(board));
+            Photo firstPhoto = photoRepository.getFirstByBoardsContains(board);
+            if(firstPhoto != null)
+                readUserBoard.setFirstPicture(PhotoServiceImpl.getPhotoFromFile(firstPhoto.getPath()));
+            else
+                readUserBoard.setFirstPicture(new byte[]{});
             return readUserBoard;
         })).collect(Collectors.toList());
     }
@@ -89,15 +96,14 @@ public class BoardServiceImp implements BoardServiceInterface {
         Optional<Board> board = boardRepository.findById(boardId);
         if(!board.isPresent())
             throw new NotFoundException("Board not found!");
-        Optional<User> user = userRepository.findById(loggedUserId);
-        if(user.isPresent() && !user.get().getBoards().contains(board.get()))
+        if(!userRepository.existsByUserIdAndBoardsContains(loggedUserId, board.get()))
             throw new UnauthorizedOperationException("Can't add photo to this board because is not yours!");
         Optional<Photo> photo = photoRepository.findById(photoId);
         if(!photo.isPresent())
             throw new NotFoundException("Photo not found!");
-        if(board.get().getPhotos().contains(photo.get()))
+        if(boardRepository.existsByPhotosContains(photo.get()))
             return false;
-        board.get().getPhotos().add(photo.get());
+        board.get().addPhoto(photo.get());
         boardRepository.flush();
         return true;
     }
@@ -107,13 +113,12 @@ public class BoardServiceImp implements BoardServiceInterface {
         Optional<Board> board = boardRepository.findById(boardId);
         if(!board.isPresent())
             throw new NotFoundException("Board not found!");
-        Optional<User> user = userRepository.findById(loggedUserId);
-        if(user.isPresent() && !user.get().getBoards().contains(board.get()))
+        if(!userRepository.existsByUserIdAndBoardsContains(loggedUserId, board.get()))
             throw new UnauthorizedOperationException("Can't remove photo from this board because is not yours!");
         Optional<Photo> photo = photoRepository.findById(photoId);
         if(!photo.isPresent())
             throw new NotFoundException("Photo not found!");
-        board.get().getPhotos().remove(photo.get());
+        board.get().deletePhoto(photo.get());
         boardRepository.flush();
     }
 }
