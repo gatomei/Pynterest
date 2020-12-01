@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef,MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Board } from '@app/shared/models/boardModel';
+import {BoardsService} from '../../services/boards.service';
+import { NotificationService } from '@app/core/services/notification.service';
 
 @Component({
   selector: 'app-create-board-dialog',
@@ -11,15 +13,14 @@ import { Board } from '@app/shared/models/boardModel';
 export class CreateBoardDialogComponent implements OnInit {
 
   public userId:string;
-  public boardNames:string[];
   public boardForm :FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-    private dialogRef:MatDialogRef<CreateBoardDialogComponent>,
+    private boardService:BoardsService,
+    private notifications: NotificationService,
     @Inject(MAT_DIALOG_DATA) data,
     ) {
       this.userId = data.userId;
-      this.boardNames = data.boardNames;
       this.boardForm = this.formBuilder.group({
         boardName:  ['', { validators: [Validators.required], updateOn: "change" }],
         privateBoard :['',{  updateOn: "change" }]});
@@ -28,16 +29,11 @@ export class CreateBoardDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-  }
-
-
-  close(){
-    this.dialogRef.close();
-  }
+    }
 
   addBoard(){
-    var isPrivate = (this.boardForm.get("privateBoard").value!=null)?
+    var isPrivate = (this.boardForm.get("privateBoard").value!=null
+    && this.boardForm.get("privateBoard").value!="")?
                 this.boardForm.get("privateBoard").value:false;
     const board:Board ={
       userId:this.userId,
@@ -45,10 +41,18 @@ export class CreateBoardDialogComponent implements OnInit {
       privateBoard:isPrivate
     }
 
-    return this.dialogRef.close(board);
+    this.boardService.createNewBoard(board).subscribe(
+      (response: any) => {
+        const header = response.headers.get('Location'); //header location=id of the new board
+        console.log(header);
+      },
+      (error) => {
+        this.notifications.showError("Your board couldn't be created! A board with the same name already exists!", 'Error');
+
+      }
+    );
+
   }
 
-  isBoardTitleUsed(title){
-    return this.boardNames.includes(title);
-  }
+
 }

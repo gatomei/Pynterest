@@ -1,0 +1,87 @@
+@import '../../../assets/styles/colors.scss';
+
+.photo-card {
+  border-color: white;
+  border-radius: 7%;
+  margin: 3% 10%;
+  padding: 0%;
+}
+
+.photo-card-img {
+  width: 50%;
+  height: auto;
+  border-radius: 7% 0% 0% 7%;
+}
+
+.photo-card-content {
+  display: flex;
+  justify-content: space-between;
+
+  & > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: auto;
+    max-width: 50%;
+
+    &:last-child {
+      flex-direction: column;
+      align-items: start;
+      padding: 8px;
+    }
+  }
+}
+
+.pin-button {
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 0px 25px 25px 0px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
+  height: 100%;
+}
+
+.board-button {
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px 0px 0px 25px;
+  color: $logoColor;
+  background: white;
+  border: 3px $icon-color solid;
+  width: 65%;
+  height: 100%;
+}
+
+.select-board-icon {
+  vertical-align: middle;
+}
+
+.save-container {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  display: flex;
+  flex-direction: row;
+  width: 25%;
+  height: 50px;
+}
+
+.photo-card-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+}
+.pin-detail {
+  padding:3%;
+
+  .pin-title{
+    font-size: 27px;
+  }
+  .pin-description{
+    font-size: 20px;
+  }
+}

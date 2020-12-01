@@ -3,9 +3,9 @@ import { Routes, RouterModule,CanActivate } from '@angular/router';
 import { AuthGuard } from '@app/core/guards/auth.guard'
 
 const routes: Routes = [
-  { path: 'login', 
+  { path: 'login',
     loadChildren: () => import('./login/login.module')
-      .then(m => m.LoginModule) 
+      .then(m => m.LoginModule)
   },
   {
     path: 'users',
@@ -15,9 +15,10 @@ const routes: Routes = [
   },
   { path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module')
-    .then(m => m.ResetPasswordModule) 
+    .then(m => m.ResetPasswordModule)
   },
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
+  {path:'pin', loadChildren: () => import('./pin/pin.module').then(m => m.PinModule) },
   { path: '**', pathMatch: 'full', redirectTo: '/login' }
 ];
 
