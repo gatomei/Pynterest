@@ -111,7 +111,7 @@ public class UserController {
     public ResponseEntity<?> getUserBoards(@PathVariable String username)
     {
         JwtUserDetails jwtUserDetails = authenticatedJwtUserService.getAuthenticatedJwtUserDetails();
-        List<ReadUserBoard> boards = boardService.getUserBoard(username, jwtUserDetails.getUsername().equals(username));
+        List<ReadUserBoard> boards = boardService.getUserBoards(username, jwtUserDetails.getUsername().equals(username));
         return new ResponseEntity<>(boards, HttpStatus.OK);
     }
 }
