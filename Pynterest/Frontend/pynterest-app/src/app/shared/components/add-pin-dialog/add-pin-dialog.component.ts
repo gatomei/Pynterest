@@ -6,6 +6,8 @@ import { UserInfoService } from '@app/user/services/user-info.service';
 import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { PhotoModel } from '../../models/photoModel';
 import { PhotosService } from '@app/shared/services/photos.service';
+import { BoardsService } from '../../services/boards.service';
+import { SelectBoardModel } from '../../models/selectBoardModel';
 
 @Component({
   selector: 'app-add-pin-dialog',
@@ -20,6 +22,7 @@ export class AddPinDialogComponent implements OnInit {
     category: [, { updateOn: "change" }],
     photo: [, { validators: [Validators.required], updateOn: "change" }]
   })
+
 
   public categoryList: string[] = [
     "Other/Everything", "Animals", "Architecture", "Art", "Cars and motorcycles", "Celebrities", "DIY and crafts",
@@ -36,16 +39,19 @@ export class AddPinDialogComponent implements OnInit {
   public imagePath: string;
   public url: any;
   public isPhotoSelected: boolean = false;
+  public selectBoardModel: SelectBoardModel[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
     private jwtDecoderService: JwtDecoderService,
     private userInfoService: UserInfoService,
-    private photosService: PhotosService
+    private photosService: PhotosService,
+    private boardsService: BoardsService,
   ) {
     this.loggedInUserUsername = this.jwtDecoderService.getUsername();
     this.setLoggedInUserImageUrl();
+    this.setBoards();
   }
 
   ngOnInit(): void {
@@ -61,6 +67,12 @@ export class AddPinDialogComponent implements OnInit {
       (error) => {
         console.log(error);
       });
+  }
+
+  setBoards() {
+    this.boardsService.getBoards(this.loggedInUserUsername).subscribe(
+      (data) => { this.selectBoardModel = data; console.log(this.selectBoardModel) },
+      (error) => console.log(error));
   }
 
   toBase64 = file => new Promise((resolve, reject) => {

@@ -1,5 +1,5 @@
-export interface Board{
+export interface Board {
   userId: string;
-  title:string;
-  privateBoard:boolean;
+  title: string;
+  privateBoard: boolean;
 }

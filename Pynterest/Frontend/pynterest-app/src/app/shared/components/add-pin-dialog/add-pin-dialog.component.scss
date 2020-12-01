@@ -4,7 +4,7 @@
   width: 500px;
   overflow-y: hidden !important;
   overflow-x: hidden !important;
-  height: 385px;
+  height: 440px;
 }
 
 .sub-content {
@@ -22,7 +22,7 @@
   flex-direction: row;
   align-items: flex-start;
   overflow: hidden;
-  padding: 10px;
+  padding-top: 20px;
 }
 
 .add-pin-subcontent {
@@ -226,4 +226,8 @@
   font-size: 15px;
   margin-left: 5px;
   padding-bottom: 10px;
+}
+
+.select-board {
+  margin-left: 260px;
 }
