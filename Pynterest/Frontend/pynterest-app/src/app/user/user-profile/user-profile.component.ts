@@ -175,9 +175,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   openAddBoardDialog() {
-    this.boardsService.openDialog({
-      userId: this.jwtDecoder.getId(),
-      boardNames: ["asa", "gigel"]
+    this.dialogService.openAddBoardDialog({
+      userId: this.jwtDecoder.getId()
     })
 
   }
