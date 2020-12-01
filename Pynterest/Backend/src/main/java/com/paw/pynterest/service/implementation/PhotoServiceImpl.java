@@ -1,5 +1,6 @@
 package com.paw.pynterest.service.implementation;
 
+import com.paw.pynterest.boundry.dto.ReadPhotoDTO;
 import com.paw.pynterest.boundry.dto.WritePhotoDTO;
 import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
 import com.paw.pynterest.boundry.exceptions.DeleteFileException;
@@ -21,6 +22,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,14 +57,14 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
     }
 
     @Override
-    public Long addPhoto(WritePhotoDTO writePhotoDTO){
+    public Long addPhoto(WritePhotoDTO writePhotoDTO, Long userId){
         Photo photo = modelMapper.map(writePhotoDTO,Photo.class);
         Optional<Category> categorySelected = categoryRepository.findByName(writePhotoDTO.getCategoryName());
         if(!categorySelected.isPresent()) {
             throw new DataIntegrityViolationException("Selected category does not exists! Please add that category first than try again!");
         }
 
-        Optional<User> user = userRepository.findById(writePhotoDTO.getUserId());
+        Optional<User> user = userRepository.findById(userId);
         if(!user.isPresent()){
             throw new DataIntegrityViolationException("User id is not in database!");
         }
@@ -84,7 +87,46 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         {
             throw new ServerErrorException("Couldn't save board!");
         }
+    }
 
+    @Override
+    public ReadPhotoDTO getPhotoById(Long photoId){
+        Optional<Photo> photoFromDb = photoRepository.findById(photoId);
+        if(!photoFromDb.isPresent()) {
+            throw new NotFoundException("Viata e minunata....dar poza cu id-ul" + photoId.toString() + " nu exista!");
+        }
+        ReadPhotoDTO photoToReturn= modelMapper.map(photoFromDb.get(),ReadPhotoDTO.class);
+
+        photoToReturn.setUserId(photoFromDb.get().getUser().getUserId());
+        photoToReturn.setCategoryId(photoFromDb.get().getCategories().iterator().next().getCategoryId());
+        photoToReturn.setPictureData(getPhotoFromFile(photoFromDb.get().getPath()));
+
+        return photoToReturn;
+    }
+
+    @Override
+    public List<ReadPhotoDTO> getAllPhotoByUserName(String userName){
+        List<ReadPhotoDTO> photoListToReturn = new ArrayList<ReadPhotoDTO>();
+        User user = userRepository.findByUsername(userName);
+        if(user!=null)
+        {
+            List<Photo> photoListFromDb = photoRepository.findAllByUser(user);
+            photoListFromDb.forEach(photo -> {
+                ReadPhotoDTO tempPhoto = modelMapper.map(photo, ReadPhotoDTO.class);
+
+                tempPhoto.setUserId(photo.getUser().getUserId());
+                tempPhoto.setCategoryId(photo.getCategories().iterator().next().getCategoryId());
+                tempPhoto.setPictureData(getPhotoFromFile(photo.getPath()));
+
+                photoListToReturn.add(tempPhoto);
+            });
+        }
+        else
+        {
+            throw new NotFoundException("User with username " + userName + " does not exist!");
+        }
+
+        return photoListToReturn;
     }
 
     private static void convertAndSavaPhoto(byte[] profilePicture,String path) throws IOException {
