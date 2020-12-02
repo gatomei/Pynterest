@@ -5,13 +5,13 @@
         <h1 mat-dialog-title class="dialog-title-text">Add category</h1>
       </div>
       <button class="close-button" matDialogClose>
-        <mat-icon style="font-size:40px; padding-bottom: 20px;">clear</mat-icon>
+        <mat-icon class="close-icon">clear</mat-icon>
       </button>
     </div>
     <div mat-dialog-content>
       <div class="input-content">
         <mat-form-field>
-          <mat-label>Category</mat-label>
+          <mat-label>Enter new category</mat-label>
           <input matInput formControlName="categoryName" placeholder="Add category" />
           <mat-error *ngIf="addCategoryForm.get('categoryName').hasError('required')">
             Category is <strong>required</strong>
