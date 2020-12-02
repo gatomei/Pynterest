@@ -62,6 +62,22 @@
   align-self: flex-end;
   margin-left: 100px;
 }
+.add-board-icon {
+  font-size: 10px;
+  vertical-align: middle;
+  color: $logoColor;
+}
+
+.add-board-button {
+  border: none;
+  outline: none;
+  background-color: white;
+  text-align: center;
+}
+
+.boards-label {
+  font-size: 10px;
+}
 
 .delete-button {
   border: none;
@@ -82,13 +98,12 @@
 }
 
 .mat-icon {
-  font-size: 28px;
   font-weight: 800;
   color: $icon-color;
+  font-size: 20px;
 }
 
 .mat-label {
-  color: $icon-color;
   font-weight: bold;
   font-size: medium;
 }
@@ -120,7 +135,6 @@
 }
 
 .title-input {
-  color: $icon-color;
   font-weight: bold;
 }
 

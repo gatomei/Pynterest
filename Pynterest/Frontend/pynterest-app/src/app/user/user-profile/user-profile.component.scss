@@ -37,7 +37,6 @@ button.link {
   flex-direction: column;
 }
 
-
 //profile photo
 #profile-photo-container {
   width: 100%;
@@ -52,6 +51,16 @@ button.link {
   overflow: hidden;
   border: $icon-color 2px solid;
   background-color: transparent;
+}
+
+.photos-boards-container {
+  padding-bottom: 300px;
+  margin-top: 15px;
+  background: white;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 #profile-photo img {

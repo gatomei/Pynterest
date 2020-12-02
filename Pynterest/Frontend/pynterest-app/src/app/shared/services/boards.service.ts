@@ -4,11 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'environments/environment';
 import { Board } from '../models/boardModel';
 import { SelectBoardModel } from '../models/selectBoardModel';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardsService {
+
   constructor(public dialog: MatDialog, private httpClient: HttpClient) { }
 
   createNewBoard(board: Board) {

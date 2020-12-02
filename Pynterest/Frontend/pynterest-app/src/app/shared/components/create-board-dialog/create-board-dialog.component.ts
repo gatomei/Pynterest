@@ -49,7 +49,6 @@ export class CreateBoardDialogComponent implements OnInit {
       },
       (error) => {
         this.notifications.showError("Your board couldn't be created! A board with the same name already exists!", 'Error');
-
       }
     );
 

@@ -50,7 +50,8 @@
     <div class="profile-content shaddow">
       <ng-container *ngIf="isHisPage()">
         <div class="add-content-buttons">
-          <button mat-icon-button class="content-buttons" aria-label="Add new photo" (click)="openAddPinDialog()">
+          <button mat-icon-button class="content-buttons" matTooltip="Add a new photo" [matTooltipPosition]="'above'"
+            class="content-buttons" aria-label="Add a new photo" (click)="openAddPinDialog()">
             <mat-icon>add_a_photo</mat-icon>
           </button>
           <button mat-icon-button (click)="openAddBoardDialog()" matTooltip="Add a new board"
@@ -63,8 +64,12 @@
         <button>Photos</button>
         <button>Boards</button>
       </div>
+    </div>
+
+    <div class="photos-boards-container shaddow">
 
     </div>
+
 
   </div>
 

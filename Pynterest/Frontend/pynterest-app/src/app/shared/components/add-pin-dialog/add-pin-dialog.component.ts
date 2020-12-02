@@ -1,6 +1,6 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { JwtDecoderService } from '../../services/jwt-decoder.service';
 import { UserInfoService } from '@app/user/services/user-info.service';
 import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,10 @@ import { PhotoModel } from '../../models/photoModel';
 import { PhotosService } from '@app/shared/services/photos.service';
 import { BoardsService } from '../../services/boards.service';
 import { SelectBoardModel } from '../../models/selectBoardModel';
+import { DialogService } from '../../services/dialog.service';
+import { ReplaySubject, Subject } from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-pin-dialog',
@@ -16,11 +20,19 @@ import { SelectBoardModel } from '../../models/selectBoardModel';
 })
 export class AddPinDialogComponent implements OnInit {
 
+
+  public boardCtrl: FormControl = new FormControl();
+  public boardFilterCtrl: FormControl = new FormControl();
+  public filteredBoards: ReplaySubject<SelectBoardModel[]> = new ReplaySubject<SelectBoardModel[]>(1);
+  @ViewChild('singleSelect') singleSelect: MatSelect;
+  protected _onDestroy = new Subject<void>();
+
   public addPinForm: FormGroup = this.formBuilder.group({
-    title: [, { updateOn: "change" }],
+    title: [, { validators: [Validators.required], updateOn: "change" }],
     description: [, { updateOn: "change" }],
-    category: [, { updateOn: "change" }],
-    photo: [, { validators: [Validators.required], updateOn: "change" }]
+    category: [, { validators: [Validators.required], updateOn: "change" }],
+    photo: [, { validators: [Validators.required], updateOn: "change" }],
+    board: [, { validators: [Validators.required], updateOn: "change" }]
   })
 
 
@@ -40,7 +52,6 @@ export class AddPinDialogComponent implements OnInit {
   public url: any;
   public isPhotoSelected: boolean = false;
   public selectBoardModel: SelectBoardModel[] = [];
-
   constructor(
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
@@ -48,13 +59,62 @@ export class AddPinDialogComponent implements OnInit {
     private userInfoService: UserInfoService,
     private photosService: PhotosService,
     private boardsService: BoardsService,
+    private dialogService: DialogService
   ) {
     this.loggedInUserUsername = this.jwtDecoderService.getUsername();
     this.setLoggedInUserImageUrl();
-    this.setBoards();
+    this.getBoards();
   }
 
-  ngOnInit(): void {
+  getBoards() {
+    this.boardsService.getBoards(this.loggedInUserUsername).subscribe(
+      (data) => {
+        this.selectBoardModel = data;
+        this.filteredBoards.next(this.selectBoardModel.slice());
+
+        this.boardFilterCtrl.valueChanges
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.filterBanks();
+          });
+      },
+      (error) => console.log(error));
+
+  }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.setInitialValue();
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+  protected setInitialValue() {
+    this.filteredBoards
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.singleSelect.compareWith = (a: SelectBoardModel, b: SelectBoardModel) => a && b && a.title === b.title;
+      });
+  }
+
+  protected filterBanks() {
+    if (!this.selectBoardModel) {
+      return;
+    }
+    let search = this.boardFilterCtrl.value;
+    if (!search) {
+      this.filteredBoards.next(this.selectBoardModel.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredBoards.next(
+      this.selectBoardModel.filter(bank => bank.title.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   setLoggedInUserImageUrl() {
@@ -69,12 +129,6 @@ export class AddPinDialogComponent implements OnInit {
       });
   }
 
-  setBoards() {
-    this.boardsService.getBoards(this.loggedInUserUsername).subscribe(
-      (data) => { this.selectBoardModel = data; console.log(this.selectBoardModel) },
-      (error) => console.log(error));
-  }
-
   toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -84,10 +138,9 @@ export class AddPinDialogComponent implements OnInit {
 
   async submitAddPinForm(_addPinForm) {
 
-    console.log("valid:" + this.uploadedValidPhoto)
-
     this.addPinForm = _addPinForm;
     let _photoInBytes = <string>await this.toBase64(this.addPinForm.get("photo").value?.files[0]);
+    _photoInBytes = _photoInBytes.split(",")[1]
     let _categoryName = this.addPinForm.get("category").value;
 
     if (_categoryName == null) {
@@ -100,6 +153,9 @@ export class AddPinDialogComponent implements OnInit {
       categoryName: _categoryName,
       pictureData: _photoInBytes
     }
+
+    console.log(photo);
+    console.log(this.addPinForm.get("board").value);
 
     this.photosService.addPhoto(photo).subscribe((error) => console.log(error));
   }
@@ -127,4 +183,10 @@ export class AddPinDialogComponent implements OnInit {
     this.uploadedValidPhoto = true;
   }
 
+  openAddBoardDialog() {
+    this.dialogService.openAddBoardDialog({
+      userId: this.jwtDecoderService.getId()
+    })
+    this.singleSelect.close();
+  }
 }

@@ -178,6 +178,5 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.dialogService.openAddBoardDialog({
       userId: this.jwtDecoder.getId()
     })
-
   }
 }

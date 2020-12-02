@@ -1,6 +1,5 @@
-import { SafeUrl } from '@angular/platform-browser';
 import { FollowModel } from '@app/shared/models/followModel';
-import { Injectable, ɵConsole } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FollowDialogComponent } from '../components/follow-dialog/follow-dialog.component';
 import { FollowDialogModel } from '../models/followDialogModel';
@@ -13,9 +12,11 @@ import { CreateBoardDialogComponent } from '../components/create-board-dialog/cr
 })
 export class DialogService {
 
-  constructor(public followDialog: MatDialog,
-     public addPinDialog: MatDialog,
-    public addBoardDialog:MatDialog) { }
+  constructor(
+    public followDialog: MatDialog,
+    public addPinDialog: MatDialog,
+    public addBoardDialog: MatDialog,
+    public showBoardDialog: MatDialog) { }
 
   openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
@@ -25,19 +26,21 @@ export class DialogService {
       loggedInUserFollowingModel: _loggedInUserFollowingModel
     }
 
-    this.followDialog.open(FollowDialogComponent, { data, panelClass: 'custom-dialog-container' });
+    this.followDialog.open(FollowDialogComponent,
+      { data, panelClass: 'custom-dialog-container' });
   }
 
   openAddPinDialog() {
 
-    this.addPinDialog.open(AddPinDialogComponent, { panelClass: 'custom-dialog-container' });
+    this.addPinDialog.open(AddPinDialogComponent,
+      { panelClass: 'custom-dialog-container' });
   }
 
-  openAddBoardDialog(data){
+  openAddBoardDialog(data) {
 
-      this.addBoardDialog.open(CreateBoardDialogComponent, {
-        data: data,
-        panelClass: 'custom-dialog-container',
-      });
+    this.addBoardDialog.open(CreateBoardDialogComponent, {
+      data: data,
+      panelClass: 'custom-dialog-container',
+    });
   }
 }
