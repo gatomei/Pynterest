@@ -1,5 +1,6 @@
 package com.paw.pynterest.service.implementation;
 
+import com.paw.pynterest.boundry.dto.ReadCategoryDTO;
 import com.paw.pynterest.boundry.dto.WriteCategoryDTO;
 import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
 import com.paw.pynterest.boundry.exceptions.DirectoryCreationException;
@@ -13,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryServiceInterface {
@@ -49,6 +52,15 @@ public class CategoryServiceImpl implements CategoryServiceInterface {
         {
             throw new ServerErrorException("Couldn't save category!");
         }
+    }
+
+    @Override
+    public List<ReadCategoryDTO> getAllCategories(){
+        return categoryRepository.findAll()
+                .stream()
+                .map(category -> modelMapper.map(category,ReadCategoryDTO.class))
+                .collect(Collectors.toList());
+
     }
 
 
