@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FollowDialogComponent } from '../components/follow-dialog/follow-dialog.component';
 import { FollowDialogModel } from '../models/followDialogModel';
 import { AddPinDialogComponent } from '../components/add-pin-dialog/add-pin-dialog.component';
+import { CreateBoardDialogComponent } from '../components/create-board-dialog/create-board-dialog.component';
 
 
 @Injectable({
@@ -12,7 +13,9 @@ import { AddPinDialogComponent } from '../components/add-pin-dialog/add-pin-dial
 })
 export class DialogService {
 
-  constructor(public followDialog: MatDialog, public addPinDialog: MatDialog) { }
+  constructor(public followDialog: MatDialog,
+     public addPinDialog: MatDialog,
+    public addBoardDialog:MatDialog) { }
 
   openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
@@ -28,5 +31,13 @@ export class DialogService {
   openAddPinDialog() {
 
     this.addPinDialog.open(AddPinDialogComponent, { panelClass: 'custom-dialog-container' });
+  }
+
+  openAddBoardDialog(data){
+
+      this.addBoardDialog.open(CreateBoardDialogComponent, {
+        data: data,
+        panelClass: 'custom-dialog-container',
+      });
   }
 }

@@ -47,4 +47,8 @@ public class Photo {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "photos")
+    private Set<Board> boards = new HashSet<>();
+
 }

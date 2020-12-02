@@ -26,4 +26,7 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Photo> photos = new HashSet<>();
+
+    @ManyToMany(mappedBy = "interests", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
 }

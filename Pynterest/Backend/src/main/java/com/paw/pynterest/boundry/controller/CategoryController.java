@@ -32,7 +32,4 @@ public class CategoryController {
     {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
-
-
-
 }

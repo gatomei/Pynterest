@@ -1,30 +1,43 @@
-<h2 mat-dialog-title class="dialog-title">Create a new board</h2>
+<form [formGroup]="boardForm" (ngSubmit)="addBoard()" class="form-container">
+  <div class="container">
+    <div class="dialog-title">
+      <h1 mat-dialog-title >Create a new board</h1>
+    </div>
 
-<mat-dialog-content [formGroup]="boardForm">
-  <div class="name-field" >
-    <mat-form-field>
-      <mat-label class="name-label">Name</mat-label>
-      <input matInput type="text" formControlName="boardName"
-      placeholder="Ex. Shoes/Quotes/Cars" class="form-inputs">
-    </mat-form-field>
+    <div mat-dialog-content class="create-board-content">
 
-  </div>
-  <div class="private-field">
-    <mat-form-field>
-      <mat-label class="toggle-label">Make this board private</mat-label>
-      <mat-slide-toggle formControlName="privateBoard" >Private</mat-slide-toggle>
+        <div class="input-content" >
+          <mat-form-field class="form-field">
+            <mat-label class="mat-label">Name</mat-label>
+            <input matInput type="text" formControlName="boardName"
+            placeholder="Ex. Shoes/Quotes/Cars" class="form-input">
+            <mat-error *ngIf="boardForm.get('boardName').hasError('required')">
+              Name is <strong>required</strong>
+            </mat-error>
 
-    </mat-form-field>
+          </mat-form-field>
+        </div>
 
-  </div>
-</mat-dialog-content>
+        <div class="input-content">
+          <mat-form-field floatLabel="always" appearance="none" class="private-field">
+            <mat-label class="mat-label">Make this board private</mat-label>
+            <mat-slide-toggle formControlName="privateBoard" class="form-input">Private</mat-slide-toggle>
+            <textarea matInput hidden></textarea>
+          </mat-form-field>
+      </div>
+
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="submit-button" [disabled]="!boardForm.valid"  type="submit"
+        matDialogClose>Create</button>
+      <button class="close-button" mat-raised-button matDialogClose>Cancel</button>
+
+    </div>
+    <div class="error">
+
+    </div>
+</form>
 
 
-<div mat-dialog-actions class="buttons">
-  <div>
-    <button class="close-button" mat-raised-button [mat-dialog-close]="null">Cancel</button>
-  </div>
-  <div>
-    <button class="create-button" mat-raised-button [disabled]="!boardForm.valid" (click)="addBoard()">Save</button>
-  </div>
-</div>
+
