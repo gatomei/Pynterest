@@ -5,6 +5,7 @@ import { FollowDialogComponent } from '../components/follow-dialog/follow-dialog
 import { FollowDialogModel } from '../models/followDialogModel';
 import { AddPinDialogComponent } from '../components/add-pin-dialog/add-pin-dialog.component';
 import { CreateBoardDialogComponent } from '../components/create-board-dialog/create-board-dialog.component';
+import { AddCategoryDialogComponent } from '../components/add-category-dialog/add-category-dialog.component';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class DialogService {
     public followDialog: MatDialog,
     public addPinDialog: MatDialog,
     public addBoardDialog: MatDialog,
-    public showBoardDialog: MatDialog) { }
+    public addCategoryDialog: MatDialog) { }
 
   openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
@@ -42,5 +43,10 @@ export class DialogService {
       data: data,
       panelClass: 'custom-dialog-container',
     });
+  }
+
+  openAddCategoryDialog() {
+    this.addCategoryDialog.open(AddCategoryDialogComponent,
+      { panelClass: 'custom-dialog-container' });
   }
 }

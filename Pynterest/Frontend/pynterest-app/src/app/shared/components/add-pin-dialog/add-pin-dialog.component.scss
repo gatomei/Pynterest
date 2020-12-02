@@ -62,17 +62,18 @@
   align-self: flex-end;
   margin-left: 100px;
 }
-.add-board-icon {
+.add-icon {
   font-size: 10px;
   vertical-align: middle;
   color: $logoColor;
 }
 
-.add-board-button {
+.add-button {
   border: none;
   outline: none;
   background-color: white;
   text-align: center;
+  padding: 10px;
 }
 
 .boards-label {

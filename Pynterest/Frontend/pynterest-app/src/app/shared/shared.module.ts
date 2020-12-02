@@ -23,6 +23,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateBoardDialogComponent } from './components/create-board-dialog/create-board-dialog.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatDividerModule } from '@angular/material/divider';
+import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
 
 
 
@@ -34,7 +35,8 @@ import { MatDividerModule } from '@angular/material/divider';
     ProgressSpinnerComponent,
     FollowDialogComponent,
     AddPinDialogComponent,
-    CreateBoardDialogComponent
+    CreateBoardDialogComponent,
+    AddCategoryDialogComponent
   ],
   imports: [
     CommonModule,

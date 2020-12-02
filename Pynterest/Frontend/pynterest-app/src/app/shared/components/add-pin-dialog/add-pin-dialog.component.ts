@@ -12,6 +12,9 @@ import { DialogService } from '../../services/dialog.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { take, takeUntil } from 'rxjs/operators';
+import { CategoryService } from '../../services/category.service';
+import { WriteCategoryModel } from '@app/shared/models/writeCategoryModel';
+import { ReadCategoryModel } from '../../models/readCategoryModel';
 
 @Component({
   selector: 'app-add-pin-dialog',
@@ -35,13 +38,7 @@ export class AddPinDialogComponent implements OnInit {
     board: [, { validators: [Validators.required], updateOn: "change" }]
   })
 
-
-  public categoryList: string[] = [
-    "Other/Everything", "Animals", "Architecture", "Art", "Cars and motorcycles", "Celebrities", "DIY and crafts",
-    "Design", "Education", "Entertainment", "Food and drink", "Gardening", "Geek", "Hair and beauty",
-    "Health and fitness", "History", "Holidays and events", "Home decor", "Humor", "Fashion", "Outdoors",
-    "Photography", "Quotes", "Science", "Travel"
-  ];
+  public categoryList: ReadCategoryModel[] = [];
 
   faArrowAltCircleUp = faArrowAltCircleUp;
 
@@ -52,6 +49,7 @@ export class AddPinDialogComponent implements OnInit {
   public url: any;
   public isPhotoSelected: boolean = false;
   public selectBoardModel: SelectBoardModel[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
@@ -59,11 +57,15 @@ export class AddPinDialogComponent implements OnInit {
     private userInfoService: UserInfoService,
     private photosService: PhotosService,
     private boardsService: BoardsService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private categoryService: CategoryService
   ) {
     this.loggedInUserUsername = this.jwtDecoderService.getUsername();
     this.setLoggedInUserImageUrl();
     this.getBoards();
+    this.getCategories();
+    let c: WriteCategoryModel = { name: "Sport" }
+    // this.categoryService.addCategory(c).subscribe((error) => console.log(error))
   }
 
   getBoards() {
@@ -80,6 +82,13 @@ export class AddPinDialogComponent implements OnInit {
       },
       (error) => console.log(error));
 
+  }
+
+  getCategories() {
+    this.categoryService.getCategories().subscribe(
+      (data) => { this.categoryList = data; },
+      (error) => { console.log(error); }
+    )
   }
 
   ngOnInit() {
@@ -188,5 +197,9 @@ export class AddPinDialogComponent implements OnInit {
       userId: this.jwtDecoderService.getId()
     })
     this.singleSelect.close();
+  }
+
+  openAddCategoryModal() {
+    this.dialogService.openAddCategoryDialog();
   }
 }

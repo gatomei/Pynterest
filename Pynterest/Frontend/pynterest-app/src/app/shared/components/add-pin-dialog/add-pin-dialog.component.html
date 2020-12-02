@@ -23,15 +23,14 @@
 
             </mat-option>
             <!-- Create board button -->
-            <button type="button" class="add-board-button" (click)="openAddBoardDialog()">
-              <mat-icon style="color: #CC2127" class="add-board-icon">add_circle</mat-icon>
+            <button type="button" class="add-button" (click)="openAddBoardDialog()">
+              <mat-icon style="color: #CC2127" class="add-icon">add_circle</mat-icon>
               <strong><span>Create board</span></strong>
             </button>
 
             <mat-divider></mat-divider>
 
             <!-- Boards -->
-            <mat-label class="boards-label">All boards</mat-label>
             <mat-option *ngFor="let board of filteredBoards | async" [value]="board"><strong>
                 {{board.title}}</strong>
             </mat-option>
@@ -112,8 +111,17 @@
 
               <mat-select [value]="categoryList[0]" class="mat-select-text" panelClass="mat-select-panel"
                 formControlName="category">
+
+                <!-- add category button -->
+                <button type="button" class="add-button" (click)="openAddCategoryModal()">
+                  <mat-icon style="color: #CC2127" class="add-icon">add_circle</mat-icon>
+                  <strong><span>Add category</span></strong>
+                </button>
+
+                <mat-divider></mat-divider>
+
                 <ng-container *ngFor="let category of categoryList">
-                  <mat-option [value]="category">{{category}}</mat-option>
+                  <mat-option [value]="category.name">{{category.name}}</mat-option>
                 </ng-container>
               </mat-select>
 

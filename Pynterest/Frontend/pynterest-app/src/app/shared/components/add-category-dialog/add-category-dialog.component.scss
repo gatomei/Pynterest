@@ -1,0 +1,78 @@
+@import '../../../../assets/styles/colors.scss';
+
+.container {
+  width: 400px;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  height: 250px;
+}
+
+.sub-content {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+
+.dialog-title {
+  justify-content: center;
+  align-items: center;
+  margin-left: 70px;
+}
+
+.dialog-title-text {
+  font-weight: bolder;
+  color: $icon-color;
+}
+.mat-icon {
+  font-weight: 800;
+  color: $icon-color;
+  font-size: 20px;
+}
+
+.close-button {
+  border-radius: 30px;
+  border: 3px solid white;
+  background-color: $header-background;
+  border: none;
+  outline: none;
+  width: 55px;
+  align-self: flex-end;
+  margin-left: 100px;
+}
+
+.mat-icon {
+  font-weight: 800;
+  color: $icon-color;
+  font-size: 20px;
+}
+
+.submit-button {
+  font-size: 14px;
+  flex: 1;
+  border-radius: 30px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
+  width: 100px;
+}
+
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.input-content {
+  text-align: center;
+  padding: 30px;
+}
+
+.submit-button[disabled] {
+  cursor: no-drop;
+}

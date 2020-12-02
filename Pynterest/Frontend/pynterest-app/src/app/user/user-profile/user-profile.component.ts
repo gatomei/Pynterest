@@ -10,6 +10,7 @@ import { FollowModel } from '../../shared/models/followModel';
 import { DialogService } from '@app/shared/services/dialog.service';
 
 import { BoardsService } from '../../shared/services/boards.service';
+import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,6 +25,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
   public imageUrl: SafeUrl
   private subscribedUser;
+  public selectBoardModel: SelectBoardModel[] = [];
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -179,4 +181,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       userId: this.jwtDecoder.getId()
     })
   }
+
+  getBoards() {
+    this.boardsService.getBoards(this.user.username).subscribe(
+      (data) => {
+        this.selectBoardModel = data;
+      },
+      (error) => console.log(error));
+  }
+
 }
