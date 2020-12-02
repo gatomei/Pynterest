@@ -1,5 +1,6 @@
 package com.paw.pynterest.service.implementation;
 
+import com.paw.pynterest.boundry.dto.ReadCategoryDTO;
 import com.paw.pynterest.boundry.dto.WriteCategoryDTO;
 import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
 import com.paw.pynterest.boundry.exceptions.DirectoryCreationException;
@@ -14,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
@@ -54,12 +57,19 @@ public class CategoryServiceImpl implements CategoryServiceInterface {
     }
 
     @Override
+    public List<ReadCategoryDTO> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(category -> modelMapper.map(category, ReadCategoryDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Category findById(Long categoryId) {
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent())
             throw new NotFoundException("Category not found!");
         return category.get();
     }
-
 
 }
