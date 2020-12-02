@@ -1,4 +1,3 @@
-<!-- <div id="background"> -->
 <app-header></app-header>
 <div class="profile-container">
   <div class="profile-info-container">
@@ -62,24 +61,45 @@
       </ng-container>
       <div class="change-content-buttons">
         <button>Photos</button>
-        <button>Boards</button>
+        <button (click)="getBoards()">Boards</button>
       </div>
     </div>
 
-    <div class="photos-boards-container shaddow">
-
-      <div>
-        <div>
-
-        </div>
-
-        <div>
-
-        </div>
+    <div *ngIf="isBoardsButtonClicked" class="boards-container shaddow">
+      <div class="boards-subcontent">
+        <ng-container *ngIf="selectBoardModel.length;else noBoards">
+          <div *ngFor="let board of selectBoardModel;let i=index">
+            <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
+              <div class="board-details-container">
+                <ng-container *ngIf="imageUrlBoards[i];else greyPic">
+                  <button class="board-button">
+                    <img [src]="imageUrlBoards[i]" class="img-board-thumbnail" id="img-thumbnail">
+                  </button>
+                </ng-container>
+                <ng-template #greyPic>
+                  <button class="board-button">
+                    <img src="../../../assets/images/light_grey.jpg" class="img-board-thumbnail" id="img-thumbnail">
+                  </button>
+                </ng-template>
+                <div class="board-details-subcontent">
+                  <strong>{{board.title}}</strong>
+                  <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+        <ng-template #noBoards>
+          <ng-container *ngIf="isHisPage();else notHisPage">
+            <div class="no-boards-text"><b>...you haven't saved any Pins yet!</b></div>
+          </ng-container>
+          <ng-template #notHisPage>
+            <div *ngIf="isBoardsButtonClicked" class="no-boards-text">
+              <b>...{{user.username}} haven't saved any Pins
+                yet!</b>
+            </div>
+          </ng-template>
+        </ng-template>
       </div>
     </div>
-
-
   </div>
-
-</div>
