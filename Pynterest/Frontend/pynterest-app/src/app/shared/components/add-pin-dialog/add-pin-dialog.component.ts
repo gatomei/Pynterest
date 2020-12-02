@@ -31,6 +31,8 @@ export class AddPinDialogComponent implements OnInit {
   public filteredCategories: ReplaySubject<ReadCategoryModel[]> = new ReplaySubject<ReadCategoryModel[]>(1);
   @ViewChild('categorySelect') categorySelect: MatSelect;
 
+  public imageUrlBoards: SafeUrl[] = [];
+
   protected _onDestroy = new Subject<void>();
 
   public addPinForm: FormGroup = this.formBuilder.group({
@@ -85,7 +87,7 @@ export class AddPinDialogComponent implements OnInit {
     this.boardsService.getBoards(this.loggedInUserUsername).subscribe(
       (data) => {
         this.selectBoardModel = data;
-
+        this.setImageUrlArray();
         this.filteredBoards.next(this.selectBoardModel.slice());
 
         this.boardFilterCtrl.valueChanges
@@ -98,8 +100,20 @@ export class AddPinDialogComponent implements OnInit {
 
   }
 
-  getCategories() {
-    this.categoryService.getCategories().subscribe(
+  setImageUrlArray() {
+    this.selectBoardModel.forEach(board => {
+      if (board.firstPicture.length) {
+        this.imageUrlBoards.push(this.sanitizer.bypassSecurityTrustUrl(
+          'data:image/png;base64,' + board.firstPicture));
+      }
+      else {
+        this.imageUrlBoards.push(null);
+      }
+    })
+  }
+
+  async getCategories() {
+    await this.categoryService.getCategories().subscribe(
       (data) => {
         this.categoryList = data;
 

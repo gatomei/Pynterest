@@ -42,7 +42,6 @@ public class BoardController {
     @PutMapping("/{boardId}/photos/{photoId}")
     public ResponseEntity<?> addPhotoToBoard(@PathVariable Long boardId, @PathVariable Long photoId)
     {
-        System.out.println("photo to b");
         Long loggedUserId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
         Boolean created = boardService.addPhotoToBoard(boardId, photoId, loggedUserId);
         if (created)

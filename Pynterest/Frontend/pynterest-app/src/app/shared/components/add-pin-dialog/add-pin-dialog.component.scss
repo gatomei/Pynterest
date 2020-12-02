@@ -4,7 +4,7 @@
   width: 500px;
   overflow-y: hidden !important;
   overflow-x: hidden !important;
-  height: 440px;
+  height: 460px;
 }
 
 .sub-content {
@@ -91,11 +91,19 @@
   border-radius: 30%;
   outline: none;
 }
+
 .img-thumbnail {
   width: 100%;
   max-width: 400px;
   height: 100%;
   max-height: 400px;
+}
+
+.img-board-thumbnail {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  margin-right: 10px;
 }
 
 .mat-icon {
@@ -216,8 +224,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding-top: 10px;
-  padding-bottom: 20px;
+  padding: 30px;
 }
 
 .submit-button[disabled] {
