@@ -15,5 +15,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b where b.user.username = :username")
     List<Board> getUserBoards(@Param("username")String username);
 
-    Boolean existsByPhotosContains(Photo photo);
+    Boolean existsByPhotosContainsAndBoardId(Photo photo, Long boardId);
 }

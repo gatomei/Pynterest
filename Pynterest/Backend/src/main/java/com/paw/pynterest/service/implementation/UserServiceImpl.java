@@ -1,9 +1,12 @@
 package com.paw.pynterest.service.implementation;
 
 import com.paw.pynterest.boundry.exceptions.AlreadyExistsException;
+import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
 import com.paw.pynterest.boundry.exceptions.InvalidResetTokenException;
 import com.paw.pynterest.boundry.exceptions.NotFoundException;
+import com.paw.pynterest.entity.model.Category;
 import com.paw.pynterest.entity.model.User;
+import com.paw.pynterest.entity.repository.CategoryRepository;
 import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,11 +21,13 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private final CategoryRepository categoryRepository;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder)
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CategoryRepository categoryRepository)
     {
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -111,6 +116,14 @@ public class UserServiceImpl implements UserService {
         if(user==null)
             throw new NotFoundException("User with username '"+username+"' not found!");
         return user;
+    }
+
+    @Override
+    public User findById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent())
+            throw new NotFoundException("User is not in database!");
+        return user.get();
     }
 
 

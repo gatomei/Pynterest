@@ -1,6 +1,7 @@
 package com.paw.pynterest.entity.repository;
 
 import com.paw.pynterest.entity.model.Board;
+import com.paw.pynterest.entity.model.Category;
 import com.paw.pynterest.entity.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByResetToken(String resetToken);
     Boolean existsByUsername(String username);
     Boolean existsByUserIdAndBoardsContains(Long userId, Board board);
+    Boolean existsByUsernameAndInterestsContains(String username, Category interest);
 }
