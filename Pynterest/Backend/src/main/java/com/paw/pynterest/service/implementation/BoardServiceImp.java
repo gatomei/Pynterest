@@ -13,12 +13,10 @@ import com.paw.pynterest.entity.repository.BoardRepository;
 import com.paw.pynterest.entity.repository.PhotoRepository;
 import com.paw.pynterest.entity.repository.UserRepository;
 import com.paw.pynterest.service.interfaces.BoardServiceInterface;
+import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.bytebuddy.matcher.TypeSortMatcher;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,26 +24,25 @@ import java.util.stream.Collectors;
 @Service
 public class BoardServiceImp implements BoardServiceInterface {
 
-
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final PhotoRepository photoRepository;
+    private final UserService userService;
 
-    public BoardServiceImp(BoardRepository boardRepository, ModelMapper modelMapper, UserRepository userRepository, PhotoRepository photoRepository) {
+    public BoardServiceImp(BoardRepository boardRepository, ModelMapper modelMapper, UserRepository userRepository, PhotoRepository photoRepository, UserService userService) {
         this.boardRepository = boardRepository;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.photoRepository = photoRepository;
+        this.userService = userService;
     }
 
     @Override
     public Long addBoard(WriteBoardDTO newBoard,  Long loggedUserId){
         Board board = modelMapper.map(newBoard, Board.class);
-        Optional<User> user = userRepository.findById(loggedUserId);
-        if(!user.isPresent())
-            throw new DataIntegrityViolationException("User id is not in database!");
-        board.setUser(user.get());
+        User user = userService.findById(loggedUserId);
+        board.setUser(user);
         try{
             Board savedBoard = boardRepository.saveAndFlush(board);
             return savedBoard.getBoardId();
@@ -60,13 +57,12 @@ public class BoardServiceImp implements BoardServiceInterface {
     }
 
     @Override
-    public void deleteBoard(Long boardId) {
-        try{
-            boardRepository.deleteById(boardId);
-        }catch (Exception e)
-        {
-            throw new NotFoundException("Board not found!");
-        }
+    public void deleteBoard(Long boardId, Long userId) {
+        User user = userService.findById(userId);
+        Board board = findBoardById(boardId);
+        if (board.getUser() != user)
+            throw new UnauthorizedOperationException("You can't delete someone else's board!");
+        boardRepository.delete(board);
     }
 
     @Override
@@ -93,32 +89,36 @@ public class BoardServiceImp implements BoardServiceInterface {
 
     @Override
     public Boolean addPhotoToBoard(Long boardId, Long photoId,  Long loggedUserId) {
-        Optional<Board> board = boardRepository.findById(boardId);
-        if(!board.isPresent())
-            throw new NotFoundException("Board not found!");
-        if(!userRepository.existsByUserIdAndBoardsContains(loggedUserId, board.get()))
+        Board board = findBoardById(boardId);
+        if(!userRepository.existsByUserIdAndBoardsContains(loggedUserId, board))
             throw new UnauthorizedOperationException("Can't add photo to this board because is not yours!");
         Optional<Photo> photo = photoRepository.findById(photoId);
         if(!photo.isPresent())
             throw new NotFoundException("Photo not found!");
-        if(boardRepository.existsByPhotosContains(photo.get()))
+        if(boardRepository.existsByPhotosContainsAndBoardId(photo.get(), boardId))
             return false;
-        board.get().addPhoto(photo.get());
+        board.addPhoto(photo.get());
         boardRepository.flush();
         return true;
     }
 
     @Override
     public void deletePhotoFromBoard(Long boardId, Long photoId, Long loggedUserId) {
-        Optional<Board> board = boardRepository.findById(boardId);
-        if(!board.isPresent())
-            throw new NotFoundException("Board not found!");
-        if(!userRepository.existsByUserIdAndBoardsContains(loggedUserId, board.get()))
+        Board board = findBoardById(boardId);
+        if(!userRepository.existsByUserIdAndBoardsContains(loggedUserId, board))
             throw new UnauthorizedOperationException("Can't remove photo from this board because is not yours!");
         Optional<Photo> photo = photoRepository.findById(photoId);
         if(!photo.isPresent())
             throw new NotFoundException("Photo not found!");
-        board.get().deletePhoto(photo.get());
+        board.deletePhoto(photo.get());
         boardRepository.flush();
+    }
+
+    @Override
+    public Board findBoardById(Long boardId) {
+        Optional<Board> board = boardRepository.findById(boardId);
+        if(!board.isPresent())
+            throw new NotFoundException("Board not found!");
+        return board.get();
     }
 }

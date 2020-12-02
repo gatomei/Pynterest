@@ -29,5 +29,4 @@ public class CategoryController {
         headers.add("Location", categoryId.toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
-
 }

@@ -34,7 +34,8 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long boardId)
     {
-        boardService.deleteBoard(boardId);
+        Long loggedUserId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
+        boardService.deleteBoard(boardId, loggedUserId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
