@@ -30,7 +30,6 @@ public class CategoryController {
     @GetMapping("")
     public ResponseEntity<?> getAllCategories()
     {
-        System.out.println("sunt aici");
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
 }

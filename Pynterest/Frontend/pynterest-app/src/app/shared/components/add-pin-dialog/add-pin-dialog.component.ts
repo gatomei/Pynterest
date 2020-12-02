@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { JwtDecoderService } from '../../services/jwt-decoder.service';
 import { UserInfoService } from '@app/user/services/user-info.service';
-import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { PhotoModel } from '../../models/photoModel';
 import { PhotosService } from '@app/shared/services/photos.service';
 import { BoardsService } from '../../services/boards.service';
@@ -13,7 +13,6 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { take, takeUntil } from 'rxjs/operators';
 import { CategoryService } from '../../services/category.service';
-import { WriteCategoryModel } from '@app/shared/models/writeCategoryModel';
 import { ReadCategoryModel } from '../../models/readCategoryModel';
 
 @Component({
@@ -24,10 +23,14 @@ import { ReadCategoryModel } from '../../models/readCategoryModel';
 export class AddPinDialogComponent implements OnInit {
 
 
-  public boardCtrl: FormControl = new FormControl();
   public boardFilterCtrl: FormControl = new FormControl();
   public filteredBoards: ReplaySubject<SelectBoardModel[]> = new ReplaySubject<SelectBoardModel[]>(1);
-  @ViewChild('singleSelect') singleSelect: MatSelect;
+  @ViewChild('boardSelect') boardSelect: MatSelect;
+
+  public categoryFilterCtrl: FormControl = new FormControl();
+  public filteredCategories: ReplaySubject<ReadCategoryModel[]> = new ReplaySubject<ReadCategoryModel[]>(1);
+  @ViewChild('categorySelect') categorySelect: MatSelect;
+
   protected _onDestroy = new Subject<void>();
 
   public addPinForm: FormGroup = this.formBuilder.group({
@@ -38,10 +41,10 @@ export class AddPinDialogComponent implements OnInit {
     board: [, { validators: [Validators.required], updateOn: "change" }]
   })
 
-  public categoryList: ReadCategoryModel[] = [];
 
   faArrowAltCircleUp = faArrowAltCircleUp;
 
+  public categoryList: ReadCategoryModel[] = [];
   public uploadedValidPhoto: boolean = true;
   public loggedInUserUsername: string;
   public imgUrl: SafeUrl;
@@ -59,25 +62,36 @@ export class AddPinDialogComponent implements OnInit {
     private boardsService: BoardsService,
     private dialogService: DialogService,
     private categoryService: CategoryService
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.loggedInUserUsername = this.jwtDecoderService.getUsername();
     this.setLoggedInUserImageUrl();
     this.getBoards();
     this.getCategories();
-    let c: WriteCategoryModel = { name: "Sport" }
-    // this.categoryService.addCategory(c).subscribe((error) => console.log(error))
+  }
+
+  ngAfterViewInit() {
+    this.setBoardsInitialValues();
+    this.setCategoriesInitialValues();
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
 
   getBoards() {
     this.boardsService.getBoards(this.loggedInUserUsername).subscribe(
       (data) => {
         this.selectBoardModel = data;
+
         this.filteredBoards.next(this.selectBoardModel.slice());
 
         this.boardFilterCtrl.valueChanges
           .pipe(takeUntil(this._onDestroy))
           .subscribe(() => {
-            this.filterBanks();
+            this.filterBoards();
           });
       },
       (error) => console.log(error));
@@ -86,31 +100,39 @@ export class AddPinDialogComponent implements OnInit {
 
   getCategories() {
     this.categoryService.getCategories().subscribe(
-      (data) => { this.categoryList = data; },
+      (data) => {
+        this.categoryList = data;
+
+        this.filteredCategories.next(this.categoryList.slice());
+
+        this.categoryFilterCtrl.valueChanges
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.filterCategories();
+          });
+      },
       (error) => { console.log(error); }
     )
   }
 
-  ngOnInit() {
-  }
 
-  ngAfterViewInit() {
-    this.setInitialValue();
-  }
-
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
-  protected setInitialValue() {
+  protected setBoardsInitialValues() {
     this.filteredBoards
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
-        this.singleSelect.compareWith = (a: SelectBoardModel, b: SelectBoardModel) => a && b && a.title === b.title;
+        this.boardSelect.compareWith = (selectBoardModel1: SelectBoardModel, selectBoardModel2: SelectBoardModel) => selectBoardModel1 && selectBoardModel2 && selectBoardModel1.title === selectBoardModel2.title;
       });
   }
 
-  protected filterBanks() {
+  protected setCategoriesInitialValues() {
+    this.filteredCategories
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.categorySelect.compareWith = (readCategoryModel1: ReadCategoryModel, readCategoryModel2: ReadCategoryModel) => readCategoryModel1 && readCategoryModel2 && readCategoryModel1.name === readCategoryModel2.name;
+      });
+  }
+
+  protected filterBoards() {
     if (!this.selectBoardModel) {
       return;
     }
@@ -122,7 +144,24 @@ export class AddPinDialogComponent implements OnInit {
       search = search.toLowerCase();
     }
     this.filteredBoards.next(
-      this.selectBoardModel.filter(bank => bank.title.toLowerCase().indexOf(search) > -1)
+      this.selectBoardModel.filter(board => board.title.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  protected filterCategories() {
+    if (!this.filteredCategories) {
+      return;
+    }
+    let search = this.categoryFilterCtrl.value;
+    if (!search) {
+      this.filteredCategories.next(this.categoryList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredCategories.next(
+      this.categoryList.filter(category => category.name.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -148,13 +187,12 @@ export class AddPinDialogComponent implements OnInit {
   async submitAddPinForm(_addPinForm) {
 
     this.addPinForm = _addPinForm;
-    let _photoInBytes = <string>await this.toBase64(this.addPinForm.get("photo").value?.files[0]);
-    _photoInBytes = _photoInBytes.split(",")[1]
-    let _categoryName = this.addPinForm.get("category").value;
 
-    if (_categoryName == null) {
-      _categoryName = "Others/Everything";
-    }
+    let _photoInBytes = <string>await this.toBase64(this.addPinForm.get("photo").value?.files[0]);
+    _photoInBytes = _photoInBytes.split(",")[1];
+
+    let _categoryName = this.addPinForm.get("category").value.name;
+    let boardId = this.addPinForm.get("board").value.boardId;
 
     let photo: PhotoModel = {
       title: this.addPinForm.get("title").value,
@@ -163,10 +201,14 @@ export class AddPinDialogComponent implements OnInit {
       pictureData: _photoInBytes
     }
 
-    console.log(photo);
-    console.log(this.addPinForm.get("board").value);
-
-    this.photosService.addPhoto(photo).subscribe((error) => console.log(error));
+    this.photosService.addPhoto(photo).subscribe(
+      (response: any) => {
+        const photoId = response.headers.get('Location');
+        this.photosService.addPhotoToBoard(photoId, boardId).subscribe(
+          (error) => { console.log(error); }
+        )
+      },
+      (error) => console.log(error));
   }
 
   onFileChanged(event) {
@@ -196,10 +238,12 @@ export class AddPinDialogComponent implements OnInit {
     this.dialogService.openAddBoardDialog({
       userId: this.jwtDecoderService.getId()
     })
-    this.singleSelect.close();
+    this.boardSelect.close();
   }
 
   openAddCategoryModal() {
     this.dialogService.openAddCategoryDialog();
+    this.categorySelect.close();
   }
+
 }

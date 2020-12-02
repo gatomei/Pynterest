@@ -14,7 +14,7 @@
       <div class="select-board">
         <mat-form-field>
           <mat-label>Choose a board</mat-label>
-          <mat-select (click)="getBoards()" formControlName="board" placeholder="Choose a board" #singleSelect>
+          <mat-select (click)="getBoards()" formControlName="board" placeholder="Choose a board" #boardSelect>
 
             <!-- Search board -->
             <mat-option>
@@ -109,10 +109,18 @@
             <mat-form-field class="category-select" style="border-radius: 50%;">
               <mat-label class="mat-label">Select a category</mat-label>
 
-              <mat-select [value]="categoryList[0]" class="mat-select-text" panelClass="mat-select-panel"
-                formControlName="category">
+              <mat-select (click)="getCategories()" class="mat-select-text" panelClass="mat-select-panel"
+                formControlName="category" #categorySelect>
 
-                <!-- add category button -->
+
+                <!-- Search category -->
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search" [formControl]="categoryFilterCtrl">
+                  </ngx-mat-select-search>
+
+                </mat-option>
+
+                <!-- Add category button -->
                 <button type="button" class="add-button" (click)="openAddCategoryModal()">
                   <mat-icon style="color: #CC2127" class="add-icon">add_circle</mat-icon>
                   <strong><span>Add category</span></strong>
@@ -120,9 +128,9 @@
 
                 <mat-divider></mat-divider>
 
-                <ng-container *ngFor="let category of categoryList">
-                  <mat-option [value]="category.name">{{category.name}}</mat-option>
-                </ng-container>
+                <mat-option *ngFor="let category of filteredCategories | async" [value]="category"><strong>
+                    {{category.name}}</strong>
+                </mat-option>
               </mat-select>
 
               <mat-error *ngIf="addPinForm.get('category').hasError('required')">

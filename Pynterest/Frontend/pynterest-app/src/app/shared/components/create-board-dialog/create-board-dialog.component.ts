@@ -44,6 +44,7 @@ export class CreateBoardDialogComponent implements OnInit {
 
     this.boardService.createNewBoard(board).subscribe(
       (response: any) => {
+        console.log(response)
         const header = response.headers.get('Location'); //header location=id of the new board
         console.log(header);
       },
