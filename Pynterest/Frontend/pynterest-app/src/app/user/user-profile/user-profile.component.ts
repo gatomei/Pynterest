@@ -10,6 +10,7 @@ import { FollowModel } from '../../shared/models/followModel';
 import { DialogService } from '@app/shared/services/dialog.service';
 
 import { BoardsService } from '../../shared/services/boards.service';
+import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,6 +25,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
   public imageUrl: SafeUrl
   private subscribedUser;
+  public selectBoardModel: SelectBoardModel[] = [];
+  public imageUrlBoards: SafeUrl[] = [];
+  public isBoardsButtonClicked: boolean = false;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -178,6 +182,30 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.dialogService.openAddBoardDialog({
       userId: this.jwtDecoder.getId()
     })
-
   }
+
+  getBoards() {
+
+    this.isBoardsButtonClicked = true;
+
+    this.boardsService.getBoards(this.user.username).subscribe(
+      (data) => {
+        this.selectBoardModel = data;
+        this.setImageUrlArray();
+      },
+      (error) => console.log(error));
+  }
+
+  setImageUrlArray() {
+    this.selectBoardModel.forEach(board => {
+      if (board.firstPicture.length) {
+        this.imageUrlBoards.push(this.sanitizer.bypassSecurityTrustUrl(
+          'data:image/png;base64,' + board.firstPicture));
+      }
+      else {
+        this.imageUrlBoards.push(null);
+      }
+    })
+  }
+
 }

@@ -21,6 +21,10 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateBoardDialogComponent } from './components/create-board-dialog/create-board-dialog.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatDividerModule } from '@angular/material/divider';
+import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
+
 
 
 @NgModule({
@@ -31,7 +35,8 @@ import { CreateBoardDialogComponent } from './components/create-board-dialog/cre
     ProgressSpinnerComponent,
     FollowDialogComponent,
     AddPinDialogComponent,
-    CreateBoardDialogComponent
+    CreateBoardDialogComponent,
+    AddCategoryDialogComponent
   ],
   imports: [
     CommonModule,
@@ -49,6 +54,8 @@ import { CreateBoardDialogComponent } from './components/create-board-dialog/cre
     FontAwesomeModule,
     MatCardModule,
     MatSlideToggleModule,
+    NgxMatSelectSearchModule,
+    MatDividerModule
   ],
   exports: [
     HeaderComponent,

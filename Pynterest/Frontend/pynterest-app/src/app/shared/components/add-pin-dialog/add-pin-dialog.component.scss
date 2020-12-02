@@ -4,7 +4,7 @@
   width: 500px;
   overflow-y: hidden !important;
   overflow-x: hidden !important;
-  height: 385px;
+  height: 460px;
 }
 
 .sub-content {
@@ -22,7 +22,12 @@
   flex-direction: row;
   align-items: flex-start;
   overflow: hidden;
-  padding: 10px;
+  padding-top: 20px;
+}
+
+.no-boards-text {
+  margin-left: 30px;
+  color: $icon-color;
 }
 
 .add-pin-subcontent {
@@ -62,6 +67,23 @@
   align-self: flex-end;
   margin-left: 100px;
 }
+.add-icon {
+  font-size: 10px;
+  vertical-align: middle;
+  color: $logoColor;
+}
+
+.add-button {
+  border: none;
+  outline: none;
+  background-color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.boards-label {
+  font-size: 10px;
+}
 
 .delete-button {
   border: none;
@@ -74,6 +96,7 @@
   border-radius: 30%;
   outline: none;
 }
+
 .img-thumbnail {
   width: 100%;
   max-width: 400px;
@@ -81,14 +104,20 @@
   max-height: 400px;
 }
 
+.img-board-thumbnail {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  margin-right: 10px;
+}
+
 .mat-icon {
-  font-size: 28px;
   font-weight: 800;
   color: $icon-color;
+  font-size: 20px;
 }
 
 .mat-label {
-  color: $icon-color;
   font-weight: bold;
   font-size: medium;
 }
@@ -120,7 +149,6 @@
 }
 
 .title-input {
-  color: $icon-color;
   font-weight: bold;
 }
 
@@ -201,8 +229,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding-top: 10px;
-  padding-bottom: 20px;
+  padding: 30px;
 }
 
 .submit-button[disabled] {
@@ -226,4 +253,8 @@
   font-size: 15px;
   margin-left: 5px;
   padding-bottom: 10px;
+}
+
+.select-board {
+  margin-left: 260px;
 }

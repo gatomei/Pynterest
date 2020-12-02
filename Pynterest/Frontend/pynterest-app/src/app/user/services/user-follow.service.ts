@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FollowModel } from '@app/shared/models/followModel';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { JwtDecoderService } from '../../shared/services/jwt-decoder.service';
 
 
 @Injectable({
@@ -14,27 +15,33 @@ export class UserFollowService {
   public followersModel: BehaviorSubject<FollowModel[]> = new BehaviorSubject([]);
   public followingModel: BehaviorSubject<FollowModel[]> = new BehaviorSubject([]);
 
+  private loggedInUserUsername: string;
 
-  constructor(private httpClient: HttpClient) { }
-
-  followUser(username: string) {
-    const authenticateEnpoint = `${environment.baseAPIAuth}/user/followings/${username}`;
-    return this.httpClient.put<string>(authenticateEnpoint, null);
+  constructor(
+    private httpClient: HttpClient,
+    private jwtDecoderService: JwtDecoderService
+  ) {
+    this.loggedInUserUsername = this.jwtDecoderService.getUsername();
   }
 
-  unfollowUser(username: string) {
-    const authenticateEnpoint = `${environment.baseAPIAuth}/user/followings/${username}`;
-    return this.httpClient.delete<string>(authenticateEnpoint);
+  followUser(followedUserUsername: string) {
+    const followUserEnpoint = `${environment.baseAPIAuth}/user/${this.loggedInUserUsername}/followings/${followedUserUsername}`;
+    return this.httpClient.put<string>(followUserEnpoint, null);
+  }
+
+  unfollowUser(unfollowedUserUsername: string) {
+    const unfollowUserEnpoint = `${environment.baseAPIAuth}/user/${this.loggedInUserUsername}/followings/${unfollowedUserUsername}`;
+    return this.httpClient.delete<string>(unfollowUserEnpoint);
   }
 
   getUsersFollowingMe(username: string) {
-    const authenticateEnpoint = `${environment.baseAPIAuth}/user/${username}/followings`;
-    return this.httpClient.get<FollowModel[]>(authenticateEnpoint);
+    const getUsersFollowingMeEnpoint = `${environment.baseAPIAuth}/user/${username}/followings`;
+    return this.httpClient.get<FollowModel[]>(getUsersFollowingMeEnpoint);
   }
 
   getFollowedUsers(username: string) {
-    const authenticateEnpoint = `${environment.baseAPIAuth}/user/${username}/followers`;
-    return this.httpClient.get<FollowModel[]>(authenticateEnpoint);
+    const getFollowedUsersEnpoint = `${environment.baseAPIAuth}/user/${username}/followers`;
+    return this.httpClient.get<FollowModel[]>(getFollowedUsersEnpoint);
   }
 
   isSubscribedTo(loggedInUsername: string): boolean {
