@@ -21,7 +21,12 @@ export class PhotosService {
 
   addPhoto(photo: PhotoModel) {
     const addPhotoEndpoint = `${environment.baseAPIAuth}/photos`;
-    return this.httpClient.post(addPhotoEndpoint, photo);
+    return this.httpClient.post<any>(addPhotoEndpoint, photo, { observe: 'response' });
+  }
+
+  addPhotoToBoard(photoId: number, boardId: number) {
+    const addPhotoToBoardEndpoint = `${environment.baseAPIAuth}/boards/${boardId}/photos/${photoId}`;
+    return this.httpClient.put<any>(addPhotoToBoardEndpoint, null);
   }
 
   getPhotoById(id:String){

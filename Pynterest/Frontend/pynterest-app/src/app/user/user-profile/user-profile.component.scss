@@ -12,6 +12,12 @@ button.link {
   font-weight: 700;
 }
 
+.img-board-thumbnail {
+  width: 100px;
+  height: 100px;
+  border-radius: 20%;
+}
+
 .profile-container {
   margin-top: 25px;
   width: 100%;
@@ -19,12 +25,23 @@ button.link {
   flex-direction: row;
   padding: 0px 20px;
 }
+
+.board-button {
+  outline: none;
+  border: none;
+  background-color: white;
+}
+
+.board-details-container {
+  margin: 15px;
+}
+
 .profile-info-container {
   width: 25%;
   padding: 15px;
 }
 
-.shaddow {
+.boards .shaddow {
   box-shadow: $container-shadow;
 }
 
@@ -36,7 +53,6 @@ button.link {
   display: flex;
   flex-direction: column;
 }
-
 
 //profile photo
 #profile-photo-container {
@@ -52,6 +68,29 @@ button.link {
   overflow: hidden;
   border: $icon-color 2px solid;
   background-color: transparent;
+}
+
+.boards-container {
+  margin-top: 15px;
+  background: white;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.number-of-pics-text {
+  font-size: 12px;
+}
+
+.board-details-subcontent {
+  text-align: center;
+  justify-content: center;
+}
+
+.boards-subcontent {
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #profile-photo img {

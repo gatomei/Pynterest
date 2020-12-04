@@ -8,79 +8,149 @@
         <mat-icon style="font-size:40px; padding-bottom: 20px;">clear</mat-icon>
       </button>
     </div>
-    <div mat-dialog-content class="add-pin-content">
+    <div mat-dialog-content>
 
-      <div class="add-pin-subcontent">
+      <!-- Board -->
+      <div class="select-board">
+        <mat-form-field>
+          <mat-label>Choose a board</mat-label>
+          <mat-select (click)="getBoards()" formControlName="board" placeholder="Choose a board" #boardSelect>
 
-        <!-- Photo -->
-        <div [ngClass]="{'file-input': !isPhotoSelected, 
-        'file-input-error': !uploadedValidPhoto, 
-        '': isPhotoSelected && uploadedValidPhoto}">
-          <div [class]="!isPhotoSelected || !uploadedValidPhoto?'file-input-border':''">
-            <mat-form-field class="photo-mat-form-field" appearance="none">
+            <!-- Search board -->
+            <mat-option>
+              <ngx-mat-select-search placeholderLabel="Search" [formControl]="boardFilterCtrl">
+              </ngx-mat-select-search>
 
-              <!-- Upload photo container -->
-              <ng-container *ngIf="uploadedValidPhoto;else invalidPhotoContainer">
-                <fa-icon [icon]="faArrowAltCircleUp" class="upload-icon" [hidden]="isPhotoSelected"></fa-icon>
-                <h4 class="upload-text" [hidden]="isPhotoSelected">Click to upload</h4>
-              </ng-container>
+            </mat-option>
+            <!-- Create board button -->
+            <button type="button" class="add-button" (click)="openAddBoardDialog()">
+              <mat-icon style="color: #CC2127" class="add-icon">add_circle</mat-icon>
+              <strong><span>Create board</span></strong>
+            </button>
 
-              <!-- Uploaded invalid photo container -->
-              <ng-template #invalidPhotoContainer>
-                <mat-icon class="error-icon">error</mat-icon>
-                <h4 class="error-text">Your upload failed because it's the wrong format!</h4>
-              </ng-template>
+            <mat-divider></mat-divider>
 
-              <ngx-mat-file-input class="file-input-text" [hidden]="isPhotoSelected" (change)="onFileChanged($event)"
-                formControlName="photo" accept="image/*">
-              </ngx-mat-file-input>
+            <!-- Boards -->
+            <mat-option *ngFor="let board of filteredBoards | async; let i=index" [value]="board">
+              <strong>
+                <span>
+                  <ng-container *ngIf="imageUrlBoards[i];else greyPic">
+                    <img [src]="imageUrlBoards[i]" alt="tzapa" class="img-board-thumbnail" id="img-thumbnail">
+                  </ng-container>
+                  <ng-template #greyPic>
+                    <img src="../../../assets/images/light_grey.jpg" alt="tzapa" class="img-board-thumbnail"
+                      id="img-thumbnail">
 
-              <div class="photo-container">
-                <img [hidden]="!isPhotoSelected || !uploadedValidPhoto" alt="thumbnail" class="img-thumbnail"
-                  src={{url}}>
-              </div>
+                  </ng-template>
+                </span>
+                {{board.title}}</strong>
+            </mat-option>
 
-            </mat-form-field>
-          </div>
-        </div>
+          </mat-select>
+          <mat-error *ngIf="addPinForm.get('board').hasError('required')">
+            Board is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
       </div>
 
-      <div class="add-pin-subcontent">
+      <div class="add-pin-content">
 
-        <!-- Title -->
-        <div class="input-content">
-          <mat-form-field>
-            <mat-label class="title-label">Title</mat-label>
-            <input matInput formControlName="title" placeholder="Add your title" />
-          </mat-form-field>
+        <div class="add-pin-subcontent">
+
+          <!-- Photo -->
+          <div [ngClass]="{'file-input': !isPhotoSelected, 
+        'file-input-error': !uploadedValidPhoto, 
+        '': isPhotoSelected && uploadedValidPhoto}">
+            <div [class]="!isPhotoSelected || !uploadedValidPhoto?'file-input-border':''">
+              <mat-form-field class="photo-mat-form-field" appearance="none">
+
+                <!-- Upload photo container -->
+                <ng-container *ngIf="uploadedValidPhoto;else invalidPhotoContainer">
+                  <fa-icon [icon]="faArrowAltCircleUp" class="upload-icon" [hidden]="isPhotoSelected"></fa-icon>
+                  <h4 class="upload-text" [hidden]="isPhotoSelected">Click to upload</h4>
+                </ng-container>
+
+                <!-- Uploaded invalid photo container -->
+                <ng-template #invalidPhotoContainer>
+                  <mat-icon class="error-icon">error</mat-icon>
+                  <h4 class="error-text">Your upload failed because it's the wrong format!</h4>
+                </ng-template>
+
+                <ngx-mat-file-input class="file-input-text" [hidden]="isPhotoSelected" (change)="onFileChanged($event)"
+                  formControlName="photo" accept="image/*">
+                </ngx-mat-file-input>
+
+                <div class="photo-container">
+                  <img [hidden]="!isPhotoSelected || !uploadedValidPhoto" alt="thumbnail" class="img-thumbnail"
+                    src={{url}}>
+                </div>
+
+              </mat-form-field>
+            </div>
+          </div>
         </div>
 
-        <!-- Profile picture && username -->
-        <div class="input-content">
-          <img [src]="imgUrl" alt="thumbnail" class="profile-picture-thumbnail">
-          <mat-label class="username-label">{{loggedInUserUsername}}</mat-label>
-        </div>
+        <div class="add-pin-subcontent">
+          <!-- Title -->
+          <div class="input-content">
+            <mat-form-field>
+              <mat-label class="title-label">Title</mat-label>
+              <input matInput formControlName="title" placeholder="Add your title" />
+              <mat-error *ngIf="addPinForm.get('title').hasError('required')">
+                Title is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-        <!-- Description -->
-        <div class="input-content">
-          <mat-form-field>
-            <input matInput formControlName="description" placeholder="What your Pin is about?" />
-          </mat-form-field>
-        </div>
+          <!-- Profile picture && username -->
+          <div class="input-content">
+            <img [src]="imgUrl" alt="thumbnail" class="profile-picture-thumbnail">
+            <mat-label class="username-label">{{loggedInUserUsername}}</mat-label>
+          </div>
 
-        <!-- Category -->
-        <div class="input-content">
-          <mat-form-field class="category-select" style="border-radius: 50%;">
-            <mat-label class="mat-label">Select a category</mat-label>
-            <mat-select [value]="categoryList[0]" class="mat-select-text" panelClass="mat-select-panel"
-              formControlName="category">
-              <ng-container *ngFor="let category of categoryList">
-                <mat-option [value]="category">{{category}}</mat-option>
-              </ng-container>
-            </mat-select>
-          </mat-form-field>
-        </div>
+          <!-- Description -->
+          <div class="input-content">
+            <mat-form-field>
+              <input matInput formControlName="description" placeholder="What your Pin is about?" />
+            </mat-form-field>
+          </div>
 
+          <!-- Category -->
+          <div class="input-content">
+            <mat-form-field class="category-select" style="border-radius: 50%;">
+              <mat-label class="mat-label">Select a category</mat-label>
+
+              <mat-select (click)="getCategories()" class="mat-select-text" panelClass="mat-select-panel"
+                formControlName="category" #categorySelect>
+
+
+                <!-- Search category -->
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search" [formControl]="categoryFilterCtrl">
+                  </ngx-mat-select-search>
+
+                </mat-option>
+
+                <!-- Add category button -->
+                <button type="button" class="add-button" (click)="openAddCategoryModal()">
+                  <mat-icon style="color: #CC2127" class="add-icon">add_circle</mat-icon>
+                  <strong><span>Add category</span></strong>
+                </button>
+
+                <mat-divider></mat-divider>
+
+                <mat-option *ngFor="let category of filteredCategories | async" [value]="category"><strong>
+                    {{category.name}}</strong>
+                </mat-option>
+              </mat-select>
+
+              <mat-error *ngIf="addPinForm.get('category').hasError('required')">
+                Category is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
       </div>
     </div>
     <div class="submit-button-container">

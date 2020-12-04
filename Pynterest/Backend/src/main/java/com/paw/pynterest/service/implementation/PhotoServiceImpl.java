@@ -129,6 +129,14 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         return photoListToReturn;
     }
 
+    @Override
+    public Photo findById(Long photoId) {
+        Optional<Photo> photo = photoRepository.findById(photoId);
+        if (!photo.isPresent())
+            throw new NotFoundException("Photo not found!");
+        return photo.get();
+    }
+
     private static void convertAndSavaPhoto(byte[] profilePicture,String path) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(profilePicture);
         BufferedImage bImage = ImageIO.read(bis);
