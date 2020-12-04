@@ -1,44 +1,47 @@
 <app-header></app-header>
-<div class="pin-container">
-  <mat-card class="photo-card">
-    <mat-card-content class="photo-card-content">
-      <img mat-card-md-image class="photo-card-img" [src]="getImageUrl()" />
-        <div class="save-container">
-          <button mat-button class="board-button" (click)="openBoardViewDialog()">
-            <div>
-              Name
-              <mat-icon class="select-board-icon">expand_more</mat-icon>
-            </div>
-          </button>
-          <button mat-button class="pin-button">Save photo</button>
-        </div>
+<mat-card class="photo-card">
+  <mat-card-content class="photo-card-content">
+    <img mat-card-md-image class="photo-card-img" [src]="getImageUrl()" />
 
-      <div class="photo-card-details">
-        <div  class="pin-detail">
-          <div class="pin-title">
-            <b><p>Title</p></b>
+
+    <div class="photo-card-details">
+      <div class="pin-detail">
+      <div class="save-container">
+        <button mat-button class="board-button" (click)="openBoardViewDialog()">
+          <div>
+            Name
+            <mat-icon class="select-board-icon">expand_more</mat-icon>
           </div>
-        </div>
-        <div class="pin-detail">
-          <div class="pin-description">
-            <b><p>Description</p></b>
-          </div>
-        </div>
-
-        <div class="pin-detail">
-          <div class="pin-user">
-          </div>
-        </div>
-
-        <div class="pin-detail">
-          <div class="pin-comments">
-            <div *ngFor="">
-
-            </div>
-          </div>
-        </div>
-
+        </button>
+        <button mat-button class="pin-button">Save photo</button>
       </div>
-    </mat-card-content>
-  </mat-card>
-</div>
+    </div>
+      <div class="pin-detail">
+        <div class="pin-title">
+          <b
+            ><p>{{ pin.title }}</p></b
+          >
+        </div>
+      </div>
+      <div class="pin-detail">
+        <div class="pin-description">
+          <b
+            ><p>{{ pin.description }}</p></b
+          >
+        </div>
+      </div>
+
+      <div class="pin-detail">
+        <div class="pin-user">
+          <p></p>
+        </div>
+      </div>
+
+      <div class="pin-detail">
+        <div class="pin-comments">
+          <div *ngFor=""></div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
