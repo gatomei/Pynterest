@@ -1,0 +1,8 @@
+<form (ngSubmit)="deleteBoard()">
+<h2 mat-dialog-title class="title">Are you sure?</h2>
+<mat-dialog-content class="content">This will delete all pins that are currently on this board and it cannot be undone.</mat-dialog-content>
+<mat-dialog-actions class="buttons">
+  <button mat-raised-button mat-dialog-close class="cancel-button">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="true" class="delete-button" type="submit">Delete</button>
+</mat-dialog-actions>
+</form>

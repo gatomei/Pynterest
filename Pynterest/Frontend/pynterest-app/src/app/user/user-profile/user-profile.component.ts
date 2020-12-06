@@ -208,4 +208,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  openDeleteBoardDialog(index){
+    let boardId = this.selectBoardModel[index].boardId;
+    this.dialogService.openDeleteBoardDialog(
+      {boardId:boardId}).subscribe(
+        (result)=>{
+          if(result==true)
+          {
+            this.selectBoardModel= this.selectBoardModel.filter(it=>it.boardId!=boardId);
+          }
+        }
+      )
+
+  }
 }

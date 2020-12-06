@@ -81,10 +81,20 @@
                     <img src="../../../assets/images/light_grey.jpg" class="img-board-thumbnail" id="img-thumbnail">
                   </button>
                 </ng-template>
-                <div class="board-details-subcontent">
-                  <strong>{{board.title}}</strong>
-                  <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
+                <div class="board-details-subcontent-container">
+                  <div class="board-details-subcontent">
+                    <strong>{{board.title}}</strong>
+                    <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
+                  </div>
+                  <div *ngIf="isHisPage()" class="board-details-subcontent-actions">
+                    <mat-icon matTooltip="Delete board"
+                    [matTooltipPosition]="'right'"
+                    (click)="openDeleteBoardDialog(i)"
+                    >more_vert</mat-icon>
+                  </div>
                 </div>
+
+
               </div>
             </ng-container>
           </div>

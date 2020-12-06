@@ -15,6 +15,7 @@ import { AddPinDialogComponent } from './components/add-pin-dialog/add-pin-dialo
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgxImageCompressService } from 'ngx-image-compress';
@@ -25,6 +26,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatDividerModule } from '@angular/material/divider';
 import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
 import { AddToBoardFormComponent } from './components/add-to-board-form/add-to-board-form.component';
+import { DeleteBoardDialogComponent } from './components/delete-board-dialog/delete-board-dialog.component';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { AddToBoardFormComponent } from './components/add-to-board-form/add-to-b
     AddPinDialogComponent,
     CreateBoardDialogComponent,
     AddCategoryDialogComponent,
-    AddToBoardFormComponent
+    AddToBoardFormComponent,
+    DeleteBoardDialogComponent
   ],
   imports: [
     CommonModule,
