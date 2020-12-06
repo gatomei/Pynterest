@@ -68,6 +68,12 @@ public class PhotoController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{photoId}/comments/{commentId}")
+    public ResponseEntity<?> getComment(@PathVariable Long photoId, @PathVariable Long commentId)
+    {
+        return new ResponseEntity<>(commentService.getComment(photoId, commentId), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{photoId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long photoId, @PathVariable Long commentId)
     {

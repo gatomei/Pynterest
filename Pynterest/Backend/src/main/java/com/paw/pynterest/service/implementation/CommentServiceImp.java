@@ -76,4 +76,15 @@ public class CommentServiceImp implements CommentServiceInterface {
             return readComment;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public ReadCommentDTO getComment(Long photoId, Long commentId) {
+        Comment comment = findCommentById(commentId);
+        Photo photo = photoService.findById(photoId);
+        if (photo != comment.getPhoto())
+            throw new NotFoundException("Comment not found on this photo");
+        ReadCommentDTO commentDTO = modelMapper.map(comment, ReadCommentDTO.class);
+        commentDTO.setUsername(comment.getUser().getUsername());
+        return commentDTO;
+    }
 }

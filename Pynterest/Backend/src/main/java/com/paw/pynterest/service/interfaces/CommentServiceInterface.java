@@ -10,4 +10,5 @@ public interface CommentServiceInterface {
     void deleteCommentFromPhoto(Long photoId, Long userId, Long commentId);
     Comment findCommentById(Long commentId);
     List<ReadCommentDTO> getCommentsFromPhoto(Long photoId);
+    ReadCommentDTO getComment(Long photoId, Long commentId);
 }
