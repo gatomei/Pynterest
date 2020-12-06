@@ -1,28 +1,224 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PhotosService } from '@app/shared/services/photos.service';
+import { PinDetails } from '@app/shared/models/pinDetailsModel';
+import { UserInfoService } from '@app/user/services/user-info.service';
+import { ReadComment } from '@app/shared/models/readCommentModel';
+import { FormBuilder, FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
+import { WriteComment } from '@app/shared/models/writeCommentModel';
+import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
+import { BoardsService } from '@app/shared/services/boards.service';
+import { DialogService } from '@app/shared/services/dialog.service';
+import { MatSelect } from '@angular/material/select';
+import { ReplaySubject, Subject } from 'rxjs';
+import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pin-details',
   templateUrl: './pin-details.component.html',
-  styleUrls: ['./pin-details.component.scss']
+  styleUrls: ['./pin-details.component.scss'],
 })
 export class PinDetailsComponent implements OnInit {
+  public pin: PinDetails;
+  public isLoaded: boolean = false;
+  public comments: ReadComment[];
+  public commentForm: FormGroup;
+  public isCommenting: boolean = false;
+  public loggedUserImage: SafeUrl;
+  public photoUserImage: SafeUrl;
+  public boardSelectForm: FormGroup;
+  public imageUrlBoards: SafeUrl[] = [];
+  public selectBoardModel: SelectBoardModel[] = [];
 
+  public filteredBoards: ReplaySubject<SelectBoardModel[]> = new ReplaySubject<SelectBoardModel[]>(1);
+  @ViewChild('boardSelect') boardSelect: MatSelect;
 
-  constructor( private sanitizer: DomSanitizer) { }
+  protected _onDestroy = new Subject<void>();
+
+  constructor(
+    private jwtDecoder: JwtDecoderService,
+    private sanitizer: DomSanitizer,
+    private photosService: PhotosService,
+    private userService: UserInfoService,
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private boardsService: BoardsService,
+    private dialogService: DialogService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+
+    this.photosService.getPhotoById(id).subscribe(
+      (data) => {
+        this.pin = data;
+        this.getCommentsForPhoto(this.pin.photoId);
+        this.setAuthorPhotoUserImage();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    this.commentForm = this.formBuilder.group({
+      content: ['', { validators: [Validators.required], updateOn: 'change' }],
+    });
+
+    this.boardSelectForm = this.formBuilder.group({
+      boardFilterCtrl: ['', { updateOn: 'change' }],
+      board: [, { updateOn: 'change' }],
+    });
   }
 
-  getImageUrl(){
-    let image="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AAc+AukGOP8ACqkbEqrQbziFTGmOR59vBwTGF+sKxbD26IxgfwSf/8QAJhAAAgIBAgUFAQEAAAAAAAAAAAECERASITFBUGBxAyJRYbCBkf/aAAgBAQAGPwL9+vfsaPkXY0fJE2IrF8EKn2CqFr5FQX+ERJEfTiRFKRUXuaWXIv0mVI08haespV7iOIDkTn90RxGiBEfwf0gR6zHyRWE1yJIUURkjSapsvkKj5ZZGT5FrDXV00W8UnsbY0tWbHubeI6XRvjjjZ1195jjh2FLMd8SKFHsXS+DNd7H12Nu/37v/xAAlEAEAAgEDBAIDAQEAAAAAAAABABEhMUFhEFFxoVBggbCxkcH/2gAIAQEAAT8h/f1BVBbKwUeelqumu/0XhS8dKMxlPomPgT+mM6CvE/xJ0zrywlK33+g1ZVu5bNHKNGwx78bUTAA2zwTV+cSx7uYX/wAIz2EiaxrljbI83DJQhGpI64D8yIVZpjaOzc1E9yXu2KgVN6PBPTY6Sdn+xpyoM28ePa4mvsilppLqm7Dm2v5kUY8QOh1wi4GTm7im5v1NtBKgNWJHKtmkw7RgiXQJ3hVbb7iWtVua12XhldcBiuDVTixr5ddQE3F9ElRRKtU9yJVrbHfshKG6gZ7FJoeYtIl2jttXnpoBV2mj4IxbLj5/03oaz3/+dBBRIdBQcH0ABKXnqIgW+huozmFDctR8l9FJ4iJ9ytiZg0YPoySkTz+/u//aAAwDAQACAAMAAAAQ+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++9//APvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvuUVsvfvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvul4AQg+QPfvvvvvvvvvvvvvvvvvvvvvvvvvvvtbeCe7EoPvvvvvvvvvvvvvvvvvvvvvvvvvvv/AL/lgOzv7777777777777777777777777777777x237Xz77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777/xAAgEQEAAgIBBAMAAAAAAAAAAAABABEhMUFAUFFhcZCg/9oACAEDAQE/EPv9Wi2CCyCOuxG/ggiMzbyzmc9h3KWZZVnEvB7hoomLLMpZTlEMiiyMO9metKobjk4PZxdk5aTcENC8xMHmQtrbFsLFgWrjr2FLPMDf7ikC8xUPm+w1KhK5aO3H4JP/xAAkEQEAAgIABgEFAAAAAAAAAAABABEhMUFQUWFxsUCBkJGgof/aAAgBAgEBPxD7/oKoiOhTFbHIlT9z3FGbr1KEGiZypyGWKRnz2lkcwtZZR6Gr8VcdpCleLomAlJbxziKEXlX3hoGAnCJ5sKenH5ukMSa3XUQNZKQnxUeFalVVFdIetGlqH00yC3VLr1SLqx29eQUi6ggLsPcN1qhfxOGzD6vIbWWwNwf72mT2be7+hJ//xAApEAEAAgIBAwMDBAMAAAAAAAABABEhMUFRYXEQUJFgobEggbDB0fDx/9oACAEBAAE/EP5+oC5cAcxZuuvQKyh2DHz9CKndUh9Sf5jBpBt56rC+Zea+glb6fkgy9T+kCvXAuO8wrR4I3xBrKMYZfEuUNKBcNfQBOaCrguXnS3oM9YiJcGFdtxWvVP2m2IrwcsNRhvYc/uytfaL+FuihuImU66kvPyHcLuU7q1pLlKQGKoXpF7JThayTBxWdhYOCNsW8nvKm5qDbe7hjKWEvxFTvCP3jtjX+EEZoD53O8tMNBgmwyJwzUxyQNS2H5KiFjJL8Q57UV7Ny3Ibemf8AsE1sj4YtTRj8Q17xjTgy7qh9Nbk7rMMaqjFOpVTR/r6lrViCr2VwPMa0BD+8VKj4Ep9wW9Lga43hhslOvy10O0ftuHvdyqpwFeCmGwALZqoa0m1q7jutrJPd8eT2MXKYUBoPRx1qzzL6OsUy0pNq2yjZpVdHeM6pkThhBhOqfYPzCThtVWVEbXyr9AkS3IcTJX/ZjVQKVViLartyvu/n9XGZVKPSaPM+y+je2BDB6WFv+739yQ96mK6sxAzc6VKZQND29ADZvOe0FhYAQyVtAeA9/qcVx+laQfC8MpaCw9nWPrsa/n6GKkvDafj+ft//2Q=="
-    return this.sanitizer.bypassSecurityTrustUrl(
-      'data:image/png;base64,' +image
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
+  getCommentsForPhoto(id: string) {
+    this.photosService.getCommentsForPhoto(id).subscribe(
+      (data) => {
+        this.comments = data;
+        this.setLoggedUserImageUrl();
+        this.isLoaded = true;
+      },
+      (error) => {
+        console.log(error);
+      }
     );
   }
 
-  openBoardViewDialog()
-  {
+  getImageUrl() {
+    return this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + this.pin.pictureData);
+  }
 
+  addComment(formDirective: FormGroupDirective) {
+    const comment: WriteComment = {
+      content: this.commentForm.get('content').value,
+    };
+
+    this.photosService.addCommentToPhoto(comment, this.pin.photoId).subscribe(
+      (response: any) => {
+        const header = response.headers.get('Location');
+        console.log(header);
+
+        this.dropComment();
+        formDirective.resetForm();
+      },
+      (error) => {
+        console.log(error);
+        this.dropComment();
+        formDirective.resetForm();
+      }
+    );
+  }
+
+  dropComment() {
+    this.commentForm.reset();
+    this.isCommenting = false;
+  }
+  addingComment() {
+    this.isCommenting = true;
+  }
+
+  isOwnComment(username: String) {
+    return username == this.jwtDecoder.getUsername();
+  }
+
+  deleteComment(commentId: string) {
+    this.photosService.deleteCommentFromPhoto(this.pin.photoId, commentId).subscribe(
+      () => {
+        this.comments = this.comments.filter((comm) => comm.commentId != commentId);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  setLoggedUserImageUrl() {
+    this.userService.getInfo(this.jwtDecoder.getUsername()).subscribe(
+      (user) => {
+        this.loggedUserImage = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + user.profilePicture);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  setAuthorPhotoUserImage(){
+    this.userService.getInfo(this.pin.username).subscribe(
+      (user) => {
+        this.photoUserImage = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + user.profilePicture);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  openAddBoardDialog() {
+    this.dialogService.openAddBoardDialog({
+      userId: this.jwtDecoder.getId(),
+    });
+    this.boardSelect.close();
+  }
+
+  getBoards() {
+    this.boardsService.getBoards(this.jwtDecoder.getUsername()).subscribe(
+      (data) => {
+        this.selectBoardModel = data;
+        this.setImageUrlArray();
+        this.filteredBoards.next(this.selectBoardModel.slice());
+
+        this.boardSelectForm
+          .get('boardFilterCtrl')
+          .valueChanges.pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.filterBoards();
+          });
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  protected filterBoards() {
+    if (!this.selectBoardModel) {
+      return;
+    }
+    let search = this.boardSelectForm.get('boardFilterCtrl').value;
+    if (!search) {
+      this.filteredBoards.next(this.selectBoardModel.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredBoards.next(this.selectBoardModel.filter((board) => board.title.toLowerCase().indexOf(search) > -1));
+  }
+
+  setImageUrlArray() {
+    this.selectBoardModel.forEach((board) => {
+      if (board.firstPicture.length) {
+        this.imageUrlBoards.push(this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + board.firstPicture));
+      } else {
+        this.imageUrlBoards.push(null);
+      }
+    });
+  }
+
+  addPinToBoard() {
+    if (this.boardSelectForm.get('board').value != null) {
+      let boardId = this.boardSelectForm.get('board').value.boardId;
+      this.photosService.addPhotoToBoard(Number(this.pin.photoId), boardId).subscribe((error) => {
+        console.log(error);
+      });
+    }
+  }
+  navigateToUser(){
+    this.router.navigate([`users/${this.pin.username}/profile`]);
   }
 }

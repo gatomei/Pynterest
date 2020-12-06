@@ -2,7 +2,7 @@
 
 .photo-card {
   border-color: white;
-  border-radius: 7%;
+  border-radius: 30px;
   margin: 3% 10%;
   padding: 0%;
 }
@@ -10,7 +10,8 @@
 .photo-card-img {
   width: 50%;
   height: auto;
-  border-radius: 7% 0% 0% 7%;
+  border-radius: 30px 0px 0px 30px;
+  border-color: white;
 }
 
 .photo-card-content {
@@ -19,8 +20,8 @@
 
   & > * {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex: auto;
     max-width: 50%;
 
@@ -32,56 +33,213 @@
   }
 }
 
-.pin-button {
-  outline: none;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 0px 25px 25px 0px;
-  background-color: $logoColor;
-  color: $header-background;
-  border: 3px $logoColor solid;
-  height: 100%;
-}
-
-.board-button {
-  outline: none;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 25px 0px 0px 25px;
-  color: $logoColor;
-  background: white;
-  border: 3px $icon-color solid;
-  width: 65%;
-  height: 100%;
-}
-
-.select-board-icon {
-  vertical-align: middle;
-}
 
 .save-container {
   position: absolute;
   top: 4%;
-  right: 4%;
+  right: 2%;
+  transform: translate(-2%, -2%);
+  -ms-transform: translate(-2%, -2%);
   display: flex;
   flex-direction: row;
-  width: 25%;
+  width: 35%;
   height: 50px;
 }
 
 .photo-card-details {
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: flex-start;
+  justify-content: space-between;
 }
 .pin-detail {
-  padding:3%;
+  padding: 3%;
+  width: 100%;
 
-  .pin-title{
+  .pin-title {
+    padding-top: 45px;
     font-size: 27px;
+    overflow-wrap: break-word;
   }
-  .pin-description{
+  .pin-description {
     font-size: 20px;
+  }
+  .pin-comments {
+    width: 100%;
+  }
+}
+
+.buttons {
+  padding-top: 3%;
+  padding-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.cancel-comment-button {
+  background-color: $header-background;
+  color: $logoColor;
+  border: 2px $header-background solid;
+  outline: none;
+}
+.add-comment-button {
+  background-color: $logoColor;
+  color: $header-background;
+  border: 2px $logoColor solid;
+  outline: none;
+}
+
+.add-comment-button[disabled] {
+  cursor: no-drop;
+  background-color: $logoColor;
+  color: $header-background;
+}
+
+.add-comment-form {
+  padding: 2%;
+  margin-bottom: 2%;
+}
+
+.add-comment {
+  padding-top: 2%;
+  width: 100%;
+}
+
+.add-comment-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  padding-top: 3%;
+  .add-comment-content {
+    padding-left: 3%;
+    width: 90%;
+  }
+}
+.img-thumbnail {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.img-thumbnail-pin-user{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.user-author-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.user-author-item{
+  vertical-align: middle;
+  padding-right:20px;
+
+  .user-author-name{
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 17px;
+  }
+}
+
+.add-icon {
+  vertical-align: middle;
+  color: $logoColor;
+}
+
+
+.add-button {
+  border: none;
+  outline: none;
+  background-color: white;
+  text-align: center;
+  padding: 10px;
+}
+.img-board-thumbnail {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  margin-right: 10px;
+}
+
+
+.comment-item {
+  border-radius: 20px;
+  border: 0.5px lightgray solid;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: center;
+  margin-top: 2%;
+}
+
+.comments-title {
+  font-size: 20px;
+}
+
+@media (max-width: 950px) {
+  .pin-button,
+  .board-button {
+    font-size: 12px;
+  }
+
+  .pin-detail {
+    .pin-title {
+      font-size: 22px;
+    }
+    .pin-description {
+      font-size: 16px;
+    }
+  }
+  .comments-title {
+    font-size: 16px;
+  }
+
+  .save-container {
+    right: 15px;
+    width: 40%;
+  }
+
+
+}
+
+
+
+
+
+
+@media (max-width: 650px) {
+  .photo-card-img {
+    width: 100%;
+    border-radius: 30px;
+  }
+  .save-container {
+    position: relative;
+    width: 80%;
+    margin: 7%;
+  }
+  .photo-card-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    & > * {
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 350px) {
+
+  .img-thumbnail {
+    width: 50px;
+    height: 50px;
   }
 }

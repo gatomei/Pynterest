@@ -1,9 +1,10 @@
 <div>
-<mat-card class="photo-card" (click)="clickCard()">
+<mat-card class="photo-card" >
   <img
     mat-card-md-image
     class="photo-file"
     [src]="getImageUrl(photo)"
+    (click)="clickCard()"
   />
 
   <mat-card-content>
@@ -11,15 +12,9 @@
       <b><p>{{title}}</p></b>
     </div>
     <div class="save-container">
+      <app-add-to-board-form photoId="{{id}}" class="add-to-board" >
 
-      <button mat-button class="board-button" (click)="openBoardViewDialog()">
-        <div>
-        Name
-        <mat-icon class="select-board-icon">expand_more</mat-icon>
-        </div>
-
-      </button>
-      <button mat-button class="pin-button">Save photo</button>
+      </app-add-to-board-form>
     </div>
   </mat-card-content>
 </mat-card>

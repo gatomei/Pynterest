@@ -6,6 +6,7 @@ import { FollowDialogModel } from '../models/followDialogModel';
 import { AddPinDialogComponent } from '../components/add-pin-dialog/add-pin-dialog.component';
 import { CreateBoardDialogComponent } from '../components/create-board-dialog/create-board-dialog.component';
 import { AddCategoryDialogComponent } from '../components/add-category-dialog/add-category-dialog.component';
+import { DeleteBoardDialogComponent } from '../components/delete-board-dialog/delete-board-dialog.component';
 
 
 @Injectable({
@@ -17,7 +18,8 @@ export class DialogService {
     public followDialog: MatDialog,
     public addPinDialog: MatDialog,
     public addBoardDialog: MatDialog,
-    public addCategoryDialog: MatDialog) { }
+    public addCategoryDialog: MatDialog,
+    public deleteBoardDialog:MatDialog) { }
 
   openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
@@ -48,5 +50,14 @@ export class DialogService {
   openAddCategoryDialog() {
     this.addCategoryDialog.open(AddCategoryDialogComponent,
       { panelClass: 'custom-dialog-container' });
+  }
+
+  openDeleteBoardDialog(data){
+    const dialogRef = this.deleteBoardDialog.open(DeleteBoardDialogComponent,
+
+      {  data: data,
+        panelClass: 'custom-dialog-container' })
+
+        return dialogRef.afterClosed()
   }
 }

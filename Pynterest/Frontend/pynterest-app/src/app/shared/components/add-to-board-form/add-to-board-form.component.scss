@@ -1,0 +1,46 @@
+@import '../../../../assets/styles/colors.scss';
+
+.add-icon {
+  vertical-align: middle;
+  color: $logoColor;
+}
+
+.add-button {
+  border: none;
+  outline: none;
+  background-color: white;
+  text-align: center;
+  padding: 10px;
+}
+.img-board-thumbnail {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  margin-right: 10px;
+}
+.pin-button {
+  outline: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 25px;
+  background-color: $logoColor;
+  color: $header-background;
+  border: 3px $logoColor solid;
+  height: 50px;
+  width: 40%;
+  margin-right: 0%;
+}
+.pin-button[disabled]{
+  background-color:lightgray;
+  border: 3px lightgray solid;
+  color: black;
+}
+
+.select-board {
+  padding-right: 15px;
+  width: 60%;
+}
+
+.select-board-icon {
+  vertical-align: middle;
+}

@@ -1,0 +1,43 @@
+@import '../../../../assets/styles/colors.scss';
+
+.title {
+  font-size: 30px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.content {
+  font-size: 25px;
+  overflow: hidden;
+  padding: 30px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-bottom: 10px;
+
+
+  .cancel-button, .delete-button{
+    width: 55%;
+    border-radius: 30px;
+    font-size: 20px;
+    outline: none;
+    height: 50px;
+    margin: 15px;
+    font-weight: bolder;
+  }
+
+  .cancel-button{
+    color: $logoColor;
+    border: 2px $icon-color solid;
+    background-color: $header-background;
+  }
+
+  .delete-button {
+    background-color: $logoColor;
+    color: $header-background;
+    border: 2px $logoColor solid;
+  }
+}

@@ -26,4 +26,8 @@ export class BoardsService {
     return this.httpClient.get<SelectBoardModel[]>(getBoardsEndpoint);
 
   }
+  deleteBoard(id:string){
+    const deleteBoardEndpoint = `${environment.baseAPIAuth}/boards/${id}`;
+    return this.httpClient.delete<any>(deleteBoardEndpoint);
+  }
 }
