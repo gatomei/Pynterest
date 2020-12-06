@@ -95,9 +95,10 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         if(!photoFromDb.isPresent()) {
             throw new NotFoundException("Viata e minunata....dar poza cu id-ul" + photoId.toString() + " nu exista!");
         }
+
         ReadPhotoDTO photoToReturn= modelMapper.map(photoFromDb.get(),ReadPhotoDTO.class);
 
-        photoToReturn.setUserId(photoFromDb.get().getUser().getUserId());
+        photoToReturn.setUsername(photoFromDb.get().getUser().getUsername());
         photoToReturn.setCategoryId(photoFromDb.get().getCategories().iterator().next().getCategoryId());
         photoToReturn.setPictureData(getPhotoFromFile(photoFromDb.get().getPath()));
 
@@ -114,7 +115,7 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
             photoListFromDb.forEach(photo -> {
                 ReadPhotoDTO tempPhoto = modelMapper.map(photo, ReadPhotoDTO.class);
 
-                tempPhoto.setUserId(photo.getUser().getUserId());
+                tempPhoto.setUsername(photo.getUser().getUsername());
                 tempPhoto.setCategoryId(photo.getCategories().iterator().next().getCategoryId());
                 tempPhoto.setPictureData(getPhotoFromFile(photo.getPath()));
 

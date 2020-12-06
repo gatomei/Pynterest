@@ -4,6 +4,9 @@ import { environment } from 'environments/environment';
 import { Pin } from '../models/pinModel';
 import { PhotoModel } from '../models/photoModel';
 import { PinDetails } from '../models/pinDetailsModel';
+import { ReadComment } from '../models/readCommentModel';
+import { WriteComment } from '../models/writeCommentModel';
+import { identity } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,4 +37,19 @@ export class PhotosService {
     return this.httpClient.get<PinDetails>(getPhotoEndpoint);
   }
 
+  getCommentsForPhoto(id:String){
+    const getCommentsEndpoint = `${environment.baseAPIAuth}/photos/${id}/comments`;
+    return this.httpClient.get<ReadComment[]>(getCommentsEndpoint);
+  }
+
+
+  addCommentToPhoto(comment:WriteComment, id:string){
+    const addCommentToPhoto = `${environment.baseAPIAuth}/photos/${id}/comments`;
+    return this.httpClient.post<any>(addCommentToPhoto, comment, { observe: 'response' });
+  }
+
+  deleteCommentFromPhoto(photoId:string, commentId:string){
+    const deleteCommentEndpoint = `${environment.baseAPIAuth}/photos/${photoId}/comments/${commentId}`;
+    return this.httpClient.delete<any>(deleteCommentEndpoint);
+  }
 }

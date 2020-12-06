@@ -4,7 +4,7 @@ import lombok.Data;
 @Data
 public class ReadPhotoDTO {
     private Long photoId;
-    private Long userId;
+    private String username;
     private String title;
     private String description;
     private String path;

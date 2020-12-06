@@ -1,6 +1,6 @@
 export interface PinDetails{
   photoId:string;
-  userId: string;
+  username: string;
   title:string;
   description: string;
   path: string;

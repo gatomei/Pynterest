@@ -1,29 +1,23 @@
 <app-header></app-header>
-<mat-card class="photo-card">
+
+<mat-card *ngIf="isLoaded" class="photo-card">
   <mat-card-content class="photo-card-content">
     <img mat-card-md-image class="photo-card-img" [src]="getImageUrl()" />
 
-
     <div class="photo-card-details">
       <div class="pin-detail">
-      <div class="save-container">
-        <button mat-button class="board-button" (click)="openBoardViewDialog()">
-          <div>
-            Name
-            <mat-icon class="select-board-icon">expand_more</mat-icon>
-          </div>
-        </button>
-        <button mat-button class="pin-button">Save photo</button>
+        <div class="save-container">
+          <app-add-to-board-form photoId="{{ pin.photoId }}"> </app-add-to-board-form>
+        </div>
       </div>
-    </div>
-      <div class="pin-detail">
+      <div *ngIf="pin.title" class="pin-detail">
         <div class="pin-title">
           <b
             ><p>{{ pin.title }}</p></b
           >
         </div>
       </div>
-      <div class="pin-detail">
+      <div *ngIf="pin.description" class="pin-detail">
         <div class="pin-description">
           <b
             ><p>{{ pin.description }}</p></b
@@ -33,13 +27,70 @@
 
       <div class="pin-detail">
         <div class="pin-user">
-          <p></p>
+          <div class="user-author-container">
+            <div class="user-author-item">
+              <img [src]="photoUserImage" class="img-thumbnail-pin-user" (click)="navigateToUser()" />
+            </div>
+            <div class="user-author-item">
+              <p class="user-author-name" (click)="navigateToUser()">{{ pin.username }}</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="pin-detail">
         <div class="pin-comments">
-          <div *ngFor=""></div>
+          <label class="comments-title"><b>Comments</b></label>
+          <div class="comments-list">
+            <div *ngIf="comments.length > 0">
+              <mat-list>
+                <mat-list-item *ngFor="let comment of comments; last as last" class="comment-item">
+                  <p matLine>
+                    <b>{{ comment.username }}</b>
+                  </p>
+                  <div *ngIf="isOwnComment(comment.username)">
+                    <button mat-icon-button (click)="deleteComment(comment.commentId)">
+                      <mat-icon
+                        style="font-size: 20px; padding-top: 0px"
+                        matTooltip="Delete comment"
+                        [matTooltipPosition]="'above'"
+                        >clear</mat-icon
+                      >
+                    </button>
+                  </div>
+                  <p matLine>{{ comment.content }}</p>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+          <div class="add-comment-form">
+            <form [formGroup]="commentForm" (ngSubmit)="addComment(formDirective)" #formDirective="ngForm">
+              <div class="add-comment-container">
+                <div class="userImage">
+                  <img [src]="loggedUserImage" class="img-thumbnail" />
+                </div>
+                <div class="add-comment-content">
+                  <mat-form-field class="add-comment">
+                    <textarea
+                      matInput
+                      formControlName="content"
+                      placeholder="Add a comment"
+                      (click)="addingComment()"
+                    ></textarea>
+                  </mat-form-field>
+
+                  <div *ngIf="isCommenting" class="buttons">
+                    <button mat-raised-button class="cancel-comment-button" (click)="dropComment()">
+                      <span>Cancel</span>
+                    </button>
+                    <button mat-raised-button class="add-comment-button" type="submit" [disabled]="!commentForm.valid">
+                      Add comment
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

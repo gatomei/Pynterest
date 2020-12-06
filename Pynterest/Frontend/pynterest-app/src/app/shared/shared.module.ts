@@ -24,7 +24,7 @@ import { CreateBoardDialogComponent } from './components/create-board-dialog/cre
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatDividerModule } from '@angular/material/divider';
 import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
-
+import { AddToBoardFormComponent } from './components/add-to-board-form/add-to-board-form.component';
 
 
 @NgModule({
@@ -36,7 +36,8 @@ import { AddCategoryDialogComponent } from './components/add-category-dialog/add
     FollowDialogComponent,
     AddPinDialogComponent,
     CreateBoardDialogComponent,
-    AddCategoryDialogComponent
+    AddCategoryDialogComponent,
+    AddToBoardFormComponent
   ],
   imports: [
     CommonModule,
@@ -63,7 +64,8 @@ import { AddCategoryDialogComponent } from './components/add-category-dialog/add
     PanelComponent,
     ProgressSpinnerComponent,
     FollowDialogComponent,
-    AddPinDialogComponent
+    AddPinDialogComponent,
+    AddToBoardFormComponent
   ],
   providers: [
     FormBuilder,

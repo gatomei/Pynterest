@@ -21,47 +21,36 @@
 }
 
 
-.pin-button{
+::ng-deep .add-to-board .pin-button{
   opacity: 0;
-  outline: none;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius:  0px 25px 25px 0px;
   background-color: $logoColor;
   color: $header-background;
-  border: 3px $logoColor solid;
   width: 105px;
   height: 50px;
-
 }
 
-.board-button{
+::ng-deep .add-to-board .select-board{
   opacity: 0;
-  outline: none;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 25px 0px 0px 25px;
-  color: $logoColor;
-  background: $header-background;
-  border: 3px $header-background solid;
-  width: 105px;
-  height: 50px;
-
 }
+
 
 .photo-card:hover{
   cursor: zoom-in;
 }
-.photo-card:hover .pin-button, .photo-card:hover .board-button{
+.photo-card:hover ::ng-deep .add-to-board{
+ .pin-button, .select-board{
   opacity: 0.8;
 }
-
-.photo-card:hover  .board-button:hover, .photo-card:hover .pin-button:hover{
-  opacity: 1;
 }
 
-.select-board-icon{
-  vertical-align: middle;
+.photo-card:hover ::ng-deep .add-to-board{
+
+.pin-button:hover{
+  opacity: 1;
+}
+.select-board:hover{
+  opacity: 1;
+}
 }
 
 .save-container{
