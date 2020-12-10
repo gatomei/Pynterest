@@ -22,9 +22,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class PhotoServiceImpl implements PhotoServiceInterface {
@@ -71,6 +71,7 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         photo.setUser(user.get());
         photo.getCategories().add(categorySelected.get());
         photo.setPath("Categories/"+categorySelected.get().getName() + "/" + generatePhotoFileName("jpg"));
+        photo.setCreationDate( new Timestamp(System.currentTimeMillis()) );
 
         try{
             convertAndSavaPhoto(writePhotoDTO.getPictureData(),photo.getPath());
@@ -138,6 +139,57 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         return photo.get();
     }
 
+    @Override
+    public List<Photo> getPhotosForMainPage(Long userId, int photoNumber, Long lastPhotoSentId){
+        int[] totalPhotos = {0};
+        List<Photo> photosToReturn = new ArrayList<Photo>();
+        List<List<Photo>> photosFromEachCategoriesOrderByDate = new ArrayList<List<Photo>>();
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent()) {
+            throw new NotFoundException("Viata e miiinunata, dar user-ul cu id-ul " + userId.toString() + " nu exista!");
+        }
+        List<Category> usersCategories = new ArrayList<>(user.get().getInterests());
+        usersCategories.sort(Comparator.comparing(Category::getName));
+
+        usersCategories.stream().forEach(c -> {
+            List<Photo> photoSortedByDate = photoRepository.findAllByCategoriesContainsOrderByCreationDateDesc(c);
+            photosFromEachCategoriesOrderByDate.add(photoSortedByDate);
+            totalPhotos[0] = totalPhotos[0] + photoSortedByDate.size();
+        });
+        AtomicBoolean startAdding = new AtomicBoolean(false);
+        if(lastPhotoSentId == null)
+        {
+            startAdding.set(true);
+        }
+
+
+        while(totalPhotos[0] != 0 && photosToReturn.size() < photoNumber) {
+            photosFromEachCategoriesOrderByDate.forEach(c -> {
+                if (!c.isEmpty() && startAdding.get() == true && photosToReturn.size() < photoNumber) {
+                    photosToReturn.add(c.get(0));
+                    c.remove(c.get(0));
+                    totalPhotos[0]--;
+                }
+
+                if(lastPhotoSentId != null && !c.isEmpty() && startAdding.get() == false) {
+                    if (c.get(0).getPhotoId() == lastPhotoSentId) {
+                        startAdding.set(true);
+                        c.remove(c.get(0));
+                        totalPhotos[0]--;
+                    }
+                    else
+                    {
+                        c.remove(c.get(0));
+                        totalPhotos[0]--;
+                    }
+                }
+            });
+        }
+        return photosToReturn;
+    }
+
+
+
     private static void convertAndSavaPhoto(byte[] profilePicture,String path) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(profilePicture);
         BufferedImage bImage = ImageIO.read(bis);
@@ -163,4 +215,6 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
             return new byte[]{};
         }
     }
+
+
 }

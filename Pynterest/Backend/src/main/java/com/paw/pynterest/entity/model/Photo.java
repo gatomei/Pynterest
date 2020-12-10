@@ -6,6 +6,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +40,10 @@ public class Photo {
     @Column(length = 100, name = "path")
     @Type(type = "nstring")
     private String path;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
