@@ -4,15 +4,19 @@ package com.paw.pynterest.boundry.controller;
 import com.paw.pynterest.boundry.dto.ReadPhotoDTO;
 import com.paw.pynterest.boundry.dto.WriteCommentDTO;
 import com.paw.pynterest.boundry.dto.WritePhotoDTO;
+import com.paw.pynterest.entity.model.Photo;
 import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.CommentServiceInterface;
 import com.paw.pynterest.service.interfaces.PhotoServiceInterface;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,11 +25,13 @@ public class PhotoController {
     private final PhotoServiceInterface photoService;
     private final AuthenticatedJwtUserService authenticatedJwtUserService;
     private final CommentServiceInterface commentService;
+    private final ModelMapper modelMapper;
 
-    public PhotoController(PhotoServiceInterface photoService, AuthenticatedJwtUserService authenticatedJwtUserService, CommentServiceInterface commentService){
+    public PhotoController(PhotoServiceInterface photoService, AuthenticatedJwtUserService authenticatedJwtUserService, CommentServiceInterface commentService, ModelMapper modelMapper){
         this.photoService = photoService;
         this.authenticatedJwtUserService = authenticatedJwtUserService;
         this.commentService = commentService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("")
@@ -43,6 +49,14 @@ public class PhotoController {
     {
         ReadPhotoDTO photoToReturn = photoService.getPhotoById(photoId);
         return new ResponseEntity<>(photoToReturn,HttpStatus.OK);
+    }
+
+    @GetMapping("/MainPage")
+    public ResponseEntity<?> getPhotosForMainPage(@RequestParam Long userId, @RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSendId)
+    {
+        List<Photo> photosFromService = photoService.getPhotosForMainPage(userId,photoNumber,lastPhotoSendId);
+        List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
+        return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 
     @GetMapping("")
