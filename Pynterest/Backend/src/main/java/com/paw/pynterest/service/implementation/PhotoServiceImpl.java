@@ -107,28 +107,39 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
     }
 
     @Override
-    public List<ReadPhotoDTO> getAllPhotoByUserName(String userName){
-        List<ReadPhotoDTO> photoListToReturn = new ArrayList<ReadPhotoDTO>();
+    public List<Photo> getAllPhotoByUserName(String userName, int photoNumber, Long lastPhotoSentId){
+        boolean startAdd = false;
+        List<Photo> photoListToReturn = new ArrayList<Photo>();
         User user = userRepository.findByUsername(userName);
-        if(user!=null)
-        {
-            List<Photo> photoListFromDb = photoRepository.findAllByUser(user);
-            photoListFromDb.forEach(photo -> {
-                ReadPhotoDTO tempPhoto = modelMapper.map(photo, ReadPhotoDTO.class);
-
-                tempPhoto.setUsername(photo.getUser().getUsername());
-                tempPhoto.setCategoryId(photo.getCategories().iterator().next().getCategoryId());
-                tempPhoto.setPictureData(getPhotoFromFile(photo.getPath()));
-
-                photoListToReturn.add(tempPhoto);
-            });
-        }
-        else
-        {
+        if(user==null) {
             throw new NotFoundException("User with username " + userName + " does not exist!");
+        }
+        List<Photo> allPhotoFromDb = photoRepository.findAllByUserOrderByCreationDateDesc(user);
+        if(lastPhotoSentId == null){
+            startAdd = true;
+        }
+
+        while(photoListToReturn.size() < photoNumber && !allPhotoFromDb.isEmpty())
+        {
+            if(startAdd == true)
+            {
+                photoListToReturn.add(allPhotoFromDb.get(0));
+                allPhotoFromDb.remove(allPhotoFromDb.get(0));
+            }
+            else{
+                if(allPhotoFromDb.get(0).getPhotoId() == lastPhotoSentId){
+                    startAdd = true;
+                    allPhotoFromDb.remove(allPhotoFromDb.get(0));
+                }
+                else
+                {
+                    allPhotoFromDb.remove(allPhotoFromDb.get(0));
+                }
+            }
         }
 
         return photoListToReturn;
+
     }
 
     @Override
