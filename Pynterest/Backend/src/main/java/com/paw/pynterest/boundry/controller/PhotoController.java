@@ -59,10 +59,11 @@ public class PhotoController {
         return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> getUserPhotosByUserName(@RequestParam String userName){
-        List<ReadPhotoDTO> photoListToReturn = photoService.getAllPhotoByUserName(userName);
-        return new ResponseEntity<>(photoListToReturn,HttpStatus.OK);
+    @GetMapping("/UserPhotos")
+    public ResponseEntity<?> getUserPhotosByUserName(@RequestParam String userName, @RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSendId){
+        List<Photo> photosFromService = photoService.getAllPhotoByUserName(userName, photoNumber, lastPhotoSendId);
+        List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
+        return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 
     @DeleteMapping("/{photoId}")

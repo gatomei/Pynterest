@@ -12,7 +12,7 @@ public interface PhotoServiceInterface {
     Long addPhoto(WritePhotoDTO newPhoto, Long userId);
     void deletePhoto(Long photoId);
     ReadPhotoDTO getPhotoById(Long photoId);
-    List<ReadPhotoDTO> getAllPhotoByUserName(String userName);
+    List<Photo> getAllPhotoByUserName(String userName, int photoNumber, Long lastPhotoSentId);
     Photo findById(Long photoId);
     List<Photo> getPhotosForMainPage(Long userId,int photoNumber, Long lastPhotoSentId);
 }
