@@ -5,6 +5,7 @@ import com.paw.pynterest.boundry.dto.ReadPhotoDTO;
 import com.paw.pynterest.boundry.dto.WriteCommentDTO;
 import com.paw.pynterest.boundry.dto.WritePhotoDTO;
 import com.paw.pynterest.entity.model.Photo;
+import com.paw.pynterest.service.implementation.PhotoServiceImpl;
 import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.CommentServiceInterface;
 import com.paw.pynterest.service.interfaces.PhotoServiceInterface;
@@ -56,6 +57,7 @@ public class PhotoController {
     {
         List<Photo> photosFromService = photoService.getPhotosForMainPage(userId,photoNumber,lastPhotoSendId);
         List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
+        photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
         return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 
@@ -63,6 +65,7 @@ public class PhotoController {
     public ResponseEntity<?> getUserPhotosByUserName(@RequestParam String userName, @RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSendId){
         List<Photo> photosFromService = photoService.getAllPhotoByUserName(userName, photoNumber, lastPhotoSendId);
         List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
+        photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
         return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 
