@@ -20,12 +20,13 @@
   padding-top: 2%;
 }
 
-
+::ng-deep .container{
+  width: 50%;
+}
 ::ng-deep .add-to-board .pin-button{
   opacity: 0;
   background-color: $logoColor;
   color: $header-background;
-  width: 105px;
   height: 50px;
 }
 
@@ -55,7 +56,7 @@
 
 .save-container{
   position: absolute;
-  top: 10%;
+  top: 55px;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);

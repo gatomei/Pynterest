@@ -1,6 +1,6 @@
-<form [formGroup]="boardSelectForm" (ngSubmit)="addPinToBoard()">
+<form [formGroup]="boardSelectForm" (ngSubmit)="addPinToBoard()" class="container">
   <mat-form-field class="select-board">
-    <mat-label>Choose a board</mat-label>
+    <mat-label class="select-label" >Choose a board</mat-label>
     <mat-select (click)="getBoards()" formControlName="board" placeholder="Choose a board" #boardSelect>
       <!-- Search board -->
       <mat-option>
@@ -33,7 +33,6 @@
 
     </mat-select>
     </mat-form-field>
-
 
     <button mat-button class="pin-button" type="submit" [disabled]="isSaved">
        {{isSaved==false?'Add to board':'Saved'}}
