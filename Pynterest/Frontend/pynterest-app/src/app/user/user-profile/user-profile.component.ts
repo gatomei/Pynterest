@@ -175,19 +175,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   openAddPinDialog() {
-    this.dialogService.openAddPinDialog();
+    this.dialogService.openAddPinDialog().subscribe(
+      () => {
+        this.getBoards();
+      }
+    )
   }
 
   openAddBoardDialog() {
     this.dialogService.openAddBoardDialog({
       userId: this.jwtDecoder.getId()
-    })
+    }).subscribe(
+      () => {
+        this.getBoards();
+      }
+    )
+  }
+
+  getBoardsOnClick() {
+    this.isBoardsButtonClicked = true;
+    this.getBoards();
   }
 
   async getBoards() {
-
-    this.isBoardsButtonClicked = true;
-
     this.selectBoardModel = [];
     await this.boardsService.getBoards(this.user.username).subscribe(
       (data) => {
@@ -221,6 +231,5 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           }
         }
       )
-
   }
 }

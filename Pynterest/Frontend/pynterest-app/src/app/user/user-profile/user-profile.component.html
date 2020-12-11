@@ -61,7 +61,7 @@
       </ng-container>
       <div class="change-content-buttons">
         <button>Photos</button>
-        <button (click)="getBoards()">Boards</button>
+        <button (click)="getBoardsOnClick()">Boards</button>
       </div>
     </div>
 
@@ -83,7 +83,7 @@
                 </ng-template>
                 <div class="board-details-subcontent-container">
                   <div class="board-details-subcontent">
-                    <strong>{{board.title}}</strong>
+                    <strong class="board-title-text">{{board.title}}</strong>
                     <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
                   </div>
                   <div *ngIf="isHisPage()" class="board-details-subcontent-actions">

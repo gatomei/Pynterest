@@ -82,21 +82,21 @@ button.link {
   font-size: 12px;
 }
 
-
-.board-details-subcontent-container{
+.board-details-subcontent-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   text-align: center;
-
+  width: 100px;
 }
 
-.board-details-subcontent-actions{
+.board-details-subcontent-actions {
   cursor: pointer;
 }
 .board-details-subcontent {
   text-align: center;
   justify-content: center;
+  width: 100px;
 }
 
 .boards-subcontent {
@@ -215,6 +215,9 @@ button.link {
   color: white;
 }
 
+.board-title-text {
+  word-break: break-all;
+}
 .change-content-buttons button:hover {
   color: $logoColor;
   background-color: white;
