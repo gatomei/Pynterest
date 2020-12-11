@@ -71,9 +71,9 @@
           <div *ngFor="let board of selectBoardModel;let i=index">
             <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
               <div class="board-details-container">
-                <ng-container *ngIf="imageUrlBoards[i];else greyPic">
+                <ng-container *ngIf="board.firstPicture;else greyPic">
                   <button class="board-button">
-                    <img [src]="imageUrlBoards[i]" class="img-board-thumbnail" id="img-thumbnail">
+                    <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
                   </button>
                 </ng-container>
                 <ng-template #greyPic>
@@ -87,10 +87,8 @@
                     <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
                   </div>
                   <div *ngIf="isHisPage()" class="board-details-subcontent-actions">
-                    <mat-icon matTooltip="Delete board"
-                    [matTooltipPosition]="'right'"
-                    (click)="openDeleteBoardDialog(i)"
-                    >more_vert</mat-icon>
+                    <mat-icon matTooltip="Delete board" [matTooltipPosition]="'right'"
+                      (click)="openDeleteBoardDialog(i)">more_vert</mat-icon>
                   </div>
                 </div>
 

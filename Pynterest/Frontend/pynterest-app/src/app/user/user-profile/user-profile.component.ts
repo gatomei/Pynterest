@@ -184,39 +184,40 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     })
   }
 
-  getBoards() {
+  async getBoards() {
 
     this.isBoardsButtonClicked = true;
 
-    this.boardsService.getBoards(this.user.username).subscribe(
+    this.selectBoardModel = [];
+    await this.boardsService.getBoards(this.user.username).subscribe(
       (data) => {
         this.selectBoardModel = data;
-        this.setImageUrlArray();
+        this.setImageUrl();
       },
       (error) => console.log(error));
   }
 
-  setImageUrlArray() {
+  setImageUrl() {
     this.selectBoardModel.forEach(board => {
-      if (board.firstPicture.length) {
-        this.imageUrlBoards.push(this.sanitizer.bypassSecurityTrustUrl(
-          'data:image/png;base64,' + board.firstPicture));
+
+      if (board.numberOfPictures != 0) {
+        board.firstPicture = this.sanitizer.bypassSecurityTrustUrl(
+          'data:image/png;base64,' + board.firstPicture);
       }
       else {
-        this.imageUrlBoards.push(null);
+        board.firstPicture = null;
       }
     })
   }
 
 
-  openDeleteBoardDialog(index){
+  openDeleteBoardDialog(index) {
     let boardId = this.selectBoardModel[index].boardId;
     this.dialogService.openDeleteBoardDialog(
-      {boardId:boardId}).subscribe(
-        (result)=>{
-          if(result==true)
-          {
-            this.selectBoardModel= this.selectBoardModel.filter(it=>it.boardId!=boardId);
+      { boardId: boardId }).subscribe(
+        (result) => {
+          if (result == true) {
+            this.selectBoardModel = this.selectBoardModel.filter(it => it.boardId != boardId);
           }
         }
       )
