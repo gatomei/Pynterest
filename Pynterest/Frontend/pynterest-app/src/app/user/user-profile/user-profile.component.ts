@@ -8,9 +8,10 @@ import { UserInfoService } from '../services/user-info.service';
 import { UserFollowService } from '../services/user-follow.service';
 import { FollowModel } from '../../shared/models/followModel';
 import { DialogService } from '@app/shared/services/dialog.service';
-
 import { BoardsService } from '../../shared/services/boards.service';
 import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
+import { PhotosService } from '../../shared/services/photos.service';
+import { ReadPhotoModel } from '../../shared/models/readPhotoModel';
 
 @Component({
   selector: 'app-user-profile',
@@ -26,8 +27,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public imageUrl: SafeUrl
   private subscribedUser;
   public selectBoardModel: SelectBoardModel[] = [];
+  public readPhotoModel: ReadPhotoModel[] = [];
   public imageUrlBoards: SafeUrl[] = [];
   public isBoardsButtonClicked: boolean = false;
+  public isPhotosButtonClicked: boolean = false;
+  public lastPhotoSendId: number = 0;
+  public photoNumber: number = 20;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -37,6 +42,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private dialogService: DialogService,
     private boardsService: BoardsService,
+    private photosService: PhotosService
   ) {
     this.subs = new Array<Subscription>();
   }
@@ -194,6 +200,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   getBoardsOnClick() {
     this.isBoardsButtonClicked = true;
+    this.isPhotosButtonClicked = false;
     this.getBoards();
   }
 
@@ -202,12 +209,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     await this.boardsService.getBoards(this.user.username).subscribe(
       (data) => {
         this.selectBoardModel = data;
-        this.setImageUrl();
+        this.setBoardsImageUrl();
       },
       (error) => console.log(error));
   }
 
-  setImageUrl() {
+  setBoardsImageUrl() {
     this.selectBoardModel.forEach(board => {
 
       if (board.numberOfPictures != 0) {
@@ -231,5 +238,30 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           }
         }
       )
+  }
+
+  getPhotosOnClick() {
+    this.isPhotosButtonClicked = true;
+    this.isBoardsButtonClicked = false;
+    this.getPhotos();
+  }
+
+  getPhotos() {
+    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
+      (data) => {
+        this.readPhotoModel = data;
+        console.log(this.readPhotoModel[0].pictureData)
+        console.log(this.readPhotoModel.length)
+        this.setPhotosImageUrl();
+        this.lastPhotoSendId = this.readPhotoModel[this.readPhotoModel.length - 1].photoId;
+      }
+    )
+  }
+
+  setPhotosImageUrl() {
+    this.readPhotoModel.forEach(photo => {
+      photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
+        'data:image/png;base64,' + photo.pictureData);
+    })
   }
 }

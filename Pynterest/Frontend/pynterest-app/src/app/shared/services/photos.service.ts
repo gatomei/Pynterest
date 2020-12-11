@@ -6,7 +6,7 @@ import { PhotoModel } from '../models/photoModel';
 import { PinDetails } from '../models/pinDetailsModel';
 import { ReadComment } from '../models/readCommentModel';
 import { WriteComment } from '../models/writeCommentModel';
-import { identity } from 'rxjs';
+import { ReadPhotoModel } from '../models/readPhotoModel';
 
 @Injectable({
   providedIn: 'root'
@@ -32,24 +32,30 @@ export class PhotosService {
     return this.httpClient.put<any>(addPhotoToBoardEndpoint, null);
   }
 
-  getPhotoById(id:String){
+  getPhotoById(id: String) {
     const getPhotoEndpoint = `${environment.baseAPIAuth}/photos/${id}`;
     return this.httpClient.get<PinDetails>(getPhotoEndpoint);
   }
 
-  getCommentsForPhoto(id:String){
+  getCommentsForPhoto(id: String) {
     const getCommentsEndpoint = `${environment.baseAPIAuth}/photos/${id}/comments`;
     return this.httpClient.get<ReadComment[]>(getCommentsEndpoint);
   }
 
-
-  addCommentToPhoto(comment:WriteComment, id:string){
+  addCommentToPhoto(comment: WriteComment, id: string) {
     const addCommentToPhoto = `${environment.baseAPIAuth}/photos/${id}/comments`;
     return this.httpClient.post<any>(addCommentToPhoto, comment, { observe: 'response' });
   }
 
-  deleteCommentFromPhoto(photoId:string, commentId:string){
+  deleteCommentFromPhoto(photoId: string, commentId: string) {
     const deleteCommentEndpoint = `${environment.baseAPIAuth}/photos/${photoId}/comments/${commentId}`;
     return this.httpClient.delete<any>(deleteCommentEndpoint);
+  }
+
+  getUserPhotos(username: string, photoNumber: number, lastPhotoSendId: number) {
+    const getUserPhotosEndpoint = `${environment.baseAPIAuth}/photos/UserPhotos?photoNumber=${photoNumber}&userName=${username}`;
+
+    // const getUserPhotosEndpoint = `${environment.baseAPIAuth}/photos/UserPhotos?lastPhotoSendId=${lastPhotoSendId}&photoNumber=${photoNumber}&userName=${username}`;
+    return this.httpClient.get<ReadPhotoModel[]>(getUserPhotosEndpoint);
   }
 }
