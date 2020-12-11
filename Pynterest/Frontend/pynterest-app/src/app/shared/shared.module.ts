@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddPinDialogComponent } from './components/add-pin-dialog/add-pin-dialog.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -63,7 +64,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MatCardModule,
     MatSlideToggleModule,
     NgxMatSelectSearchModule,
-    MatDividerModule
+    MatDividerModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
   exports: [
     HeaderComponent,

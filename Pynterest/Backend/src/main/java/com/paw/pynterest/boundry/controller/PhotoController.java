@@ -53,11 +53,13 @@ public class PhotoController {
     }
 
     @GetMapping("/MainPage")
-    public ResponseEntity<?> getPhotosForMainPage(@RequestParam Long userId, @RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSendId)
+    public ResponseEntity<?> getPhotosForMainPage(@RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSentId)
     {
-        List<Photo> photosFromService = photoService.getPhotosForMainPage(userId,photoNumber,lastPhotoSendId);
+        Long userId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
+        List<Photo> photosFromService = photoService.getPhotosForMainPage(userId,photoNumber,lastPhotoSentId);
         List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
         photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
+        System.out.println(photosFromService);
         return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 

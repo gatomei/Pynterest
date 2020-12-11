@@ -1,5 +1,8 @@
 @import '../../../../assets/styles/colors.scss';
 
+.container{
+  width: 100%;
+}
 .add-icon {
   vertical-align: middle;
   color: $logoColor;
@@ -37,8 +40,12 @@
 }
 
 .select-board {
-  padding-right: 15px;
+  padding-right: 10px;
   width: 60%;
+  .select-label{
+    font-weight: bold;
+    color: black;
+  }
 }
 
 .select-board-icon {

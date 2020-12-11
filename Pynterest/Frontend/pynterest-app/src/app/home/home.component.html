@@ -11,7 +11,8 @@
 
     <app-pin *ngFor="let photo of photos"
     title="{{photo.title}}"
-    photo = "getImageUrl({{photo}})">
+    photo = "{{photo.pictureData}}"
+    id="{{photo.photoId}}">
     </app-pin>
   </div>
 
