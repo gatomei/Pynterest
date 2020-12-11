@@ -114,6 +114,7 @@
         <ng-container *ngIf="readPhotoModel.length;else noPhoto">
           <div *ngFor="let photo of readPhotoModel;let i=index">
             <div class="board-details-container">
+
               <button class="board-button">
                 <img [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail">
               </button>

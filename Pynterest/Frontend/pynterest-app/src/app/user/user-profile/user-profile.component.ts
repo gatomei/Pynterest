@@ -31,8 +31,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public imageUrlBoards: SafeUrl[] = [];
   public isBoardsButtonClicked: boolean = false;
   public isPhotosButtonClicked: boolean = false;
-  public lastPhotoSendId: number = 0;
-  public photoNumber: number = 20;
+  public lastPhotoSendId: number = null;
+  public photoNumber: number = 2;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -250,10 +250,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
       (data) => {
         this.readPhotoModel = data;
-        console.log(this.readPhotoModel[0].pictureData)
-        console.log(this.readPhotoModel.length)
         this.setPhotosImageUrl();
         this.lastPhotoSendId = this.readPhotoModel[this.readPhotoModel.length - 1].photoId;
+        console.log(this.lastPhotoSendId)
       }
     )
   }
@@ -263,5 +262,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
         'data:image/png;base64,' + photo.pictureData);
     })
+  }
+
+  onScrollDown() {
+    console.log('scrolled down!!');
+  }
+
+  onScrollUp() {
+    console.log('scrolled up!!');
   }
 }

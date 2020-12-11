@@ -15,7 +15,7 @@ import { AddPinDialogComponent } from './components/add-pin-dialog/add-pin-dialo
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgxImageCompressService } from 'ngx-image-compress';
@@ -27,6 +27,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
 import { AddToBoardFormComponent } from './components/add-to-board-form/add-to-board-form.component';
 import { DeleteBoardDialogComponent } from './components/delete-board-dialog/delete-board-dialog.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { DeleteBoardDialogComponent } from './components/delete-board-dialog/del
     MatFormFieldModule,
     MatInputModule,
     MaterialFileInputModule,
+    InfiniteScrollModule,
+    NgxSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,

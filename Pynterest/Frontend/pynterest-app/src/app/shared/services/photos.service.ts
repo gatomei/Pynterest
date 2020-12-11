@@ -53,9 +53,16 @@ export class PhotosService {
   }
 
   getUserPhotos(username: string, photoNumber: number, lastPhotoSendId: number) {
-    const getUserPhotosEndpoint = `${environment.baseAPIAuth}/photos/UserPhotos?photoNumber=${photoNumber}&userName=${username}`;
 
-    // const getUserPhotosEndpoint = `${environment.baseAPIAuth}/photos/UserPhotos?lastPhotoSendId=${lastPhotoSendId}&photoNumber=${photoNumber}&userName=${username}`;
+    let getUserPhotosEndpoint;
+
+    if (lastPhotoSendId == null) {
+      getUserPhotosEndpoint = `${environment.baseAPIAuth}/photos/UserPhotos?photoNumber=${photoNumber}&userName=${username}`;
+    }
+    else {
+      getUserPhotosEndpoint = `${environment.baseAPIAuth}/photos/UserPhotos?lastPhotoSendId=${lastPhotoSendId}&photoNumber=${photoNumber}&userName=${username}`;
+    }
+
     return this.httpClient.get<ReadPhotoModel[]>(getUserPhotosEndpoint);
   }
 }
