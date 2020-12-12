@@ -1,5 +1,10 @@
 @import '../../../../assets/styles/colors.scss';
 
+.delete-board-form{
+  min-width: 150px;
+  max-width: 550px;
+  width: 100%;
+}
 .title {
   font-size: 30px;
   font-weight: bolder;
@@ -39,5 +44,17 @@
     background-color: $logoColor;
     color: $header-background;
     border: 2px $logoColor solid;
+  }
+}
+@media (max-width:504px) {
+
+  .title {
+    font-size: 24px;
+  }
+  .content{
+    font-size: 20px;
+  }
+  .cancel-button, .delete-button{
+    font-size: 17px;
   }
 }
