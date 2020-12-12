@@ -71,10 +71,9 @@
           <div *ngFor="let board of selectBoardModel;let i=index">
             <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
               <div class="board-details-container">
-                <ng-container *ngIf="imageUrlBoards[i];else greyPic">
-                  <button class="board-button">
+                <ng-container *ngIf="board.firstPicture;else greyPic">
+                  <button class="board-button" (click)="navigateToBoard(i)">
                     <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
-
                   </button>
                 </ng-container>
                 <ng-template #greyPic>
@@ -106,10 +105,10 @@
         </ng-container>
         <ng-template #noBoards>
           <ng-container *ngIf="isHisPage();else notHisPage">
-            <div class="no-boards-text"><b>...you haven't saved any Pins yet!</b></div>
+            <div><b>...you haven't saved any Pins yet!</b></div>
           </ng-container>
           <ng-template #notHisPage>
-            <div *ngIf="isBoardsButtonClicked" class="no-boards-text">
+            <div *ngIf="isBoardsButtonClicked">
               <b>...{{user.username}} haven't saved any Pins
                 yet!</b>
             </div>
@@ -119,79 +118,30 @@
     </div>
 
     <div *ngIf="isPhotosButtonClicked" class="boards-container shaddow">
-
-      <div class="boards-subcontent">
-
+      <div>
         <ng-container *ngIf="readPhotoModel.length;else noPhoto">
-
-          <div class="content">
-            <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()">
-
-
-              <ng-container *ngFor="let photo of readPhotoModel;let i=index">
-                <div class="board-details-container">
-                  <button class="board-button">
-                    <img [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
-                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail">
-                  </button>
-                </div>
-              </ng-container>
-
-            </div>
-            <div class="spinner">
-              <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="white" type="ball-pulse-sync"
-                [fullScreen]="false">
-              </ngx-spinner>
-            </div>
+          <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()"
+            class="photos-subcontent">
+            <ng-container *ngFor="let photo of readPhotoModel;let i=index">
+              <div class="photo-details-container">
+                <button class="photo-button">
+                  <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
+                </button>
+              </div>
+            </ng-container>
+          </div>
+          <div class="spinner">
+            <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync"
+              [fullScreen]="false">
+            </ngx-spinner>
           </div>
         </ng-container>
         <ng-template #noPhoto>
           <ng-container *ngIf="isHisPage();else notHisPage">
-            <div class="no-boards-text"><b>...you haven't saved any Pins yet!</b></div>
+            <div><b>...you haven't saved any Pins yet!</b></div>
           </ng-container>
           <ng-template #notHisPage>
-            <div *ngIf="isBoardsButtonClicked" class="no-boards-text">
+            <div *ngIf="isPhotosButtonClicked">
               <b>...{{user.username}} haven't saved any Pins
                 yet!</b>
             </div>
@@ -199,5 +149,4 @@
         </ng-template>
       </div>
     </div>
-
   </div>

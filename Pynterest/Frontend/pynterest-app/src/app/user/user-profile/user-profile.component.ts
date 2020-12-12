@@ -33,7 +33,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public isBoardsButtonClicked: boolean = false;
   public isPhotosButtonClicked: boolean = false;
   public lastPhotoSendId: number = null;
-  public photoNumber: number = 2;
+  public photoNumber: number = 20;
 
   throttle = 300;
   requestChunk = 8;
@@ -78,9 +78,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.getUserInfo();
   }
 
-  onScroll() {
-    console.log('scrolled')
-  }
   getUserInfo() {
     this.routeSub = this.activatedRoute.params.subscribe((params) => {
       this.username = params['username'];
@@ -93,6 +90,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             );
             this.getFollowers();
             this.getFollowing();
+            this.loadInitPhotos();
           },
           (error) => {
             console.log(error);
@@ -256,16 +254,40 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   getPhotosOnClick() {
     this.isPhotosButtonClicked = true;
     this.isBoardsButtonClicked = false;
-    this.getPhotos();
+    this.loadInitPhotos();
+    this.isLoaded = true;
   }
 
-  getPhotos() {
+  loadInitPhotos() {
     this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
       (data) => {
         this.readPhotoModel = data;
+        if (data.length == 0) {
+          this.notEmptyPost = false;
+        }
+        this.isLoaded = true;
         this.setPhotosImageUrl();
-        this.lastPhotoSendId = this.readPhotoModel[this.readPhotoModel.length - 1].photoId;
-        console.log(this.lastPhotoSendId)
+      }
+    )
+  }
+
+  loadNextPhotos() {
+    this.lastPhotoSendId = this.readPhotoModel[this.readPhotoModel.length - 1].photoId;
+
+    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
+      (data) => {
+        this.spinner.hide();
+        if (data.length == 0) {
+          this.notEmptyPost = false;
+        }
+
+        var pictures: ReadPhotoModel[] = data;
+        pictures.forEach(photo => {
+          photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
+            'data:image/png;base64,' + photo.pictureData);
+        })
+        this.readPhotoModel = this.readPhotoModel.concat(pictures);
+        this.notscrolly = true;
       }
     )
   }
@@ -277,12 +299,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     })
   }
 
-  onScrollDown() {
-    console.log('scrolled down!!');
-  }
-
-  onScrollUp() {
-    console.log('scrolled up!!');
+  onScroll() {
+    if (this.isLoaded) {
+      if (this.notscrolly && this.notEmptyPost) {
+        this.spinner.show();
+        this.notscrolly = false;
+        this.loadNextPhotos();
+        console.log('scroll')
+      }
+    }
   }
 
   navigateToBoard(index) {

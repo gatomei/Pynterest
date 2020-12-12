@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatBadgeModule } from '@angular/material/badge';
 import { PinComponent } from './components/pin/pin.component';
-import { PanelComponent } from './components/panel/panel.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -14,7 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddPinDialogComponent } from './components/add-pin-dialog/add-pin-dialog.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -30,20 +29,21 @@ import { AddToBoardFormComponent } from './components/add-to-board-form/add-to-b
 import { DeleteBoardDialogComponent } from './components/delete-board-dialog/delete-board-dialog.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { BoardsComponent } from './components/boards/boards.component';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     PinComponent,
-    PanelComponent,
     ProgressSpinnerComponent,
     FollowDialogComponent,
     AddPinDialogComponent,
     CreateBoardDialogComponent,
     AddCategoryDialogComponent,
     AddToBoardFormComponent,
-    DeleteBoardDialogComponent
+    DeleteBoardDialogComponent,
+    BoardsComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +71,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   exports: [
     HeaderComponent,
     PinComponent,
-    PanelComponent,
     ProgressSpinnerComponent,
     FollowDialogComponent,
     AddPinDialogComponent,
