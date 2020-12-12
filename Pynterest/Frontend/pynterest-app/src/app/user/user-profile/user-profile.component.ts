@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserInfo } from '@app/user/models/user-info';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { Subscription } from 'rxjs';
@@ -52,6 +52,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private boardsService: BoardsService,
     private photosService: PhotosService,
     private spinner: NgxSpinnerService,
+    private router: Router
   ) {
     this.subs = new Array<Subscription>();
   }
@@ -282,5 +283,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   onScrollUp() {
     console.log('scrolled up!!');
+  }
+
+  navigateToBoard(index) {
+    let boardName = this.selectBoardModel[index].title
+    this.router.navigate([`${this.user.username}/boards/${boardName}`]);
   }
 }

@@ -18,7 +18,15 @@ const routes: Routes = [
     .then(m => m.ResetPasswordModule)
   },
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
-  {path:'pin', loadChildren: () => import('./pin/pin.module').then(m => m.PinModule) },
+
+  {path:'pin', loadChildren: () =>
+   import('./pin/pin.module').then(m => m.PinModule),
+   canActivate:[AuthGuard]
+  },
+  {path:':username/boards',
+   loadChildren:()=>import('./board/board.module').then(m => m.BoardModule),
+  canActivate:[AuthGuard]
+},
   { path: '**', pathMatch: 'full', redirectTo: '/login' }
 ];
 

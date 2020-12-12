@@ -6,9 +6,11 @@ import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
 import com.paw.pynterest.boundry.exceptions.DeleteFileException;
 import com.paw.pynterest.boundry.exceptions.NotFoundException;
 import com.paw.pynterest.boundry.exceptions.ServerErrorException;
+import com.paw.pynterest.entity.model.Board;
 import com.paw.pynterest.entity.model.Category;
 import com.paw.pynterest.entity.model.Photo;
 import com.paw.pynterest.entity.model.User;
+import com.paw.pynterest.entity.repository.BoardRepository;
 import com.paw.pynterest.entity.repository.CategoryRepository;
 import com.paw.pynterest.entity.repository.PhotoRepository;
 import com.paw.pynterest.entity.repository.UserRepository;
@@ -33,12 +35,14 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final BoardRepository boardRepository;
 
-    public PhotoServiceImpl(PhotoRepository photoRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository){
+    public PhotoServiceImpl(PhotoRepository photoRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository, BoardRepository boardRepository){
         this.modelMapper = modelMapper;
         this.photoRepository = photoRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.boardRepository = boardRepository;
     }
 
     @Override
@@ -112,7 +116,7 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         List<Photo> photoListToReturn = new ArrayList<Photo>();
         User user = userRepository.findByUsername(userName);
         if(user==null) {
-            throw new NotFoundException("User with username " + userName + " does not exist!");
+            throw new NotFoundException("Viata e minunata....dar user-ul cu username-ul " + userName + " nu exista");
         }
         List<Photo> allPhotoFromDb = photoRepository.findAllByUserOrderByCreationDateDesc(user);
         if(lastPhotoSentId == null){
@@ -197,6 +201,48 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
             });
         }
         return photosToReturn;
+    }
+
+    @Override
+    public List<Photo> getPhotosFromBoard(String boardTitle,Long userId,int photoNumber, Long lastPhotoSentId) {
+        boolean startAdd = false;
+        List<Photo> photoListToReturn = new ArrayList<Photo>();
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent()) {
+            throw new NotFoundException("Viata e miiinunata, dar user-ul cu id-ul " + userId.toString() + " nu exista!");
+        }
+        Board board = boardRepository.findBoardByTitleAndUser(boardTitle,user.get());
+        if(board == null) {
+            throw new NotFoundException("Viata e miiinunata, dar board-ul cu titlul " + boardTitle + " nu exista!");
+        }
+
+        List<Photo> allPhotoFromDb = photoRepository.findAllByUserAndBoardsContainsOrderByCreationDateDesc(user.get(),board);
+
+        if(lastPhotoSentId == null){
+            startAdd = true;
+        }
+
+        while(photoListToReturn.size() < photoNumber && !allPhotoFromDb.isEmpty())
+        {
+            if(startAdd == true)
+            {
+                photoListToReturn.add(allPhotoFromDb.get(0));
+                allPhotoFromDb.remove(allPhotoFromDb.get(0));
+            }
+            else{
+                if(allPhotoFromDb.get(0).getPhotoId() == lastPhotoSentId){
+                    startAdd = true;
+                    allPhotoFromDb.remove(allPhotoFromDb.get(0));
+                }
+                else
+                {
+                    allPhotoFromDb.remove(allPhotoFromDb.get(0));
+                }
+            }
+        }
+
+        return photoListToReturn;
+
     }
 
 

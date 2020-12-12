@@ -17,13 +17,13 @@ export class PhotosService {
 
   }
 
-  getPhotosForFeed(photoNumber:Number, lastPhotoSentId:string) {
+  getPhotosForFeed(photoNumber: Number, lastPhotoSentId: string) {
     let params = new HttpParams().set('photoNumber', photoNumber.toString())
 
-    if(lastPhotoSentId!=null)
+    if (lastPhotoSentId != null)
       params = params.set('lastPhotoSentId', lastPhotoSentId);
     const getPhotosEndpoint = `${environment.baseAPIAuth}/photos/MainPage`;
-    return this.httpClient.get<PinDetails[]>(getPhotosEndpoint, {params:params});
+    return this.httpClient.get<PinDetails[]>(getPhotosEndpoint, { params: params });
   }
 
   addPhoto(photo: PhotoModel) {
@@ -36,6 +36,15 @@ export class PhotosService {
     return this.httpClient.put<any>(addPhotoToBoardEndpoint, null);
   }
 
+  getPhotosFromBoard(boardName: string, photoNumber: Number, lastPhotoSentId: string) {
+    let params = new HttpParams().set('photoNumber', photoNumber.toString())
+
+    if (lastPhotoSentId != null)
+      params = params.set('lastPhotoSentId', lastPhotoSentId);
+    // const getPhotosEndpoint = `${environment.baseAPIAuth}/boards/${boardId}`;
+    // return this.httpClient.get<PinDetails[]>(getPhotosEndpoint, {params:params});
+  }
+
   getPhotoById(id: String) {
     const getPhotoEndpoint = `${environment.baseAPIAuth}/photos/${id}`;
     return this.httpClient.get<PinDetails>(getPhotoEndpoint);
@@ -45,6 +54,12 @@ export class PhotosService {
     const getCommentsEndpoint = `${environment.baseAPIAuth}/photos/${id}/comments`;
     return this.httpClient.get<ReadComment[]>(getCommentsEndpoint);
   }
+
+  getCommentForPhoto(photoId: String, commentId: String) {
+    const getCommentsEndpoint = `${environment.baseAPIAuth}/photos/${photoId}/comments/${commentId}`;
+    return this.httpClient.get<ReadComment>(getCommentsEndpoint);
+  }
+
 
   addCommentToPhoto(comment: WriteComment, id: string) {
     const addCommentToPhoto = `${environment.baseAPIAuth}/photos/${id}/comments`;

@@ -70,8 +70,8 @@
         <ng-container *ngIf="selectBoardModel.length;else noBoards">
           <div *ngFor="let board of selectBoardModel;let i=index">
             <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
-              <div class="board-details-container">
-                <ng-container *ngIf="board.firstPicture;else greyPic">
+              <div class="board-details-container" (click)="navigateToBoard(i)">
+                <ng-container *ngIf="imageUrlBoards[i];else greyPic">
                   <button class="board-button">
                     <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
                   </button>

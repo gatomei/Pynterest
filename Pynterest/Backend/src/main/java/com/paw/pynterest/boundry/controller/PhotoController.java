@@ -59,9 +59,21 @@ public class PhotoController {
         List<Photo> photosFromService = photoService.getPhotosForMainPage(userId,photoNumber,lastPhotoSentId);
         List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
         photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
-        System.out.println(photosFromService);
+       
         return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
+
+    @GetMapping("/BoardPhoto")
+    public ResponseEntity<?> getPhotosFromBoard(@RequestParam String boardName,@RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSentId){
+        Long userId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
+        List<Photo> photosFromService = photoService.getPhotosFromBoard(boardName,userId,photoNumber,lastPhotoSentId);
+        List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
+        photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
+
+        return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
+    }
+
+
 
     @GetMapping("/UserPhotos")
     public ResponseEntity<?> getUserPhotosByUserName(@RequestParam String userName, @RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSendId){
