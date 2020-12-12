@@ -103,8 +103,15 @@ export class PinDetailsComponent implements OnInit {
     this.photosService.addCommentToPhoto(comment, this.pin.photoId).subscribe(
       (response: any) => {
         const header = response.headers.get('Location');
-        console.log(header);
+        this.photosService.getCommentForPhoto(this.pin.photoId, header).subscribe(
+          (data) => {
+            this.comments = this.comments.concat(data);
 
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
         this.dropComment();
         formDirective.resetForm();
       },

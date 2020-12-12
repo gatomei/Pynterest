@@ -59,7 +59,7 @@ public class PhotoController {
         List<Photo> photosFromService = photoService.getPhotosForMainPage(userId,photoNumber,lastPhotoSentId);
         List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
         photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
-        System.out.println(photosFromService);
+       
         return new ResponseEntity<>(photosToReturn,HttpStatus.OK);
     }
 

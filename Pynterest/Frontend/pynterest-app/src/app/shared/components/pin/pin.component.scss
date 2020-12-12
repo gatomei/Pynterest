@@ -19,15 +19,16 @@
   font-size: 18px;
   padding-top: 2%;
 }
-
-::ng-deep .container{
-  width: 50%;
+.save-container{
+  width: 90%;
 }
 ::ng-deep .add-to-board .pin-button{
   opacity: 0;
   background-color: $logoColor;
   color: $header-background;
+  width: 105px;
   height: 50px;
+
 }
 
 ::ng-deep .add-to-board .select-board{
@@ -69,7 +70,7 @@
 
   .save-container{
     .pin-button, .board-button{
-      width: 90px;
+      // width: 90px;
       font-size: 14px;
     }
   }

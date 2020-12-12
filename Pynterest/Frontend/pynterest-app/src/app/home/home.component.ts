@@ -12,7 +12,7 @@ import { PhotosService } from '../shared/services/photos.service';
 export class HomeComponent implements OnInit {
   photos: PinDetails[] = new Array<PinDetails>();
   throttle = 300;
-  requestChunk = 8;
+  requestChunk = 12;
   notEmptyPost = true;
   notscrolly = true;
   isLoaded = false;
@@ -27,6 +27,10 @@ export class HomeComponent implements OnInit {
     this.photosService.getPhotosForFeed(this.requestChunk, null).subscribe(
       (data) => {
         this.photos = data;
+        if(data.length==0)
+         {
+          this.notEmptyPost=false;
+         }
         this.isLoaded = true;
       },
       (error) => {

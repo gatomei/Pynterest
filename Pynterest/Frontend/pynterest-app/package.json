@@ -33,7 +33,7 @@
     "ngx-mat-select-search": "^3.1.4",
     "ngx-material-file-input": "^2.1.1",
     "ngx-spinner": "^10.0.1",
-    "ngx-toastr": "^13.1.0",
+    "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -44,7 +44,7 @@
     "@angular/compiler-cli": "^10.2.3",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.19.7",
+    "@types/node": "^12.19.8",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
@@ -53,10 +53,10 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "prettier": "^2.2.0",
+    "prettier": "^2.2.1",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.7"
   }
 }
