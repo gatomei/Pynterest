@@ -84,10 +84,10 @@ button.link {
 
 
 .board-details-subcontent-container{
+  margin-left: 10px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  text-align: center;
 
 }
 
@@ -219,6 +219,14 @@ button.link {
   color: $logoColor;
   background-color: white;
 }
+
+.delete-board-container{
+  vertical-align: middle;
+}
+.menu-item, .more-button, .delete-icon{
+  outline: none;
+}
+
 
 @media only screen and (max-width: 1024px) {
   #profile-photo {

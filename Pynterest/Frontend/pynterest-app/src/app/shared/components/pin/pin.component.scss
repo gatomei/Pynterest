@@ -19,19 +19,17 @@
   font-size: 18px;
   padding-top: 2%;
 }
-.save-container{
-  width: 90%;
-}
-::ng-deep .add-to-board .pin-button{
-  opacity: 0;
-  background-color: $logoColor;
-  color: $header-background;
-  width: 105px;
-  height: 50px;
+
+::ng-deep .add-to-board {
+  .select-board-container {
+    opacity: 0;
+
+  }
 
 }
 
-::ng-deep .add-to-board .select-board{
+::ng-deep .add-to-board .pin-button-container{
+
   opacity: 0;
 }
 
@@ -40,17 +38,17 @@
   cursor: zoom-in;
 }
 .photo-card:hover ::ng-deep .add-to-board{
- .pin-button, .select-board{
+ .pin-button-container, .select-board-container{
   opacity: 0.8;
 }
 }
 
 .photo-card:hover ::ng-deep .add-to-board{
 
-.pin-button:hover{
+.pin-button-container:hover{
   opacity: 1;
 }
-.select-board:hover{
+.select-board-container:hover{
   opacity: 1;
 }
 }
@@ -61,18 +59,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: row;
+  width: 80%;
 }
 
 
 @media (max-width: 850px) {
 
-  .save-container{
-    .pin-button, .board-button{
-      // width: 90px;
-      font-size: 14px;
-    }
+  .container{
+    width: 80%;
   }
 
 }
