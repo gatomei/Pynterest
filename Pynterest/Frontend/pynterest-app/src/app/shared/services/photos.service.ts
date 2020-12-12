@@ -37,12 +37,12 @@ export class PhotosService {
   }
 
   getPhotosFromBoard(boardName:string, photoNumber:Number, lastPhotoSentId:string) {
-    let params = new HttpParams().set('photoNumber', photoNumber.toString())
+    let params = new HttpParams().set('boardName', boardName).set('photoNumber', photoNumber.toString())
 
     if(lastPhotoSentId!=null)
       params = params.set('lastPhotoSentId', lastPhotoSentId);
-    // const getPhotosEndpoint = `${environment.baseAPIAuth}/boards/${boardId}`;
-    // return this.httpClient.get<PinDetails[]>(getPhotosEndpoint, {params:params});
+    const getPhotosEndpoint = `${environment.baseAPIAuth}/photos/BoardPhoto`;
+    return this.httpClient.get<PinDetails[]>(getPhotosEndpoint, {params:params});
   }
 
   getPhotoById(id:String){

@@ -21,16 +21,10 @@
 }
 
 ::ng-deep .add-to-board {
-  .select-board-container {
+  .select-board-container, .pin-button {
     opacity: 0;
-
   }
 
-}
-
-::ng-deep .add-to-board .pin-button-container{
-
-  opacity: 0;
 }
 
 
@@ -38,14 +32,14 @@
   cursor: zoom-in;
 }
 .photo-card:hover ::ng-deep .add-to-board{
- .pin-button-container, .select-board-container{
+ .pin-button, .select-board-container{
   opacity: 0.8;
 }
 }
 
 .photo-card:hover ::ng-deep .add-to-board{
 
-.pin-button-container:hover{
+.pin-button:hover{
   opacity: 1;
 }
 .select-board-container:hover{
