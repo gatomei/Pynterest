@@ -223,6 +223,15 @@ button.link {
   background-color: white;
 }
 
+.delete-board-container {
+  vertical-align: middle;
+}
+.menu-item,
+.more-button,
+.delete-icon {
+  outline: none;
+}
+
 @media only screen and (max-width: 1024px) {
   #profile-photo {
     width: 150px;

@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     UserRoutingModule,
     SharedModule,
     MatIconModule,
+    MatMenuModule,
     MatButtonModule,
     MatTooltipModule,
     InfiniteScrollModule,

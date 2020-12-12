@@ -70,14 +70,15 @@
         <ng-container *ngIf="selectBoardModel.length;else noBoards">
           <div *ngFor="let board of selectBoardModel;let i=index">
             <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
-              <div class="board-details-container" (click)="navigateToBoard(i)">
+              <div class="board-details-container">
                 <ng-container *ngIf="imageUrlBoards[i];else greyPic">
                   <button class="board-button">
                     <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
+
                   </button>
                 </ng-container>
                 <ng-template #greyPic>
-                  <button class="board-button">
+                  <button class="board-button" (click)="navigateToBoard(i)">
                     <img src="../../../assets/images/light_grey.jpg" class="img-board-thumbnail" id="img-thumbnail">
                   </button>
                 </ng-template>
@@ -86,9 +87,17 @@
                     <strong class="board-title-text">{{board.title}}</strong>
                     <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
                   </div>
-                  <div *ngIf="isHisPage()" class="board-details-subcontent-actions">
-                    <mat-icon matTooltip="Delete board" [matTooltipPosition]="'right'"
-                      (click)="openDeleteBoardDialog(i)">more_vert</mat-icon>
+                  <div *ngIf="isHisPage()" class="delete-board-container">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" class="more-button">
+                      <mat-icon class="more-icon">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="openDeleteBoardDialog(i)" class="menu-item">
+                        <span>Delete</span>
+                        <mat-icon class="delete-icon">delete_outline</mat-icon>
+                      </button>
+
+                    </mat-menu>
                   </div>
                 </div>
               </div>

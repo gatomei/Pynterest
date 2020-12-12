@@ -7,6 +7,12 @@
   vertical-align: middle;
   color: $logoColor;
 }
+.select-board-container{
+  width: 60%;
+  background-color: $header-background;
+  border-radius: 20px 0px 0px 20px;
+  border: 2px $logoColor solid;
+}
 
 .add-button {
   border: none;
@@ -23,17 +29,23 @@
 }
 .pin-button {
   outline: none;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 20px;
+  font-size: 13px;
+  font-weight:bold;
+  text-align: start;
+  width: 100%;
+  white-space: normal;
+  height: auto;
+}
+
+.pin-button-container{
+  border-radius: 0px 20px 20px 0px;
   background-color: $logoColor;
   color: $header-background;
   border: 2px $logoColor solid;
+  width: 40%;
 
-   width: 40%;
-  margin-right: 0%;
-  padding: 2px;
   overflow-wrap: break-word;
+
 
 }
 .pin-button[disabled]{
@@ -43,8 +55,8 @@
 }
 
 .select-board {
-  padding-right: 15px;
-  width: 60%;
+  width: 100%;
+  padding-left: 4px;
   .select-label{
     color: black;
   }
