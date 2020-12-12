@@ -15,4 +15,6 @@ public interface PhotoServiceInterface {
     List<Photo> getAllPhotoByUserName(String userName, int photoNumber, Long lastPhotoSentId);
     Photo findById(Long photoId);
     List<Photo> getPhotosForMainPage(Long userId,int photoNumber, Long lastPhotoSentId);
+    List<Photo> getPhotosFromBoard(String boardTitle,Long userId,int photoNumber, Long lastPhotoSentId);
+
 }
