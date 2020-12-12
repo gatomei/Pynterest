@@ -14,4 +14,5 @@ public interface PhotoRepository extends JpaRepository<Photo,Long> {
     List<Photo> findAllByUser(User user);
     List<Photo> findAllByCategoriesContainsOrderByCreationDateDesc(Category category);
     List<Photo> findAllByUserOrderByCreationDateDesc(User user);
+    List<Photo> findAllByUserAndBoardsContainsOrderByCreationDateDesc(User user, Board board);
 }
