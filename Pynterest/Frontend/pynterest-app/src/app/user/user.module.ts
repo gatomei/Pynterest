@@ -6,7 +6,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     SharedModule,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    InfiniteScrollModule,
+    NgxSpinnerModule,
   ]
 })
 export class UserModule { }

@@ -12,6 +12,7 @@ import { BoardsService } from '../../shared/services/boards.service';
 import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
 import { PhotosService } from '../../shared/services/photos.service';
 import { ReadPhotoModel } from '../../shared/models/readPhotoModel';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-user-profile',
@@ -34,6 +35,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public lastPhotoSendId: number = null;
   public photoNumber: number = 2;
 
+  throttle = 300;
+  requestChunk = 8;
+  notEmptyPost = true;
+  notscrolly = true;
+  isLoaded = false;
+
+
   constructor(
     private jwtDecoder: JwtDecoderService,
     private activatedRoute: ActivatedRoute,
@@ -42,7 +50,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private dialogService: DialogService,
     private boardsService: BoardsService,
-    private photosService: PhotosService
+    private photosService: PhotosService,
+    private spinner: NgxSpinnerService,
   ) {
     this.subs = new Array<Subscription>();
   }
@@ -68,6 +77,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.getUserInfo();
   }
 
+  onScroll() {
+    console.log('scrolled')
+  }
   getUserInfo() {
     this.routeSub = this.activatedRoute.params.subscribe((params) => {
       this.username = params['username'];

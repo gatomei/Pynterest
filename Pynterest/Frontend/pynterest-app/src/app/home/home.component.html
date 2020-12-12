@@ -1,31 +1,17 @@
 <app-header></app-header>
 
 <div class="content">
-  <div
-  infinite-scroll
-  infiniteScrollDistance="2"
-  infiniteScrollThrottle="50"
-  (scrolled)="onScroll()"
->
-  <div class="photos-container">
+  <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()">
+    <div class="photos-container">
 
-    <app-pin *ngFor="let photo of photos"
-    title="{{photo.title}}"
-    photo = "{{photo.pictureData}}"
-    id="{{photo.photoId}}">
-    </app-pin>
-  </div>
+      <app-pin *ngFor="let photo of photos" title="{{photo.title}}" photo="{{photo.pictureData}}"
+        id="{{photo.photoId}}">
+      </app-pin>
+    </div>
 
   </div>
   <div class="spinner">
-    <ngx-spinner
-    bdOpacity = 0.9
-    bdColor = ""
-    size = "default"
-    color = "white"
-    type = "ball-pulse-sync"
-    [fullScreen] = "false"
-    >
+    <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="white" type="ball-pulse-sync" [fullScreen]="false">
     </ngx-spinner>
   </div>
 

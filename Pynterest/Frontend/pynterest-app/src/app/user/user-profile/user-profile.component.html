@@ -110,14 +110,70 @@
     </div>
 
     <div *ngIf="isPhotosButtonClicked" class="boards-container shaddow">
-      <div class="boards-subcontent">
-        <ng-container *ngIf="readPhotoModel.length;else noPhoto">
-          <div *ngFor="let photo of readPhotoModel;let i=index">
-            <div class="board-details-container">
 
-              <button class="board-button">
-                <img [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail">
-              </button>
+      <div class="boards-subcontent">
+
+        <ng-container *ngIf="readPhotoModel.length;else noPhoto">
+
+          <div class="content">
+            <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()">
+
+
+              <ng-container *ngFor="let photo of readPhotoModel;let i=index">
+                <div class="board-details-container">
+                  <button class="board-button">
+                    <img [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail"> <img
+                      [src]="photo.pictureData" class="img-board-thumbnail" id="img-thumbnail">
+                  </button>
+                </div>
+              </ng-container>
+
+            </div>
+            <div class="spinner">
+              <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="white" type="ball-pulse-sync"
+                [fullScreen]="false">
+              </ngx-spinner>
             </div>
           </div>
         </ng-container>
