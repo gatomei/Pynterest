@@ -1,5 +1,8 @@
 @import '../../../../assets/styles/colors.scss';
 
+.container{
+  width: 100%;
+}
 .add-icon {
   vertical-align: middle;
   color: $logoColor;
@@ -20,15 +23,18 @@
 }
 .pin-button {
   outline: none;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
-  border-radius: 25px;
+  border-radius: 20px;
   background-color: $logoColor;
   color: $header-background;
-  border: 3px $logoColor solid;
-  height: 50px;
-  width: 40%;
+  border: 2px $logoColor solid;
+
+   width: 40%;
   margin-right: 0%;
+  padding: 2px;
+  overflow-wrap: break-word;
+
 }
 .pin-button[disabled]{
   background-color:lightgray;
@@ -39,6 +45,9 @@
 .select-board {
   padding-right: 15px;
   width: 60%;
+  .select-label{
+    color: black;
+  }
 }
 
 .select-board-icon {
