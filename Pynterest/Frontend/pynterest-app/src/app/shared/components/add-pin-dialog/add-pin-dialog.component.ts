@@ -87,7 +87,7 @@ export class AddPinDialogComponent implements OnInit {
     this.boardsService.getBoards(this.loggedInUserUsername).subscribe(
       (data) => {
         this.selectBoardModel = data;
-        this.setImageUrlArray();
+        this.setImageUrl();
         this.filteredBoards.next(this.selectBoardModel.slice());
 
         this.boardFilterCtrl.valueChanges
@@ -100,14 +100,15 @@ export class AddPinDialogComponent implements OnInit {
 
   }
 
-  setImageUrlArray() {
+  setImageUrl() {
     this.selectBoardModel.forEach(board => {
-      if (board.firstPicture.length) {
-        this.imageUrlBoards.push(this.sanitizer.bypassSecurityTrustUrl(
-          'data:image/png;base64,' + board.firstPicture));
+
+      if (board.numberOfPictures != 0) {
+        board.firstPicture = this.sanitizer.bypassSecurityTrustUrl(
+          'data:image/png;base64,' + board.firstPicture);
       }
       else {
-        this.imageUrlBoards.push(null);
+        board.firstPicture = null;
       }
     })
   }

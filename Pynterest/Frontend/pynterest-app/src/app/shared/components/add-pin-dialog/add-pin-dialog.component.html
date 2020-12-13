@@ -34,8 +34,8 @@
             <mat-option *ngFor="let board of filteredBoards | async; let i=index" [value]="board">
               <strong>
                 <span>
-                  <ng-container *ngIf="imageUrlBoards[i];else greyPic">
-                    <img [src]="imageUrlBoards[i]" alt="tzapa" class="img-board-thumbnail" id="img-thumbnail">
+                  <ng-container *ngIf="board.firstPicture;else greyPic">
+                    <img [src]="board.firstPicture" alt="tzapa" class="img-board-thumbnail" id="img-thumbnail">
                   </ng-container>
                   <ng-template #greyPic>
                     <img src="../../../assets/images/light_grey.jpg" alt="tzapa" class="img-board-thumbnail"

@@ -8,9 +8,11 @@ import { UserInfoService } from '../services/user-info.service';
 import { UserFollowService } from '../services/user-follow.service';
 import { FollowModel } from '../../shared/models/followModel';
 import { DialogService } from '@app/shared/services/dialog.service';
-
 import { BoardsService } from '../../shared/services/boards.service';
 import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
+import { PhotosService } from '../../shared/services/photos.service';
+import { ReadPhotoModel } from '../../shared/models/readPhotoModel';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-user-profile',
@@ -26,8 +28,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public imageUrl: SafeUrl
   private subscribedUser;
   public selectBoardModel: SelectBoardModel[] = [];
+  public readPhotoModel: ReadPhotoModel[] = [];
   public imageUrlBoards: SafeUrl[] = [];
   public isBoardsButtonClicked: boolean = false;
+  public isPhotosButtonClicked: boolean = false;
+  public lastPhotoSendId: number = null;
+  public photoNumber: number = 20;
+  private notEmptyPost: boolean = true;
+  private notscrolly: boolean = true;
+  private arePicturesLoaded: boolean = false;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -37,9 +46,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private dialogService: DialogService,
     private boardsService: BoardsService,
+    private photosService: PhotosService,
+    private spinner: NgxSpinnerService,
     private router: Router
   ) {
     this.subs = new Array<Subscription>();
+    console.log("schimb pag")
   }
 
   ngOnDestroy(): void {
@@ -75,6 +87,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             );
             this.getFollowers();
             this.getFollowing();
+            this.loadInitPhotos();
           },
           (error) => {
             console.log(error);
@@ -176,56 +189,116 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   openAddPinDialog() {
-    this.dialogService.openAddPinDialog();
+    this.dialogService.openAddPinDialog().subscribe(
+      () => {
+        this.getBoards();
+      }
+    )
   }
 
   openAddBoardDialog() {
     this.dialogService.openAddBoardDialog({
       userId: this.jwtDecoder.getId()
-    })
+    }).subscribe(
+      () => {
+        this.getBoards();
+      }
+    )
   }
 
-  getBoards() {
-
+  getBoardsOnClick() {
     this.isBoardsButtonClicked = true;
+    this.isPhotosButtonClicked = false;
+    this.getBoards();
+  }
 
-    this.boardsService.getBoards(this.user.username).subscribe(
+  async getBoards() {
+    this.selectBoardModel = [];
+    await this.boardsService.getBoards(this.user.username).subscribe(
       (data) => {
         this.selectBoardModel = data;
-        this.setImageUrlArray();
+        this.setBoardsImageUrl();
       },
       (error) => console.log(error));
   }
 
-  setImageUrlArray() {
+  setBoardsImageUrl() {
     this.selectBoardModel.forEach(board => {
-      if (board.firstPicture.length) {
-        this.imageUrlBoards.push(this.sanitizer.bypassSecurityTrustUrl(
-          'data:image/png;base64,' + board.firstPicture));
+      if (board.numberOfPictures != 0) {
+        board.firstPicture = this.sanitizer.bypassSecurityTrustUrl(
+          'data:image/png;base64,' + board.firstPicture);
       }
       else {
-        this.imageUrlBoards.push(null);
+        board.firstPicture = null;
       }
     })
   }
 
-
-  openDeleteBoardDialog(index){
+  openDeleteBoardDialog(index) {
     let boardId = this.selectBoardModel[index].boardId;
     this.dialogService.openDeleteBoardDialog(
-      {boardId:boardId}).subscribe(
-        (result)=>{
-          if(result==true)
-          {
-            this.selectBoardModel= this.selectBoardModel.filter(it=>it.boardId!=boardId);
+      { boardId: boardId }).subscribe(
+        (result) => {
+          if (result == true) {
+            this.selectBoardModel = this.selectBoardModel.filter(it => it.boardId != boardId);
           }
         }
       )
-
   }
 
-  navigateToBoard(index){
+  getPhotosOnClick() {
+    this.isPhotosButtonClicked = true;
+    this.isBoardsButtonClicked = false;
+    this.loadInitPhotos();
+    this.arePicturesLoaded = true;
+  }
+
+  loadInitPhotos() {
+    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
+      (data) => {
+        this.readPhotoModel = data;
+        this.notEmptyPost = data.length != 0;
+        this.arePicturesLoaded = true;
+        this.readPhotoModel = this.setPhotosImageUrl(this.readPhotoModel);
+      }
+    )
+  }
+
+  loadNextPhotos() {
+    this.lastPhotoSendId = this.readPhotoModel[this.readPhotoModel.length - 1].photoId;
+
+    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
+      (data) => {
+        this.spinner.hide();
+        this.notEmptyPost = data.length != 0;
+        var nextPhotos = data;
+        nextPhotos = this.setPhotosImageUrl(nextPhotos);
+        this.readPhotoModel = this.readPhotoModel.concat(nextPhotos);
+        this.notscrolly = true;
+      }
+    )
+  }
+
+  setPhotosImageUrl(photos: ReadPhotoModel[]) {
+    photos.forEach(photo => {
+      photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
+        'data:image/png;base64,' + photo.pictureData);
+    })
+
+    return photos;
+  }
+
+  onScroll() {
+    if (this.arePicturesLoaded && this.notscrolly && this.notEmptyPost) {
+      this.spinner.show();
+      this.notscrolly = false;
+      this.loadNextPhotos();
+    }
+  }
+
+  navigateToBoard(index) {
     let boardName = this.selectBoardModel[index].title
     this.router.navigate([`${this.user.username}/boards/${boardName}`]);
   }
+
 }

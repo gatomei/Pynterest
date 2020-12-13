@@ -19,7 +19,7 @@ export class DialogService {
     public addPinDialog: MatDialog,
     public addBoardDialog: MatDialog,
     public addCategoryDialog: MatDialog,
-    public deleteBoardDialog:MatDialog) { }
+    public deleteBoardDialog: MatDialog) { }
 
   openFollowDialog(_currentUserFollowModel: FollowModel[], _loggedInUserFollowingModel: FollowModel[], _dialogTitle: string) {
 
@@ -35,29 +35,37 @@ export class DialogService {
 
   openAddPinDialog() {
 
-    this.addPinDialog.open(AddPinDialogComponent,
+    const dialogRef = this.addPinDialog.open(AddPinDialogComponent,
       { panelClass: 'custom-dialog-container' });
+
+    return dialogRef.afterClosed()
   }
 
   openAddBoardDialog(data) {
 
-    this.addBoardDialog.open(CreateBoardDialogComponent, {
+    const dialogRef = this.addBoardDialog.open(CreateBoardDialogComponent, {
       data: data,
       panelClass: 'custom-dialog-container',
     });
+
+    return dialogRef.afterClosed()
   }
 
   openAddCategoryDialog() {
-    this.addCategoryDialog.open(AddCategoryDialogComponent,
+    const dialogRef = this.addCategoryDialog.open(AddCategoryDialogComponent,
       { panelClass: 'custom-dialog-container' });
+
+    return dialogRef.afterClosed()
   }
 
-  openDeleteBoardDialog(data){
+  openDeleteBoardDialog(data) {
     const dialogRef = this.deleteBoardDialog.open(DeleteBoardDialogComponent,
 
-      {  data: data,
-        panelClass: 'custom-dialog-container' })
+      {
+        data: data,
+        panelClass: 'custom-dialog-container'
+      })
 
-        return dialogRef.afterClosed()
+    return dialogRef.afterClosed()
   }
 }
