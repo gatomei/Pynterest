@@ -60,8 +60,8 @@
         </div>
       </ng-container>
       <div class="change-content-buttons">
-        <button>Photos</button>
-        <button (click)="getBoards()">Boards</button>
+        <button (click)="getPhotosOnClick()">Photos</button>
+        <button (click)="getBoardsOnClick()">Boards</button>
       </div>
     </div>
 
@@ -70,10 +70,10 @@
         <ng-container *ngIf="selectBoardModel.length;else noBoards">
           <div *ngFor="let board of selectBoardModel;let i=index">
             <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
-              <div class="board-details-container" >
-                <ng-container *ngIf="imageUrlBoards[i];else greyPic">
+              <div class="board-details-container">
+                <ng-container *ngIf="board.firstPicture;else greyPic">
                   <button class="board-button" (click)="navigateToBoard(i)">
-                    <img [src]="imageUrlBoards[i]" class="img-board-thumbnail" id="img-thumbnail">
+                    <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
                   </button>
                 </ng-container>
                 <ng-template #greyPic>
@@ -83,10 +83,10 @@
                 </ng-template>
                 <div class="board-details-subcontent-container">
                   <div class="board-details-subcontent">
-                    <strong>{{board.title}}</strong>
+                    <strong class="board-title-text">{{board.title}}</strong>
                     <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
                   </div>
-                  <div *ngIf="isHisPage()" class="delete-board-container" >
+                  <div *ngIf="isHisPage()" class="delete-board-container">
                     <button mat-icon-button [matMenuTriggerFor]="menu" class="more-button">
                       <mat-icon class="more-icon">more_vert</mat-icon>
                     </button>
@@ -99,23 +99,52 @@
                     </mat-menu>
                   </div>
                 </div>
-
-
               </div>
             </ng-container>
           </div>
         </ng-container>
         <ng-template #noBoards>
           <ng-container *ngIf="isHisPage();else notHisPage">
-            <div class="no-boards-text"><b>...you haven't saved any Pins yet!</b></div>
+            <div><b>...you haven't created any boards yet!</b></div>
           </ng-container>
           <ng-template #notHisPage>
-            <div *ngIf="isBoardsButtonClicked" class="no-boards-text">
-              <b>...{{user.username}} haven't saved any Pins
-                yet!</b>
+            <div *ngIf="isBoardsButtonClicked">
+              <b>...{{user.username}} haven't created any boards yet!</b>
             </div>
           </ng-template>
         </ng-template>
       </div>
     </div>
+
+    <div *ngIf="isPhotosButtonClicked" class="photos-container shaddow">
+      <ng-container *ngIf="readPhotoModel.length;else noPhoto">
+        <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()"
+          class="photos-subcontent">
+          <ng-container *ngFor="let photo of readPhotoModel;let i=index">
+            <div class="photo-details-container">
+              <button class="photo-button">
+                <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
+              </button>
+            </div>
+          </ng-container>
+        </div>
+        <div class="spinner">
+          <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync" [fullScreen]="false">
+          </ngx-spinner>
+        </div>
+      </ng-container>
+      <ng-template #noPhoto>
+        <ng-container *ngIf="isHisPage();else notHisPage">
+          <div><b>...you haven't saved any Pins yet!</b></div>
+        </ng-container>
+        <ng-template #notHisPage>
+          <div class="photos-subcontent">
+            <div *ngIf="isPhotosButtonClicked">
+              <b>...{{user.username}} haven't saved any Pins yet!</b>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+    </div>
   </div>
+</div>
