@@ -29,7 +29,6 @@ import { AddToBoardFormComponent } from './components/add-to-board-form/add-to-b
 import { DeleteBoardDialogComponent } from './components/delete-board-dialog/delete-board-dialog.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { BoardsComponent } from './components/boards/boards.component';
 
 
 @NgModule({
@@ -42,8 +41,7 @@ import { BoardsComponent } from './components/boards/boards.component';
     CreateBoardDialogComponent,
     AddCategoryDialogComponent,
     AddToBoardFormComponent,
-    DeleteBoardDialogComponent,
-    BoardsComponent
+    DeleteBoardDialogComponent
   ],
   imports: [
     CommonModule,

@@ -34,13 +34,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public isPhotosButtonClicked: boolean = false;
   public lastPhotoSendId: number = null;
   public photoNumber: number = 20;
-
-  throttle = 300;
-  requestChunk = 8;
-  notEmptyPost = true;
-  notscrolly = true;
-  isLoaded = false;
-
+  private notEmptyPost: boolean = true;
+  private notscrolly: boolean = true;
+  private arePicturesLoaded: boolean = false;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -55,6 +51,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.subs = new Array<Subscription>();
+    console.log("schimb pag")
   }
 
   ngOnDestroy(): void {
@@ -227,7 +224,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   setBoardsImageUrl() {
     this.selectBoardModel.forEach(board => {
-
       if (board.numberOfPictures != 0) {
         board.firstPicture = this.sanitizer.bypassSecurityTrustUrl(
           'data:image/png;base64,' + board.firstPicture);
@@ -237,7 +233,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       }
     })
   }
-
 
   openDeleteBoardDialog(index) {
     let boardId = this.selectBoardModel[index].boardId;
@@ -255,18 +250,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.isPhotosButtonClicked = true;
     this.isBoardsButtonClicked = false;
     this.loadInitPhotos();
-    this.isLoaded = true;
+    this.arePicturesLoaded = true;
   }
 
   loadInitPhotos() {
     this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
       (data) => {
         this.readPhotoModel = data;
-        if (data.length == 0) {
-          this.notEmptyPost = false;
-        }
-        this.isLoaded = true;
-        this.setPhotosImageUrl();
+        this.notEmptyPost = data.length != 0;
+        this.arePicturesLoaded = true;
+        this.readPhotoModel = this.setPhotosImageUrl(this.readPhotoModel);
       }
     )
   }
@@ -277,36 +270,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
       (data) => {
         this.spinner.hide();
-        if (data.length == 0) {
-          this.notEmptyPost = false;
-        }
-
-        var pictures: ReadPhotoModel[] = data;
-        pictures.forEach(photo => {
-          photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
-            'data:image/png;base64,' + photo.pictureData);
-        })
-        this.readPhotoModel = this.readPhotoModel.concat(pictures);
+        this.notEmptyPost = data.length != 0;
+        var nextPhotos = data;
+        nextPhotos = this.setPhotosImageUrl(nextPhotos);
+        this.readPhotoModel = this.readPhotoModel.concat(nextPhotos);
         this.notscrolly = true;
       }
     )
   }
 
-  setPhotosImageUrl() {
-    this.readPhotoModel.forEach(photo => {
+  setPhotosImageUrl(photos: ReadPhotoModel[]) {
+    photos.forEach(photo => {
       photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
         'data:image/png;base64,' + photo.pictureData);
     })
+
+    return photos;
   }
 
   onScroll() {
-    if (this.isLoaded) {
-      if (this.notscrolly && this.notEmptyPost) {
-        this.spinner.show();
-        this.notscrolly = false;
-        this.loadNextPhotos();
-        console.log('scroll')
-      }
+    if (this.arePicturesLoaded && this.notscrolly && this.notEmptyPost) {
+      this.spinner.show();
+      this.notscrolly = false;
+      this.loadNextPhotos();
     }
   }
 
@@ -314,4 +300,5 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     let boardName = this.selectBoardModel[index].title
     this.router.navigate([`${this.user.username}/boards/${boardName}`]);
   }
+
 }

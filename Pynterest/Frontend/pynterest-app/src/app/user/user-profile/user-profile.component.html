@@ -105,48 +105,46 @@
         </ng-container>
         <ng-template #noBoards>
           <ng-container *ngIf="isHisPage();else notHisPage">
-            <div><b>...you haven't saved any Pins yet!</b></div>
+            <div><b>...you haven't created any boards yet!</b></div>
           </ng-container>
           <ng-template #notHisPage>
             <div *ngIf="isBoardsButtonClicked">
-              <b>...{{user.username}} haven't saved any Pins
-                yet!</b>
+              <b>...{{user.username}} haven't created any boards yet!</b>
             </div>
           </ng-template>
         </ng-template>
       </div>
     </div>
 
-    <div *ngIf="isPhotosButtonClicked" class="boards-container shaddow">
-      <div>
-        <ng-container *ngIf="readPhotoModel.length;else noPhoto">
-          <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()"
-            class="photos-subcontent">
-            <ng-container *ngFor="let photo of readPhotoModel;let i=index">
-              <div class="photo-details-container">
-                <button class="photo-button">
-                  <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
-                </button>
-              </div>
-            </ng-container>
-          </div>
-          <div class="spinner">
-            <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync"
-              [fullScreen]="false">
-            </ngx-spinner>
-          </div>
-        </ng-container>
-        <ng-template #noPhoto>
-          <ng-container *ngIf="isHisPage();else notHisPage">
-            <div><b>...you haven't saved any Pins yet!</b></div>
-          </ng-container>
-          <ng-template #notHisPage>
-            <div *ngIf="isPhotosButtonClicked">
-              <b>...{{user.username}} haven't saved any Pins
-                yet!</b>
+    <div *ngIf="isPhotosButtonClicked" class="photos-container shaddow">
+      <ng-container *ngIf="readPhotoModel.length;else noPhoto">
+        <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()"
+          class="photos-subcontent">
+          <ng-container *ngFor="let photo of readPhotoModel;let i=index">
+            <div class="photo-details-container">
+              <button class="photo-button">
+                <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
+              </button>
             </div>
-          </ng-template>
+          </ng-container>
+        </div>
+        <div class="spinner">
+          <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync" [fullScreen]="false">
+          </ngx-spinner>
+        </div>
+      </ng-container>
+      <ng-template #noPhoto>
+        <ng-container *ngIf="isHisPage();else notHisPage">
+          <div><b>...you haven't saved any Pins yet!</b></div>
+        </ng-container>
+        <ng-template #notHisPage>
+          <div class="photos-subcontent">
+            <div *ngIf="isPhotosButtonClicked">
+              <b>...{{user.username}} haven't saved any Pins yet!</b>
+            </div>
+          </div>
         </ng-template>
-      </div>
+      </ng-template>
     </div>
   </div>
+</div>
