@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PinDetails } from '@app/shared/models/pinDetailsModel';
-import { BoardsService } from '@app/shared/services/boards.service';
 import { DialogService } from '@app/shared/services/dialog.service';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { PhotosService } from '@app/shared/services/photos.service';
@@ -29,7 +28,7 @@ export class BoardDetailsComponent implements OnInit {
     this.spinner.show();
     this.getBoardTitle();
     this.getUserFullname();
-    // this.loadInitPhotos();
+    this.loadInitPhotos();
   }
 
   constructor(
@@ -53,7 +52,6 @@ export class BoardDetailsComponent implements OnInit {
       (data) => {
         this.user = data;
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + data.profilePicture);
-        this.loadInitPhotos();
       },
       (error) => {
         console.log(error);
@@ -61,27 +59,14 @@ export class BoardDetailsComponent implements OnInit {
     );
   }
   loadInitPhotos() {
-    // this.photosService.getPhotosFromBoard(1, this.requestChunk, null)
-    // .subscribe(
-    //   (data) => {
-    //   if(data.length==0)
-    //   {
-    //    this.notEmptyPost=false;
-    //   }
-    //     this.photos = data;
-    //     this.spinner.hide();
-    //     this.isLoaded = true;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
-    this.photosService.getPhotosForFeed(this.requestChunk, null).subscribe(
+    this.photosService.getPhotosFromBoard(this.boardTitle, this.requestChunk, null)
+    .subscribe(
       (data) => {
+      if(data.length==0)
+      {
+       this.notEmptyPost=false;
+      }
         this.photos = data;
-        if (data.length == 0) {
-          this.notEmptyPost = false;
-        }
         this.spinner.hide();
         this.isLoaded = true;
       },
@@ -89,6 +74,7 @@ export class BoardDetailsComponent implements OnInit {
         console.log(error);
       }
     );
+
   }
 
   onScroll() {
@@ -104,7 +90,7 @@ export class BoardDetailsComponent implements OnInit {
   loadNextPhotos() {
     let lastPhotoSentId = this.photos[this.photos.length - 1].photoId;
 
-    this.photosService.getPhotosForFeed(this.requestChunk, lastPhotoSentId).subscribe(
+    this.photosService.getPhotosFromBoard(this.boardTitle, this.requestChunk, lastPhotoSentId).subscribe(
       (data) => {
         this.spinner.hide();
         if (data.length == 0) this.notEmptyPost = false;
