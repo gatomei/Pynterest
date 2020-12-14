@@ -2,6 +2,9 @@
 
 .container{
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .add-icon {
   vertical-align: middle;
@@ -29,25 +32,16 @@
 }
 .pin-button {
   outline: none;
-  font-size: 13px;
+  font-size: 15px;
   font-weight:bold;
-  text-align: start;
-  width: 100%;
-  white-space: normal;
   height: auto;
-}
-
-.pin-button-container{
   border-radius: 0px 20px 20px 0px;
   background-color: $logoColor;
   color: $header-background;
   border: 2px $logoColor solid;
-  width: 40%;
-
-  overflow-wrap: break-word;
-
-
+  width: 100%;
 }
+
 .pin-button[disabled]{
   background-color:lightgray;
   border: 3px lightgray solid;
@@ -57,6 +51,7 @@
 .select-board {
   width: 100%;
   padding-left: 4px;
+  vertical-align: middle;
   .select-label{
     color: black;
   }
