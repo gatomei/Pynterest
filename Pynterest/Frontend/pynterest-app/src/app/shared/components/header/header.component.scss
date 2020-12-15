@@ -132,6 +132,19 @@
   background-color: $header-background;
 }
 
+.profile-item .interests-button{
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 10px;
+  outline: none;
+}
+
+.profile-item .interests-button:hover{
+  background-color: $header-background;
+  color: $logoColor;
+}
+
 //icons
 .profile-item button.icon-button {
   padding: 5px;

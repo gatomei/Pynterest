@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '@app/core/services/local-storage.service';
+import { SessionStorageService } from '@app/core/services/session-storage.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { NewPasswordModel } from '../models/newPasswordModel';
 })
 export class AuthenticationService {
 
-  constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
+  constructor(private http: HttpClient, private localStorageService: SessionStorageService) { }
 
   login(email: string, password: string): Observable<string> {
     const authenticateEnpoint = `${environment.baseAPI}/pynterest/authentication/login`;

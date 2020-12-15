@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './services/notification.service';
-import { LocalStorageService } from './services/local-storage.service';
+import { SessionStorageService } from './services/session-storage.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 
 
 @NgModule({
-  providers: [ NotificationService, NotificationService, LocalStorageService ],
+  providers: [ NotificationService, NotificationService, SessionStorageService ],
   declarations: [],
   imports: [
     ToastrModule.forRoot({

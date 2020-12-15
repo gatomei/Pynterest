@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '@app/core/services/local-storage.service';
+import { SessionStorageService } from '@app/core/services/session-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JWTUserInfo } from '../models/userInfoModel';
 
@@ -12,7 +12,7 @@ export class JwtDecoderService {
 
   constructor(
     private jwtHelper: JwtHelperService,
-    private localstorageService: LocalStorageService
+    private localstorageService: SessionStorageService
   ) {}
 
   getAllInfo(): JWTUserInfo {

@@ -9,8 +9,8 @@
         </div>
             <div class="profile-content">
                 <div class="profile-item">
-                    <button [class]="isNotificationPressed ? 'icon-button button-pressed' : 'icon-button'" (click)="toggleNotificationButton()">
-                        <mat-icon [matBadge]="notificationsUnseen" [matBadgeHidden]="isNotificationBadgeHidden()" matBadgeColor="warn">notifications</mat-icon>
+                    <button class="interests-button" (click)="goToInterests()">
+                        Interests
                     </button>
                 </div>
                 <div class="profile-item">
@@ -31,14 +31,6 @@
                 </div>
         </div>
     </div>
-    <ng-container *ngIf="isNotificationPressed">
-        <div class="front-cover">
-            <h3>Notifications</h3>
-            <ul class="notifications">
-                <!--TODO: after we finish with notifications-->
-            </ul>
-        </div>
-    </ng-container>
     <ng-container *ngIf="isMessagesPressed">
         <div class="front-cover">
             <h3>Messages</h3>

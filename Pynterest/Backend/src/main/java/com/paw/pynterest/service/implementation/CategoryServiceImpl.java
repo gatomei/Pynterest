@@ -6,9 +6,10 @@ import com.paw.pynterest.boundry.exceptions.DataIntegrityViolationException;
 import com.paw.pynterest.boundry.exceptions.DirectoryCreationException;
 import com.paw.pynterest.boundry.exceptions.NotFoundException;
 import com.paw.pynterest.boundry.exceptions.ServerErrorException;
-import com.paw.pynterest.entity.model.Board;
 import com.paw.pynterest.entity.model.Category;
+import com.paw.pynterest.entity.model.Photo;
 import com.paw.pynterest.entity.repository.CategoryRepository;
+import com.paw.pynterest.entity.repository.PhotoRepository;
 import com.paw.pynterest.service.interfaces.CategoryServiceInterface;
 
 import org.modelmapper.ModelMapper;
@@ -25,7 +26,7 @@ public class CategoryServiceImpl implements CategoryServiceInterface {
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper)
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper, PhotoRepository photoRepository)
     {
         this.categoryRepository = categoryRepository;
         this.modelMapper = modelMapper;
@@ -70,6 +71,12 @@ public class CategoryServiceImpl implements CategoryServiceInterface {
         if (!category.isPresent())
             throw new NotFoundException("Category not found!");
         return category.get();
+    }
+
+    @Override
+    public List<Long> getCategoryPhotos(Long categoryId) {
+        Category category = findById(categoryId);
+        return category.getPhotos().stream().map(Photo::getPhotoId).collect(Collectors.toList());
     }
 
 }

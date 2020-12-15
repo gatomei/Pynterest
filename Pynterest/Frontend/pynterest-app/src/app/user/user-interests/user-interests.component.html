@@ -1,0 +1,34 @@
+<app-header></app-header>
+<div id="content-container">
+    <div id="title">
+        All interests
+    </div>
+    <div id="interests-container">
+        <div class="interest" *ngFor="let interest of interests;">
+            <div class="interest-picture">
+                <ng-container *ngIf="emptyLink(interest); else receivedPicture">
+                    <img src="../../../assets/images/bec.png">
+                </ng-container>
+                <ng-template #receivedPicture>
+                    <img [src]="interest.randomPicture">
+                </ng-template>
+            </div>
+            <div class="interest-name">
+                {{interest.interestName}}
+            </div>
+
+            <div class="interest-button">
+                <ng-container *ngIf="!interest.isInCurrentUserInterestsList;else removeButton">
+                    <button (click)="addUserInterest(interest)" class="add-button">
+                        Add
+                    </button>
+                </ng-container>
+                <ng-template #removeButton>
+                    <button (click)="removeInterest(interest)" class="remove-button">
+                        Remove
+                    </button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

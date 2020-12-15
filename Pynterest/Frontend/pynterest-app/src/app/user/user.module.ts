@@ -10,10 +10,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import { UserInterestsComponent } from './user-interests/user-interests.component';
 
 
 @NgModule({
-  declarations: [UserProfileComponent],
+  declarations: [UserProfileComponent, UserInterestsComponent],
   imports: [
     CommonModule,
     UserRoutingModule,

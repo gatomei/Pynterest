@@ -32,4 +32,10 @@ public class CategoryController {
     {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
+
+    @GetMapping("{categoryId}/photos")
+    public ResponseEntity<?> getCategoryPhotos(@PathVariable Long categoryId)
+    {
+        return new ResponseEntity<>(categoryService.getCategoryPhotos(categoryId), HttpStatus.OK);
+    }
 }

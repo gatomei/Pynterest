@@ -1,0 +1,99 @@
+@import '../../../assets/styles/colors.scss';
+$container-width:170px;
+$image-width: 120px;
+
+
+#content-container{
+    margin: 20px 1.2% 0 1.2%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 20px;
+
+    background-color: $header-background;
+}
+
+#title{
+    font-size: 40px;
+    text-align: center;
+    font-family: 'American Typewriter' , serif;
+    padding: 10px 0;
+}
+
+#interests-container{
+    width: 100%;
+    margin-top: 10px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.interest{
+    width: $container-width;
+    margin: 15px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: rgb(245, 245, 245);
+}
+
+
+.interest-picture{
+    width: $image-width;
+    max-height: $image-width;
+    overflow: hidden;
+    flex-grow: 1;
+
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.interest-picture img{
+    max-width: $image-width;
+    height: $image-width;
+}
+
+
+.interest-name{
+    flex-grow: 1;
+    text-align: center;
+    padding: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Gill Sans', sans-serif;
+    text-transform: capitalize;
+}
+
+.interest-button{
+    flex-grow: 1;
+}
+
+.interest-button button{
+    color: black;
+    padding: 7px 15px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.add-button{
+    background-color: #67a9cf;
+}
+
+.add-button:hover{
+    background-color: #f7f7f7;
+}
+
+.remove-button{
+    background-color: #ef8a62;
+}
+
+.remove-button:hover{
+    background-color: #f7f7f7;
+}

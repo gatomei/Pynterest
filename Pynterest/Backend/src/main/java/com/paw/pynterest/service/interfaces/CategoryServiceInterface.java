@@ -10,4 +10,5 @@ public interface CategoryServiceInterface {
     Long addCategory(WriteCategoryDTO newCategory);
     List<ReadCategoryDTO> getAllCategories();
     Category findById(Long categoryId);
+    List<Long> getCategoryPhotos(Long categoryId);
 }

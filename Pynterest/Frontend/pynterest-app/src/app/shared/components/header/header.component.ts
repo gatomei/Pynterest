@@ -3,7 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { User } from '@app/core/models/user';
 import { AuthenticationService } from '@app/core/services/authentication.service';
-import { LocalStorageService } from '@app/core/services/local-storage.service';
+import { SessionStorageService } from '@app/core/services/session-storage.service';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
 import { UserInfoService } from '@app/user/services/user-info.service';
 import { Subscription } from 'rxjs';
@@ -16,9 +16,7 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   public messagesUnseen:Number;
-  public notificationsUnseen: Number;
   public username:string;
-  public isNotificationPressed = false;
   public isMessagesPressed = false;
   private sub:Subscription;
   public imageUrl:SafeUrl = "";
@@ -28,9 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
      private JwtDecoderService: JwtDecoderService,
      private userInfoService:UserInfoService,
      private sanitizer:DomSanitizer,
-     private localStorage:LocalStorageService) {
+     private localStorage:SessionStorageService) {
     this.router = router;
-    this.notificationsUnseen = 0;
     this.messagesUnseen = 0;
    }
 
@@ -69,11 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['home']);
   }
 
-  isNotificationBadgeHidden():boolean
-  {
-    return this.notificationsUnseen == 0;
-  }
-
   isMessageBadgeHidden():boolean
   {
     return this.messagesUnseen == 0;
@@ -83,20 +75,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['users', this.JwtDecoderService.getUsername(),'profile']);
   }
 
-  toggleNotificationButton():void{
-    this.isNotificationPressed = ! this.isNotificationPressed;
-    if(this.isMessagesPressed)
-    {
-      this.isMessagesPressed = ! this.isMessagesPressed;
-    }
-  }
-
   toggleMessageButton():void{
     this.isMessagesPressed = ! this.isMessagesPressed;
-    if(this.isNotificationPressed)
-    {
-      this.isNotificationPressed = ! this.isNotificationPressed;
-    }
   }
 
+  goToInterests():void{
+    this.router.navigate(['users','interests']);
+  }
 }

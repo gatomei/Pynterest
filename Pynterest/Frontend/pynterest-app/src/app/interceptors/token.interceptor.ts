@@ -7,12 +7,12 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { LocalStorageService } from '@app/core/services/local-storage.service';
+import { SessionStorageService } from '@app/core/services/session-storage.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private localStorageService:LocalStorageService) {}
+  constructor(private router: Router, private localStorageService:SessionStorageService) {}
 
   intercept(
     req: HttpRequest<any>,

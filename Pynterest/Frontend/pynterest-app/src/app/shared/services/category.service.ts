@@ -23,4 +23,10 @@ export class CategoryService {
     return this.httpClient.post(addCategoryEndpoint, category);
   }
 
+  getPhotosForCategory(categoryId: Number)
+  {
+    const getCategoriesEndpoint = `${environment.baseAPIAuth}/categories/${categoryId}/photos`;
+    return this.httpClient.get<Number[]>(getCategoriesEndpoint);
+  }
+
 }
