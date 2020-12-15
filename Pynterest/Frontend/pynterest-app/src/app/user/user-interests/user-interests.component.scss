@@ -45,7 +45,7 @@ $image-width: 120px;
 
 
 .interest-picture{
-    width: $image-width;
+    max-width: $image-width;
     max-height: $image-width;
     overflow: hidden;
     flex-grow: 1;
