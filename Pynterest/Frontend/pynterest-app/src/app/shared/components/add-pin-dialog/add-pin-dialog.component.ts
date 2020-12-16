@@ -1,3 +1,4 @@
+import { ReadCategoryModel } from './../../models/readCategoryModel';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -13,7 +14,6 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { take, takeUntil } from 'rxjs/operators';
 import { CategoryService } from '../../services/category.service';
-import { ReadCategoryModel } from '../../models/readCategoryModel';
 
 @Component({
   selector: 'app-add-pin-dialog',
@@ -54,6 +54,13 @@ export class AddPinDialogComponent implements OnInit {
   public url: any;
   public isPhotoSelected: boolean = false;
   public selectBoardModel: SelectBoardModel[] = [];
+  public addBoardLoading: boolean = false;
+  public currentNumberOfBords: number;
+  public addCategoryLoading: boolean = false;
+  public currentNumberOfCategories: number;
+
+  public areBoardsLoading: boolean = true;
+  public areCategoriesLoading: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,6 +102,15 @@ export class AddPinDialogComponent implements OnInit {
           .subscribe(() => {
             this.filterBoards();
           });
+
+        if (this.selectBoardModel.length == (this.currentNumberOfBords + 1)) {
+          this.addBoardLoading = false;
+          this.currentNumberOfBords = this.selectBoardModel.length;
+        }
+
+        this.areBoardsLoading = false;
+        this.areCategoriesLoading = false;
+
       },
       (error) => console.log(error));
 
@@ -125,6 +141,11 @@ export class AddPinDialogComponent implements OnInit {
           .subscribe(() => {
             this.filterCategories();
           });
+
+        if (this.categoryList.length == (this.currentNumberOfCategories + 1)) {
+          this.addCategoryLoading = false;
+          this.currentNumberOfCategories = this.categoryList.length;
+        }
       },
       (error) => { console.log(error); }
     )
@@ -252,12 +273,28 @@ export class AddPinDialogComponent implements OnInit {
   openAddBoardDialog() {
     this.dialogService.openAddBoardDialog({
       userId: this.jwtDecoderService.getId()
-    })
+    }).subscribe(
+      (result) => {
+        if (result == true) {
+          this.addBoardLoading = true;
+          this.currentNumberOfBords = this.selectBoardModel.length;
+          this.getBoards();
+        }
+      }
+    )
     this.boardSelect.close();
   }
 
   openAddCategoryModal() {
-    this.dialogService.openAddCategoryDialog();
+    this.dialogService.openAddCategoryDialog().subscribe(
+      (result) => {
+        if (result == true) {
+          this.addCategoryLoading = true;
+          this.currentNumberOfCategories = this.categoryList.length;
+          this.getCategories();
+        }
+      }
+    )
     this.categorySelect.close();
   }
 

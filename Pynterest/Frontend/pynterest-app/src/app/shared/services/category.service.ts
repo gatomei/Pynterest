@@ -20,11 +20,10 @@ export class CategoryService {
 
   addCategory(category: WriteCategoryModel) {
     const addCategoryEndpoint = `${environment.baseAPIAuth}/categories`;
-    return this.httpClient.post(addCategoryEndpoint, category);
+    return this.httpClient.post(addCategoryEndpoint, category, { observe: 'response' });
   }
 
-  getPhotosForCategory(categoryId: Number)
-  {
+  getPhotosForCategory(categoryId: Number) {
     const getCategoriesEndpoint = `${environment.baseAPIAuth}/categories/${categoryId}/photos`;
     return this.httpClient.get<Number[]>(getCategoriesEndpoint);
   }

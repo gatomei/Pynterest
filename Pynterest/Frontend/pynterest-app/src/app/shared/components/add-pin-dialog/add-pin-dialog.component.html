@@ -13,6 +13,7 @@
       <!-- Board -->
       <div class="select-board">
         <mat-form-field>
+
           <mat-label>Choose a board</mat-label>
           <mat-select (click)="getBoards()" formControlName="board" placeholder="Choose a board" #boardSelect>
 
@@ -45,12 +46,13 @@
                 </span>
                 {{board.title}}</strong>
             </mat-option>
-
           </mat-select>
           <mat-error *ngIf="addPinForm.get('board').hasError('required')">
             Board is <strong>required</strong>
           </mat-error>
         </mat-form-field>
+        <div *ngIf="addBoardLoading"><i>Wait...Adding new board...</i></div>
+        <div *ngIf="areBoardsLoading"><i>Wait...Loading boards...</i></div>
       </div>
 
       <div class="add-pin-content">
@@ -149,7 +151,8 @@
               </mat-error>
             </mat-form-field>
           </div>
-
+          <div *ngIf="addCategoryLoading"><i>Wait...Adding new category...</i></div>
+          <div *ngIf="areCategoriesLoading"><i>Wait...Loading categories...</i></div>
         </div>
       </div>
     </div>

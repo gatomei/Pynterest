@@ -8,9 +8,11 @@ import { LoaderService } from '@app/shared/services/loader.service';
 })
 export class ProgressSpinnerComponent implements OnInit {
 
-  isLoading:boolean;
+  isLoading: boolean;
 
-  constructor(private loaderService: LoaderService){}
+  constructor(private loaderService: LoaderService) { }
 
-  ngOnInit() {this.loaderService.isLoading.subscribe(isLoading_=>this.isLoading = isLoading_) }
+  ngOnInit() {
+    this.loaderService.isLoading.subscribe(isLoading_ => this.isLoading = isLoading_);
+  }
 }
