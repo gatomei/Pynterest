@@ -60,91 +60,117 @@
         </div>
       </ng-container>
       <div class="change-content-buttons">
-        <button (click)="getPhotosOnClick()">Photos</button>
+        <button (click)="getPhotosOnClick()" [disabled]="getPhotosButtonDisableProp">Photos</button>
         <button (click)="getBoardsOnClick()">Boards</button>
       </div>
     </div>
 
-    <div *ngIf="isBoardsButtonClicked" class="boards-container shaddow">
-      <div class="boards-subcontent">
-        <ng-container *ngIf="selectBoardModel.length;else noBoards">
-          <div *ngFor="let board of selectBoardModel;let i=index">
-            <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
-              <div class="board-details-container">
-                <ng-container *ngIf="board.firstPicture;else greyPic">
-                  <button class="board-button" (click)="navigateToBoard(i)">
-                    <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
-                  </button>
-                </ng-container>
-                <ng-template #greyPic>
-                  <button class="board-button" (click)="navigateToBoard(i)">
-                    <img src="../../../assets/images/light_grey.jpg" class="img-board-thumbnail" id="img-thumbnail">
-                  </button>
-                </ng-template>
-                <div class="board-details-subcontent-container">
-                  <div class="board-details-subcontent">
-                    <strong class="board-title-text">{{board.title}}</strong>
-                    <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
-                  </div>
-                  <div *ngIf="isHisPage()" class="delete-board-container">
-                    <button mat-icon-button [matMenuTriggerFor]="menu" class="more-button">
-                      <mat-icon class="more-icon">more_vert</mat-icon>
+    <div *ngIf="isBoardsButtonClicked">
+      <div style=" display: flex;
+      align-items: center;
+      justify-content: center;">
+        <ng-container *ngIf="areBoardsLoading">
+          <app-progress-spinner></app-progress-spinner>
+        </ng-container>
+      </div>
+      <div class="boards-container shaddow" *ngIf="!areBoardsLoading">
+        <div class="boards-subcontent">
+          <ng-container *ngIf="selectBoardModel.length;else noBoards">
+            <div *ngFor="let board of selectBoardModel;let i=index">
+              <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
+                <div class="board-details-container">
+                  <ng-container *ngIf="board.firstPicture;else greyPic">
+                    <button class="board-button" (click)="navigateToBoard(i)">
+                      <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
                     </button>
-                    <mat-menu #menu="matMenu">
-                      <button mat-menu-item (click)="openDeleteBoardDialog(i)" class="menu-item">
-                        <span>Delete</span>
-                        <mat-icon class="delete-icon">delete_outline</mat-icon>
+                  </ng-container>
+                  <ng-template #greyPic>
+                    <button class="board-button" (click)="navigateToBoard(i)">
+                      <img src="../../../assets/images/light_grey.jpg" class="img-board-thumbnail" id="img-thumbnail">
+                    </button>
+                  </ng-template>
+                  <div class="board-details-subcontent-container">
+                    <div class="board-details-subcontent">
+                      <strong class="board-title-text">{{board.title}}</strong>
+                      <h4 class="number-of-pics-text">{{board.numberOfPictures}} pins</h4>
+                    </div>
+                    <div *ngIf="isHisPage()" class="delete-board-container">
+                      <button mat-icon-button [matMenuTriggerFor]="menu" class="more-button">
+                        <mat-icon class="more-icon">more_vert</mat-icon>
                       </button>
-
-                    </mat-menu>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openDeleteBoardDialog(i)" class="menu-item">
+                          <span>Delete</span>
+                          <mat-icon class="delete-icon">delete_outline</mat-icon>
+                        </button>
+                      </mat-menu>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ng-container>
-          </div>
-        </ng-container>
-        <ng-template #noBoards>
-          <ng-container *ngIf="isHisPage();else notHisPage">
-            <div><b>...you haven't created any boards yet!</b></div>
+              </ng-container>
+            </div>
           </ng-container>
-          <ng-template #notHisPage>
-            <div *ngIf="isBoardsButtonClicked">
-              <b>...{{user.username}} haven't created any boards yet!</b>
+          <ng-template #noBoards>
+
+            <div class="boards-container">
+              <ng-container *ngIf="isHisPage();else notHisPage">
+                <div><b>...you haven't created any boards yet!</b></div>
+              </ng-container>
+              <ng-template #notHisPage>
+                <div *ngIf="isBoardsButtonClicked">
+                  <b>...{{user.username}} haven't created any boards yet!</b>
+                </div>
+              </ng-template>
+
             </div>
           </ng-template>
-        </ng-template>
+        </div>
       </div>
     </div>
 
-    <div *ngIf="isPhotosButtonClicked" class="photos-container shaddow">
-      <ng-container *ngIf="readPhotoModel.length;else noPhoto">
-        <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()"
-          class="photos-subcontent">
-          <ng-container *ngFor="let photo of readPhotoModel;let i=index">
-            <div class="photo-details-container">
-              <button class="photo-button">
-                <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
-              </button>
-            </div>
-          </ng-container>
-        </div>
-        <div class="spinner">
-          <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync" [fullScreen]="false">
-          </ngx-spinner>
-        </div>
-      </ng-container>
-      <ng-template #noPhoto>
-        <ng-container *ngIf="isHisPage();else notHisPage">
-          <div><b>...you haven't saved any Pins yet!</b></div>
+    <div *ngIf="isPhotosButtonClicked">
+      <div style=" display: flex;
+      align-items: center;
+      justify-content: center;">
+        <ng-container *ngIf="arePicturesLoading">
+          <app-progress-spinner></app-progress-spinner>
         </ng-container>
-        <ng-template #notHisPage>
-          <div class="photos-subcontent">
-            <div *ngIf="isPhotosButtonClicked">
-              <b>...{{user.username}} haven't saved any Pins yet!</b>
+      </div>
+      <div class="photos-container shaddow">
+        <ng-container *ngIf="readPhotoModel.length;else noPhoto">
+          <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()"
+            class="photos-subcontent">
+            <ng-container *ngFor="let photo of readPhotoModel;let i=index">
+              <div class="photo-details-container">
+                <button class="photo-button">
+                  <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
+                </button>
+              </div>
+            </ng-container>
+          </div>
+          <div class="spinner">
+            <ngx-spinner bdOpacity=0.9 bdColor="" size="default" color="red" type="ball-pulse-sync"
+              [fullScreen]="false">
+            </ngx-spinner>
+          </div>
+        </ng-container>
+        <ng-template #noPhoto>
+
+          <div class="photos-container" *ngIf="!arePicturesLoading">
+            <div class="photos-subcontent">
+              <ng-container *ngIf="isHisPage();else notHisPage">
+                <div><b>...you haven't saved any Pins yet!</b></div>
+              </ng-container>
+              <ng-template #notHisPage>
+
+                <div *ngIf="isPhotosButtonClicked">
+                  <b>...{{user.username}} haven't saved any Pins yet!</b>
+                </div>
+              </ng-template>
             </div>
           </div>
         </ng-template>
-      </ng-template>
+
+      </div>
     </div>
   </div>
-</div>

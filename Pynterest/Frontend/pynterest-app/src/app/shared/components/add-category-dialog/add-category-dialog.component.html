@@ -20,7 +20,8 @@
       </div>
     </div>
     <div class="submit-button-container">
-      <button class="submit-button" [disabled]="!addCategoryForm.valid" type="submit" matDialogClose>Save</button>
+      <button class="submit-button" [disabled]="!addCategoryForm.valid" type="submit"
+        [mat-dialog-close]="true">Save</button>
     </div>
   </div>
 </form>
