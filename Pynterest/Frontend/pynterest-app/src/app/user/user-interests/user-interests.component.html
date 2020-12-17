@@ -6,12 +6,12 @@
     <div id="interests-container">
         <div class="interest" *ngFor="let interest of interests;">
             <div class="interest-picture">
-                <ng-container *ngIf="emptyLink(interest); else receivedPicture">
-                    <img src="../../../assets/images/peepo.png">
-                </ng-container>
-                <ng-template #receivedPicture>
-                    <img [src]="interest.randomPicture">
-                </ng-template>
+                    <ng-container *ngIf="emptyLink(interest); else receivedPicture">
+                        <img src="../../../assets/images/peepo.png">
+                    </ng-container>
+                    <ng-template #receivedPicture>
+                        <img [src]="interest.randomPicture">
+                    </ng-template>
             </div>
             <div class="interest-name">
                 {{interest.interestName}}

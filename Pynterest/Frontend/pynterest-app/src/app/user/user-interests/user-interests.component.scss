@@ -45,19 +45,16 @@ $image-width: 120px;
 
 
 .interest-picture{
-    max-width: $image-width;
-    max-height: $image-width;
     overflow: hidden;
-    flex-grow: 1;
-
-    border-radius: 20px;
+    height: $image-width;
     display: flex;
-    justify-content: center;
+    align-items: center;
 }
 
 .interest-picture img{
     max-width: $image-width;
-    height: $image-width;
+    max-height: $image-width;
+    border-radius: 20px;
 }
 
 
