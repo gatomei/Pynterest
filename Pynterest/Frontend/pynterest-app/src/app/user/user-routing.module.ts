@@ -5,17 +5,17 @@ import { UserInterestsComponent } from './user-interests/user-interests.componen
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
-  { 
-    path: ':username/profile', 
-    pathMatch:'full',
+  {
+    path: ':username/profile',
+    pathMatch: 'full',
     component: UserProfileComponent,
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'interests', 
-    pathMatch:'full',
+  {
+    path: 'interests',
+    pathMatch: 'full',
     component: UserInterestsComponent,
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   }
 ];
 

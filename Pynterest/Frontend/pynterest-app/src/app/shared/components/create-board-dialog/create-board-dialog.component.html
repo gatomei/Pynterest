@@ -1,43 +1,39 @@
 <form [formGroup]="boardForm" (ngSubmit)="addBoard()" class="form-container">
   <div class="container">
     <div class="dialog-title">
-      <h1 mat-dialog-title >Create a new board</h1>
+      <h1 mat-dialog-title>Create a new board</h1>
     </div>
 
     <div mat-dialog-content class="create-board-content">
 
-        <div class="input-content" >
-          <mat-form-field class="form-field">
-            <mat-label class="mat-label">Name</mat-label>
-            <input matInput type="text" formControlName="boardName"
-            placeholder="Ex. Shoes/Quotes/Cars" class="form-input">
-            <mat-error *ngIf="boardForm.get('boardName').hasError('required')">
-              Name is <strong>required</strong>
-            </mat-error>
+      <div class="input-content">
+        <mat-form-field class="form-field">
+          <mat-label class="mat-label">Name</mat-label>
+          <input matInput type="text" formControlName="boardName" placeholder="Ex. Shoes/Quotes/Cars"
+            class="form-input">
+          <mat-error *ngIf="boardForm.get('boardName').hasError('required')">
+            Name is <strong>required</strong>
+          </mat-error>
 
-          </mat-form-field>
-        </div>
-
-        <div class="input-content">
-          <mat-form-field floatLabel="always" appearance="none" class="private-field">
-            <mat-label class="mat-label">Make this board private</mat-label>
-            <mat-slide-toggle formControlName="privateBoard" class="form-input">Private</mat-slide-toggle>
-            <textarea matInput hidden></textarea>
-          </mat-form-field>
+        </mat-form-field>
       </div>
 
+      <div class="input-content">
+        <mat-form-field floatLabel="always" appearance="none" class="private-field">
+          <mat-label class="mat-label">Make this board private</mat-label>
+          <mat-slide-toggle formControlName="privateBoard" class="form-input">Private</mat-slide-toggle>
+          <textarea matInput hidden></textarea>
+        </mat-form-field>
       </div>
-    </div>
-    <div class="buttons">
-      <button class="submit-button" [disabled]="!boardForm.valid"  type="submit"
-        matDialogClose>Create</button>
-      <button class="close-button" mat-raised-button matDialogClose>Cancel</button>
 
     </div>
-    <div class="error">
+  </div>
+  <div class="buttons">
+    <button class="submit-button" [mat-dialog-close]="true" [disabled]="!boardForm.valid" type="submit">Create</button>
+    <button class="close-button" mat-raised-button matDialogClose>Cancel</button>
 
-    </div>
+  </div>
+  <div class="error">
+
+  </div>
 </form>
-
-
-

@@ -1,10 +1,5 @@
 @import '../../../assets/styles/colors.scss';
 
-// #background{
-//     background-color: $header-background;
-//     min-height: 100%;
-//     padding-top: 20px;
-// }
 button.link {
   background: none;
   border: none;
@@ -17,6 +12,7 @@ button.link {
   width: 250px;
   height: 250px;
   border-radius: 20%;
+  margin: 19px;
 }
 
 .profile-container {

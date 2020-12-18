@@ -24,6 +24,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public user: UserInfo;
   private username: String;
   private routeSub: Subscription;
+  private areBoardsLoading: boolean = false;
+  private arePicturesLoading: boolean = false;
   private subs: Subscription[];
   public imageUrl: SafeUrl
   private subscribedUser;
@@ -37,6 +39,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private notEmptyPost: boolean = true;
   private notscrolly: boolean = true;
   private arePicturesLoaded: boolean = false;
+  public getPhotosButtonDisableProp: boolean = false;
 
   constructor(
     private jwtDecoder: JwtDecoderService,
@@ -51,7 +54,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.subs = new Array<Subscription>();
-    console.log("schimb pag")
   }
 
   ngOnDestroy(): void {
@@ -209,6 +211,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   getBoardsOnClick() {
     this.isBoardsButtonClicked = true;
     this.isPhotosButtonClicked = false;
+    this.areBoardsLoading = true;
     this.getBoards();
   }
 
@@ -218,6 +221,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       (data) => {
         this.selectBoardModel = data;
         this.setBoardsImageUrl();
+        this.areBoardsLoading = false;
       },
       (error) => console.log(error));
   }
@@ -249,8 +253,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   getPhotosOnClick() {
     this.isPhotosButtonClicked = true;
     this.isBoardsButtonClicked = false;
+    this.readPhotoModel = [];
     this.loadInitPhotos();
-    this.arePicturesLoaded = true;
+    this.arePicturesLoading = true;
+    this.getPhotosButtonDisableProp = true;
   }
 
   loadInitPhotos() {
@@ -260,6 +266,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.notEmptyPost = data.length != 0;
         this.arePicturesLoaded = true;
         this.readPhotoModel = this.setPhotosImageUrl(this.readPhotoModel);
+        this.arePicturesLoading = false;
+        this.getPhotosButtonDisableProp = false;
       }
     )
   }
@@ -275,6 +283,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         nextPhotos = this.setPhotosImageUrl(nextPhotos);
         this.readPhotoModel = this.readPhotoModel.concat(nextPhotos);
         this.notscrolly = true;
+        this.getPhotosButtonDisableProp = false;
       }
     )
   }
@@ -293,6 +302,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.spinner.show();
       this.notscrolly = false;
       this.loadNextPhotos();
+      this.getPhotosButtonDisableProp = true;
     }
   }
 
