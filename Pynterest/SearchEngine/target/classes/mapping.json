@@ -1,0 +1,17 @@
+{
+  "mappings": {
+    "properties": {
+      "photoId": {
+        "type": "long"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "standard"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "standard"
+      }
+    }
+  }
+}
