@@ -14,6 +14,7 @@ import com.paw.pynterest.entity.repository.BoardRepository;
 import com.paw.pynterest.entity.repository.CategoryRepository;
 import com.paw.pynterest.entity.repository.PhotoRepository;
 import com.paw.pynterest.entity.repository.UserRepository;
+import com.paw.pynterest.service.interfaces.ElasticsearchServiceInterface;
 import com.paw.pynterest.service.interfaces.PhotoServiceInterface;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -36,13 +37,15 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BoardRepository boardRepository;
+    private final ElasticsearchServiceInterface elasticsearchService;
 
-    public PhotoServiceImpl(PhotoRepository photoRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository, BoardRepository boardRepository){
+    public PhotoServiceImpl(PhotoRepository photoRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository, BoardRepository boardRepository, ElasticsearchServiceInterface elasticsearchService){
         this.modelMapper = modelMapper;
         this.photoRepository = photoRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.boardRepository = boardRepository;
+        this.elasticsearchService = elasticsearchService;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
                 throw new DeleteFileException("Photo could not be deleted!");
             }
             photoRepository.deleteById(photoId);
+            elasticsearchService.deletePhoto(photoId);
         }
         catch (Exception e){
             throw new NotFoundException("Photo not found!");
@@ -80,6 +84,7 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
         try{
             convertAndSavaPhoto(writePhotoDTO.getPictureData(),photo.getPath());
             Photo savedPhoto = photoRepository.saveAndFlush(photo);
+            elasticsearchService.indexPhoto(photo);
             return savedPhoto.getPhotoId();
         }
         catch (IOException e){
