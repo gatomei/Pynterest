@@ -37,8 +37,15 @@
   flex-grow: 10;
 }
 
-.input {
+.search-input {
   width: 85%;
+  margin-right: 13px;
+  position: relative;
+  display: inline-block;
+}
+
+.input{
+  width: 100%;
   border: 3px solid $icon-color;
   background-color: white;
   padding: 15px 30px;
@@ -46,7 +53,30 @@
   font-size: 18px;
   color: black;
   outline: none;
-  margin-right: 13px;
+}
+
+.search-input .autocom-box{
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 20px;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  display: none;
+}
+
+.search-input .autocom-box .suggestion{
+  padding: 10px;
+  cursor: pointer;
+  background-color: white;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.no-results{
+  padding: 20px;
+  background-color: white;
 }
 
 .input:focus {

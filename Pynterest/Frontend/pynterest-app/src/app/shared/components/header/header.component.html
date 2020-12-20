@@ -4,7 +4,20 @@
             <img (click)="goToHomePage()" src="../../../assets/images/pynterestLogoResized.png" alt="Logo">
         </div>
         <div class="search-bar-container">
+            <div class="search-input">
             <input type="text" class="input" placeholder="What are you looking for?">
+                <div class="autocom-box">
+                    <!--Lista cu cuvintele de la autocomplete-->
+                    <ng-container *ngIf="suggestions.length > 0;else empty">
+                        <div class="suggestion" *ngFor="let suggestion of suggestions">
+                            {{suggestion}}
+                        </div>
+                    </ng-container>
+                   <ng-template class="no-results" #empty>
+                       No results...
+                   </ng-template>
+                </div>
+            </div>
             <input type="button" value="search" class="close-btn">
         </div>
             <div class="profile-content">

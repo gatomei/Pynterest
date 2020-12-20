@@ -40,24 +40,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="06dd243b-bc4b-4b54-9d22-cb4c7f032a0f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/boundry/dto/ElasticsearchPhotoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/service/implementation/ElasticsearchService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/service/interfaces/ElasticsearchServiceInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/boundry/controllers/PhotoController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/boundry/exceptions/DataAlreadyExists.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/boundry/exceptions/NotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/configurations/ElasticsearchConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/configurations/ErrorHandling.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/configurations/SwaggerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/persistence/documents/Photo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/persistence/repositories/PhotoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/services/implementations/PhotoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/services/interfaces/PhotoServiceInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/mapping.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/service/implementation/PhotoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/service/implementation/PhotoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="06dd243b-bc4b-4b54-9d22-cb4c7f032a0f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -103,17 +86,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="SearchengineApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="SearchEngine" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.paw.searchengine.SearchengineApplication" />
@@ -131,6 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1608311649394</updated>
       <workItem from="1608311651024" duration="7089000" />
+      <workItem from="1608400433545" duration="8000" />
     </task>
     <servers />
   </component>
