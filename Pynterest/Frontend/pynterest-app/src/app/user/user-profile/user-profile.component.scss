@@ -1,5 +1,9 @@
 @import '../../../assets/styles/colors.scss';
 
+$board-width: 200px;
+$board-height: 300px;
+
+
 button.link {
   background: none;
   border: none;
@@ -7,12 +11,19 @@ button.link {
   font-weight: 700;
 }
 
-.img-board-thumbnail,
 .img-photo-thumbnail {
   width: 250px;
   height: 250px;
   border-radius: 20%;
   margin: 19px;
+}
+
+.img-board-thumbnail
+{
+  max-width: $board-width;
+  max-height: $board-width;
+  margin: none;
+  border-radius: 20px;
 }
 
 .profile-container {
@@ -30,9 +41,28 @@ button.link {
   background-color: white;
 }
 
+.board-button
+{
+  width: $board-width;
+  height: $board-width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 .board-details-container,
 .photo-details-container {
   margin: 15px;
+}
+
+.board-details-container
+{
+  width: $board-width;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .profile-info-container {
@@ -80,14 +110,17 @@ button.link {
 
 .number-of-pics-text {
   font-size: 12px;
+  margin: 0;
 }
 
 .board-details-subcontent-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   text-align: center;
-  width: 250px;
+  width: 100%;
+  padding: 5px;
 }
 
 .board-details-subcontent-actions {
@@ -95,8 +128,11 @@ button.link {
 }
 
 .board-details-subcontent {
+  display: flex;
   text-align: center;
+  align-items: center;
   justify-content: center;
+  flex-direction: column;
   width: 100px;
 }
 

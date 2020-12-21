@@ -76,9 +76,8 @@
       <div class="boards-container shaddow" *ngIf="!areBoardsLoading">
         <div class="boards-subcontent">
           <ng-container *ngIf="selectBoardModel.length;else noBoards">
-            <div *ngFor="let board of selectBoardModel;let i=index">
+            <div class="board-details-container" *ngFor="let board of selectBoardModel;let i=index">
               <ng-container *ngIf="!(board.privateBoard && !isHisPage())">
-                <div class="board-details-container">
                   <ng-container *ngIf="board.firstPicture;else greyPic">
                     <button class="board-button" (click)="navigateToBoard(i)">
                       <img [src]="board.firstPicture" class="img-board-thumbnail" id="img-thumbnail">
@@ -106,7 +105,6 @@
                       </mat-menu>
                     </div>
                   </div>
-                </div>
               </ng-container>
             </div>
           </ng-container>
