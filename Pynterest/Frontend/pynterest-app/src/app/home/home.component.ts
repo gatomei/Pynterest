@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { PinDetails } from '@app/shared/models/pinDetailsModel';
+import { SearchService } from '@app/shared/services/search.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import { PhotosService } from '../shared/services/photos.service';
 
 @Component({
@@ -9,18 +12,76 @@ import { PhotosService } from '../shared/services/photos.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   photos: PinDetails[] = new Array<PinDetails>();
   throttle = 300;
   requestChunk = 12;
   notEmptyPost = true;
   notscrolly = true;
   isLoaded = false;
+  searchPage = false;
+  subs: Subscription[] = new Array<Subscription>(); 
+  query: string = "";
 
-  constructor(private spinner: NgxSpinnerService, private photosService: PhotosService) {}
+  constructor(private spinner: NgxSpinnerService, private photosService: PhotosService,
+     private activatedRoute: ActivatedRoute, 
+     private searchService: SearchService) {
+      
+     }
 
+  ngOnDestroy(): void {
+    for(let sub of this.subs)
+    {
+      sub.unsubscribe();
+    }
+  }
+  
   ngOnInit(): void {
-    this.loadInitPhotos();
+    this.query = this.activatedRoute.snapshot.queryParams.q;
+    if(this.query)
+    {
+      this.searchPage = true;
+      //this.loadFromSearch(query);
+    }
+    else
+    {
+      this.loadInitPhotos();
+    }
+  }
+
+  loadFromSearch(query: string){
+    this.subs.push(this.searchService.getSearchPhotos(query).subscribe((data)=>{
+      for(let photoId of data)
+      {
+          this.getPhoto(photoId);
+      }
+    }, (error)=>{
+      console.log(error);
+    }));
+  }
+
+  getPhoto(id: number)
+  {
+      this.subs.push(this.photosService.getPhotoById(id.toString())
+      .subscribe((photo)=>{
+          this.photos.push(photo);
+      }, (error)=>{
+        console.log(error);
+      }));
+  }
+
+  resetAndSearch(query)
+  {
+    this.photos = [];
+    this.searchPage = (query != "");
+    this.query = query;
+    if(this.searchPage)
+    {
+      //this.loadFromSearch(query);
+    }
+    else{
+      this.loadInitPhotos();
+    }
   }
 
   loadInitPhotos() {
@@ -40,7 +101,7 @@ export class HomeComponent implements OnInit {
   }
 
   onScroll() {
-    if (this.isLoaded) {
+    if (this.isLoaded && !this.searchPage) {
       if (this.notscrolly && this.notEmptyPost) {
         this.spinner.show();
         this.notscrolly = false;

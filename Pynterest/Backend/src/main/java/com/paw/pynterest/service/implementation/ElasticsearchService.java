@@ -34,7 +34,7 @@ public class ElasticsearchService implements ElasticsearchServiceInterface {
             ObjectMapper mapper = new ObjectMapper();
             ElasticsearchPhotoDTO photoDTO = modelMapper.map(photo, ElasticsearchPhotoDTO.class);
             String jsonPhoto = mapper.writeValueAsString(photoDTO);
-            URL url = new URL(String.format("http://%s:%s/v1/api/photos", host, port));
+            URL url = new URL(String.format("http://%s:%s/api/photos", host, port));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -54,7 +54,7 @@ public class ElasticsearchService implements ElasticsearchServiceInterface {
     @Override
     public void deletePhoto(Long photoId) {
         try {
-            URL url = new URL(String.format("http://%s:%s/v1/api/photos/%d", host, port, photoId));
+            URL url = new URL(String.format("http://%s:%s/api/photos/%d", host, port, photoId));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             int responseCode = connection.getResponseCode();

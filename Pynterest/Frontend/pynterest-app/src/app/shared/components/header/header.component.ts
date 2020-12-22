@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/services/authentication.service';
 import { SessionStorageService } from '@app/core/services/session-storage.service';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
@@ -20,13 +20,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private sub:Subscription;
   public imageUrl:SafeUrl = "";
   public suggestions = [];
+  @Output() searchEvent = new EventEmitter();
+  @Input() query:string = "";
 
   constructor(private router:Router,
      private authenticationService: AuthenticationService,
      private JwtDecoderService: JwtDecoderService,
      private userInfoService:UserInfoService,
      private sanitizer:DomSanitizer,
-     private localStorage:SessionStorageService) {
+     private localStorage:SessionStorageService,
+     private activatedRoute: ActivatedRoute) {
     this.router = router;
     this.messagesUnseen = 0;
    }
@@ -49,7 +52,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     else
     {
-      console.log("Nu s-a facut call!");
       this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/json;base64,'+ image);
     }
   }
@@ -64,6 +66,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public goToHomePage()
   {
+    if(this.isOnHomePage())
+    {
+      this.searchEvent.emit(""); 
+    }
     this.router.navigate(['home']);
   }
 
@@ -86,8 +92,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   addKeyboardListenerToSearchBar()
   {
-      let searchBar = document.getElementsByClassName("input")[0];
-      searchBar.addEventListener("keydown", this.onKeyDownSearch);
+    let searchBar = document.getElementsByClassName("input")[0];
+    searchBar.addEventListener("keydown", this.onKeyDownSearch);
   }
 
   onKeyDownSearch(event)
@@ -114,5 +120,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  search()
+  {
+    let searchBar = <HTMLInputElement>document.getElementsByClassName("input")[0];
+    let query = searchBar.value;
+    if(query != "")
+    {
+      if(this.isOnHomePage())
+      {
+        this.searchEvent.emit(query);
+      }
+      this.router.navigate(['home'], {queryParams:{q:query}});
+    }
+  }
+
+  isOnHomePage():boolean
+  {
+    let last = this.router.url.split('/').pop().split('?')[0];
+    return last == "home";
+  }
 
 }

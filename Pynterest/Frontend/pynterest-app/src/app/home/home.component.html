@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header query={{query}} (searchEvent)="resetAndSearch($event)"></app-header>
 
 <div class="content">
   <div infinite-scroll infiniteScrollDistance="2" infiniteScrollThrottle="50" (scrolled)="onScroll()">

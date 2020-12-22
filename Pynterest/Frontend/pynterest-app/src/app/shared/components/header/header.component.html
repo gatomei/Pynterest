@@ -5,7 +5,7 @@
         </div>
         <div class="search-bar-container">
             <div class="search-input">
-            <input type="text" class="input" placeholder="What are you looking for?">
+            <input type="text" class="input" placeholder="What are you looking for?" value="{{query}}">
                 <div class="autocom-box">
                     <!--Lista cu cuvintele de la autocomplete-->
                     <ng-container *ngIf="suggestions.length > 0;else empty">
@@ -18,7 +18,7 @@
                    </ng-template>
                 </div>
             </div>
-            <input type="button" value="search" class="close-btn">
+            <input type="button" value="search" class="close-btn" (click)="search()">
         </div>
             <div class="profile-content">
                 <div class="profile-item">
