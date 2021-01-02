@@ -1,5 +1,8 @@
 @import '../../../assets/styles/colors.scss';
 
+.content-container{
+  padding-bottom: 40px;
+}
 .photo-card {
   border-color: white;
   border-radius: 30px;
@@ -8,8 +11,8 @@
 }
 
 .photo-card-img {
-  width: 50%;
-  height: auto;
+  height:45vw;
+  object-fit:contain;
   border-radius: 30px 0px 0px 30px;
   border-color: white;
 }
@@ -65,7 +68,15 @@
   }
   .pin-comments {
     width: 100%;
+
   }
+}
+
+.mat-list{
+  flex-grow: 1;
+  overflow: auto;
+  max-height: 230px;
+  padding-right: 20px;
 }
 
 .buttons {
@@ -82,6 +93,8 @@
   border: 2px $header-background solid;
   outline: none;
 }
+
+
 .add-comment-button {
   background-color: $logoColor;
   color: $header-background;
@@ -122,6 +135,7 @@
   border-radius: 50%;
   overflow: hidden;
   background-color: transparent;
+  object-fit: cover;
 }
 
 .img-thumbnail-pin-user{
@@ -194,6 +208,7 @@
   .pin-detail {
     .pin-title {
       font-size: 22px;
+      padding-top: 55px;
     }
     .pin-description {
       font-size: 16px;

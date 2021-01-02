@@ -11,7 +11,7 @@
   color: $logoColor;
 }
 .select-board-container{
-  width: 60%;
+  width: 70%;
   background-color: $header-background;
   border-radius: 20px 0px 0px 20px;
   border: 2px $logoColor solid;
@@ -54,9 +54,16 @@
   vertical-align: middle;
   .select-label{
     color: black;
+    padding-left: 7px;
+    font-weight: bold;
+    font-size: 15px;
   }
 }
 
 .select-board-icon {
   vertical-align: middle;
 }
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+

@@ -1,5 +1,5 @@
 <app-header></app-header>
-
+<div class="content-container">
 <mat-card *ngIf="isLoaded" class="photo-card">
   <mat-card-content class="photo-card-content">
     <img mat-card-md-image class="photo-card-img" [src]="getImageUrl()" />
@@ -43,7 +43,7 @@
           <label class="comments-title"><b>Comments</b></label>
           <div class="comments-list">
             <div *ngIf="comments.length > 0">
-              <mat-list>
+              <mat-list class="mat-list">
                 <mat-list-item *ngFor="let comment of comments; last as last" class="comment-item">
                   <p matLine>
                     <b>{{ comment.username }}</b>
@@ -96,3 +96,4 @@
     </div>
   </mat-card-content>
 </mat-card>
+</div>
