@@ -41,10 +41,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06dd243b-bc4b-4b54-9d22-cb4c7f032a0f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/service/implementation/ElasticsearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/paw/pynterest/service/implementation/ElasticsearchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/pynterest-app/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/pynterest-app/src/app/home/home.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/pynterest-app/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/pynterest-app/src/environments/environment.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/boundry/controllers/PhotoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paw/searchengine/boundry/controllers/PhotoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/pynterest-app/src/app/shared/components/header/header.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/pynterest-app/src/app/shared/components/header/header.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/pynterest-app/src/app/user/user-profile/user-profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/pynterest-app/src/app/user/user-profile/user-profile.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +108,8 @@
       <updated>1608311649394</updated>
       <workItem from="1608311651024" duration="7089000" />
       <workItem from="1608400433545" duration="8000" />
-      <workItem from="1608624867858" duration="691000" />
+      <workItem from="1608624867858" duration="1430000" />
+      <workItem from="1608724593245" duration="126000" />
     </task>
     <servers />
   </component>

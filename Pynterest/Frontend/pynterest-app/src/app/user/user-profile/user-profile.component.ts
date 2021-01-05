@@ -24,8 +24,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public user: UserInfo;
   private username: String;
   private routeSub: Subscription;
-  private areBoardsLoading: boolean = false;
-  private arePicturesLoading: boolean = false;
+  public areBoardsLoading: boolean = false;
+  public arePicturesLoading: boolean = false;
   private subs: Subscription[];
   public imageUrl: SafeUrl
   private subscribedUser;
@@ -38,7 +38,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public photoNumber: number = 20;
   private notEmptyPost: boolean = true;
   private notscrolly: boolean = true;
-  private arePicturesLoaded: boolean = false;
+  public arePicturesLoaded: boolean = false;
   public getPhotosButtonDisableProp: boolean = false;
 
   constructor(
