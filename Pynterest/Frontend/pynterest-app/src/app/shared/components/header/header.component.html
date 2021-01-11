@@ -27,11 +27,6 @@
                     </button>
                 </div>
                 <div class="profile-item">
-                    <button [class]="isMessagesPressed ? 'icon-button button-pressed' : 'icon-button'" (click)="toggleMessageButton()">
-                        <mat-icon [matBadge]="messagesUnseen" [matBadgeHidden]="isMessageBadgeHidden()" matBadgeColor="warn">chat</mat-icon>
-                    </button>
-                </div>
-                <div class="profile-item">
                     <button (click)="toUserProfile()" id="toProfile">
                         <div class="profile-photo">
                             <img [src]="imageUrl" alt="profile"> 
