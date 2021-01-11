@@ -311,4 +311,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.router.navigate([`${this.user.username}/boards/${boardName}`]);
   }
 
+  goToPhoto(index){
+    this.router.navigate([`pin/${index}`]);
+  }
+
 }

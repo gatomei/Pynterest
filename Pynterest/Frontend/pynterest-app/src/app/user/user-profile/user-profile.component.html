@@ -140,7 +140,7 @@
             class="photos-subcontent">
             <ng-container *ngFor="let photo of readPhotoModel;let i=index">
               <div class="photo-details-container">
-                <button class="photo-button">
+                <button class="photo-button" (click)="goToPhoto(photo.photoId)">
                   <img [src]="photo.pictureData" class="img-photo-thumbnail" id="img-thumbnail">
                 </button>
               </div>

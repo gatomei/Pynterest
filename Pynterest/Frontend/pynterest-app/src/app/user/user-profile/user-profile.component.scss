@@ -2,6 +2,7 @@
 
 $board-width: 200px;
 $board-height: 300px;
+$picture-width: 200px;
 
 
 button.link {
@@ -12,8 +13,8 @@ button.link {
 }
 
 .img-photo-thumbnail {
-  width: 250px;
-  height: 250px;
+  max-width: $picture-width;
+  max-height: $picture-width;
   border-radius: 20%;
   margin: 19px;
 }
@@ -37,23 +38,31 @@ button.link {
 .board-button,
 .photo-button {
   outline: none;
+  width: $picture-width;
   border: none;
   background-color: white;
 }
 
-.board-button
+
+.board-button, .photo-button
 {
   width: $board-width;
   height: $board-width;
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .board-details-container,
 .photo-details-container {
   margin: 15px;
+}
+
+.photo-details-container{
+  width: 250px;
+  padding: 10px 25px;
+  border: 2.5px solid red;
+  border-radius: 30px;
 }
 
 .board-details-container
@@ -141,6 +150,7 @@ button.link {
   padding: 40px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 #profile-photo img {
