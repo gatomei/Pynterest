@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.query = query;
     if(this.searchPage)
     {
-      //this.loadFromSearch(query);
+      this.loadFromSearch(query);
     }
     else{
       this.loadInitPhotos();

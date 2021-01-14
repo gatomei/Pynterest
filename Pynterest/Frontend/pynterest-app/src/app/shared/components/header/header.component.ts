@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public isMessagesPressed = false;
   private sub:Subscription;
   public imageUrl:SafeUrl = "";
-  public suggestions = [];
   @Output() searchEvent = new EventEmitter();
   @Input() query:string = "";
 
@@ -39,7 +38,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.addKeyboardListenerToSearchBar();
     let image = this.localStorage.get<string>("profilePicture");
     if(image == null)
     {
@@ -88,36 +86,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   goToInterests():void{
     this.router.navigate(['users','interests']);
-  }
-
-  addKeyboardListenerToSearchBar()
-  {
-    let searchBar = document.getElementsByClassName("input")[0];
-    searchBar.addEventListener("keydown", this.onKeyDownSearch);
-  }
-
-  onKeyDownSearch(event)
-  {
-    let searchBar = <HTMLInputElement>document.getElementsByClassName("input")[0];
-    let autocommBox = document.getElementsByClassName("autocom-box")[0];
-    let query = searchBar.value;
-    if(event.keyCode >= 48 && event.keyCode <= 90)
-    {
-      query += event.key;
-    }
-    if(event.keyCode == 8)
-    {
-      query = query.substr(0, query.length - 1);
-    }
-    if(query.length > 2)
-    {
-      autocommBox.setAttribute("style", "display:inline-block;");
-      // get suggestion from the backend
-    }
-    else
-    {
-      autocommBox.setAttribute("style", "display:none;");
-    }
   }
 
   search()

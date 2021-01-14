@@ -17,6 +17,6 @@ export class SearchService {
 
   getSearchPhotos(query: string)
   {
-    return this.httpClient.get<number[]>(environment.searchAPI+"");
+    return this.httpClient.get<number[]>(environment.searchAPI+`/photos?filter=${query}`);
   }
 }

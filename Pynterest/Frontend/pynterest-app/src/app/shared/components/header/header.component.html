@@ -7,12 +7,6 @@
             <div class="search-input">
             <input type="text" class="input" placeholder="What are you looking for?" value="{{query}}">
                 <div class="autocom-box">
-                    <!--Lista cu cuvintele de la autocomplete-->
-                    <ng-container *ngIf="suggestions.length > 0;else empty">
-                        <div class="suggestion" *ngFor="let suggestion of suggestions">
-                            {{suggestion}}
-                        </div>
-                    </ng-container>
                    <ng-template class="no-results" #empty>
                        No results...
                    </ng-template>
