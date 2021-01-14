@@ -7,6 +7,8 @@ import com.paw.searchengine.persistence.repositories.PhotoRepository;
 import com.paw.searchengine.services.interfaces.PhotoServiceInterface;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PhotoService implements PhotoServiceInterface {
     private final PhotoRepository photoRepository;
@@ -36,4 +38,10 @@ public class PhotoService implements PhotoServiceInterface {
             throw new NotFoundException("Photo not found!");
         }
     }
+
+    @Override
+    public List<Photo> getPhotosByTitleOrDescription(String filter) {
+        return photoRepository.findAllByTitleContainingOrDescriptionContaining(filter, filter);
+    }
+
 }
