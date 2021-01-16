@@ -209,19 +209,15 @@ public class PhotoServiceImpl implements PhotoServiceInterface {
     }
 
     @Override
-    public List<Photo> getPhotosFromBoard(String boardTitle,Long userId,int photoNumber, Long lastPhotoSentId) {
+    public List<Photo> getPhotosFromBoard(String boardTitle, User user,int photoNumber, Long lastPhotoSentId) {
         boolean startAdd = false;
         List<Photo> photoListToReturn = new ArrayList<Photo>();
-        Optional<User> user = userRepository.findById(userId);
-        if(!user.isPresent()) {
-            throw new NotFoundException("Viata e miiinunata, dar user-ul cu id-ul " + userId.toString() + " nu exista!");
-        }
-        Board board = boardRepository.findBoardByTitleAndUser(boardTitle,user.get());
+        Board board = boardRepository.findBoardByTitleAndUser(boardTitle,user);
         if(board == null) {
             throw new NotFoundException("Viata e miiinunata, dar board-ul cu titlul " + boardTitle + " nu exista!");
         }
 
-        List<Photo> allPhotoFromDb = photoRepository.findAllByUserAndBoardsContainsOrderByCreationDateDesc(user.get(),board);
+        List<Photo> allPhotoFromDb = photoRepository.findAllByBoardsContainsOrderByCreationDateDesc(board);
 
         if(lastPhotoSentId == null){
             startAdd = true;

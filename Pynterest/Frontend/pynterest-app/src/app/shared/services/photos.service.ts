@@ -36,11 +36,11 @@ export class PhotosService {
     return this.httpClient.put<any>(addPhotoToBoardEndpoint, null);
   }
 
-  getPhotosFromBoard(boardName:string, photoNumber:Number, lastPhotoSentId:string) {
-    let params = new HttpParams().set('boardName', boardName).set('photoNumber', photoNumber.toString())
-
+  getPhotosFromBoard(boardName:string, photoNumber:Number, lastPhotoSentId:string, username: string) {
+    let params = new HttpParams().set('boardName', boardName).set('photoNumber', photoNumber.toString());
     if(lastPhotoSentId!=null)
       params = params.set('lastPhotoSentId', lastPhotoSentId);
+    params = params.set('username', username);
     const getPhotosEndpoint = `${environment.baseAPIAuth}/photos/BoardPhoto`;
     return this.httpClient.get<PinDetails[]>(getPhotosEndpoint, {params:params});
   }

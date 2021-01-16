@@ -3,6 +3,7 @@ package com.paw.pynterest.service.interfaces;
 import com.paw.pynterest.boundry.dto.ReadPhotoDTO;
 import com.paw.pynterest.boundry.dto.WritePhotoDTO;
 import com.paw.pynterest.entity.model.Photo;
+import com.paw.pynterest.entity.model.User;
 
 import java.io.File;
 import java.util.List;
@@ -15,6 +16,6 @@ public interface PhotoServiceInterface {
     List<Photo> getAllPhotoByUserName(String userName, int photoNumber, Long lastPhotoSentId);
     Photo findById(Long photoId);
     List<Photo> getPhotosForMainPage(Long userId,int photoNumber, Long lastPhotoSentId);
-    List<Photo> getPhotosFromBoard(String boardTitle,Long userId,int photoNumber, Long lastPhotoSentId);
+    List<Photo> getPhotosFromBoard(String boardTitle, User user, int photoNumber, Long lastPhotoSentId);
 
 }

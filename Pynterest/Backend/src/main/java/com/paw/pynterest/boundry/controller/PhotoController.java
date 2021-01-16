@@ -5,10 +5,12 @@ import com.paw.pynterest.boundry.dto.ReadPhotoDTO;
 import com.paw.pynterest.boundry.dto.WriteCommentDTO;
 import com.paw.pynterest.boundry.dto.WritePhotoDTO;
 import com.paw.pynterest.entity.model.Photo;
+import com.paw.pynterest.entity.model.User;
 import com.paw.pynterest.service.implementation.PhotoServiceImpl;
 import com.paw.pynterest.service.interfaces.AuthenticatedJwtUserService;
 import com.paw.pynterest.service.interfaces.CommentServiceInterface;
 import com.paw.pynterest.service.interfaces.PhotoServiceInterface;
+import com.paw.pynterest.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,12 +26,14 @@ import java.util.List;
 public class PhotoController {
     private final PhotoServiceInterface photoService;
     private final AuthenticatedJwtUserService authenticatedJwtUserService;
+    private final UserService userService;
     private final CommentServiceInterface commentService;
     private final ModelMapper modelMapper;
 
-    public PhotoController(PhotoServiceInterface photoService, AuthenticatedJwtUserService authenticatedJwtUserService, CommentServiceInterface commentService, ModelMapper modelMapper){
+    public PhotoController(PhotoServiceInterface photoService, AuthenticatedJwtUserService authenticatedJwtUserService, UserService userService, CommentServiceInterface commentService, ModelMapper modelMapper){
         this.photoService = photoService;
         this.authenticatedJwtUserService = authenticatedJwtUserService;
+        this.userService = userService;
         this.commentService = commentService;
         this.modelMapper = modelMapper;
     }
@@ -64,9 +67,9 @@ public class PhotoController {
     }
 
     @GetMapping("/BoardPhoto")
-    public ResponseEntity<?> getPhotosFromBoard(@RequestParam String boardName,@RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSentId){
-        Long userId = authenticatedJwtUserService.getAuthenticatedJwtUserDetails().getUserId();
-        List<Photo> photosFromService = photoService.getPhotosFromBoard(boardName,userId,photoNumber,lastPhotoSentId);
+    public ResponseEntity<?> getPhotosFromBoard(@RequestParam String username,@RequestParam String boardName,@RequestParam int photoNumber, @RequestParam(required = false) Long lastPhotoSentId){
+        User user = userService.findUserByUsername(username);
+        List<Photo> photosFromService = photoService.getPhotosFromBoard(boardName,user,photoNumber,lastPhotoSentId);
         List<ReadPhotoDTO> photosToReturn =(List<ReadPhotoDTO>)modelMapper.map(photosFromService, new TypeToken<List<ReadPhotoDTO>>(){}.getType());
         photosToReturn.forEach(p -> {p.setPictureData(PhotoServiceImpl.getPhotoFromFile(p.getPath()));});
 

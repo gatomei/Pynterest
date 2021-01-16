@@ -59,7 +59,8 @@ export class BoardDetailsComponent implements OnInit {
     );
   }
   loadInitPhotos() {
-    this.photosService.getPhotosFromBoard(this.boardTitle, this.requestChunk, null)
+    let username = this.activatedRoute.snapshot.paramMap.get('username');
+    this.photosService.getPhotosFromBoard(this.boardTitle, this.requestChunk, null, username)
     .subscribe(
       (data) => {
       if(data.length==0)
@@ -89,8 +90,8 @@ export class BoardDetailsComponent implements OnInit {
 
   loadNextPhotos() {
     let lastPhotoSentId = this.photos[this.photos.length - 1].photoId;
-
-    this.photosService.getPhotosFromBoard(this.boardTitle, this.requestChunk, lastPhotoSentId).subscribe(
+    let username = this.activatedRoute.snapshot.paramMap.get('username');
+    this.photosService.getPhotosFromBoard(this.boardTitle, this.requestChunk, lastPhotoSentId, username).subscribe(
       (data) => {
         this.spinner.hide();
         if (data.length == 0) this.notEmptyPost = false;
