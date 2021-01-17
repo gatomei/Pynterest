@@ -7,7 +7,7 @@
         <div class="interest" *ngFor="let interest of interests;">
             <div class="interest-picture">
                     <ng-container *ngIf="emptyLink(interest); else receivedPicture">
-                        <img src="../../../assets/images/ezy.jpeg">
+                        <img src="../../../assets/images/default.png">
                     </ng-container>
                     <ng-template #receivedPicture>
                         <img [src]="interest.randomPicture">

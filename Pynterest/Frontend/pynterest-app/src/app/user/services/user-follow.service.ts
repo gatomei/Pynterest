@@ -1,5 +1,5 @@
 import { environment } from 'environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FollowModel } from '@app/shared/models/followModel';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -26,12 +26,12 @@ export class UserFollowService {
 
   followUser(followedUserUsername: string) {
     const followUserEnpoint = `${environment.baseAPIAuth}/user/${this.loggedInUserUsername}/followings/${followedUserUsername}`;
-    return this.httpClient.put<string>(followUserEnpoint, null);
+    return this.httpClient.put<HttpResponse<string>>(followUserEnpoint, null, {observe:'response'});
   }
 
   unfollowUser(unfollowedUserUsername: string) {
     const unfollowUserEnpoint = `${environment.baseAPIAuth}/user/${this.loggedInUserUsername}/followings/${unfollowedUserUsername}`;
-    return this.httpClient.delete<string>(unfollowUserEnpoint);
+    return this.httpClient.delete<HttpResponse<string>>(unfollowUserEnpoint, {observe:'response'});
   }
 
   getUsersFollowingMe(username: string) {
@@ -50,10 +50,7 @@ export class UserFollowService {
       if (model.username == loggedInUsername) {
         subscribedUser = true;
       }
-      else {
-        subscribedUser = false;
-      }
-    })
+    });
 
     return subscribedUser;
   }

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserInfo } from '@app/user/models/user-info';
 import { JwtDecoderService } from '@app/shared/services/jwt-decoder.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { UserInfoService } from '../services/user-info.service';
 import { UserFollowService } from '../services/user-follow.service';
@@ -13,6 +13,7 @@ import { SelectBoardModel } from '@app/shared/models/selectBoardModel';
 import { PhotosService } from '../../shared/services/photos.service';
 import { ReadPhotoModel } from '../../shared/models/readPhotoModel';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SessionStorageService } from '@app/core/services/session-storage.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,15 +21,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-
   public user: UserInfo;
   private username: String;
   private routeSub: Subscription;
   public areBoardsLoading: boolean = false;
   public arePicturesLoading: boolean = false;
   private subs: Subscription[];
-  public imageUrl: SafeUrl
-  private subscribedUser;
+  public imageUrl: SafeUrl;
+  public subscribedUser: boolean = false;
   public selectBoardModel: SelectBoardModel[] = [];
   public readPhotoModel: ReadPhotoModel[] = [];
   public imageUrlBoards: SafeUrl[] = [];
@@ -51,7 +51,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private boardsService: BoardsService,
     private photosService: PhotosService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private sessionStorageService: SessionStorageService
   ) {
     this.subs = new Array<Subscription>();
   }
@@ -61,10 +62,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.subs.forEach((element) => {
       element.unsubscribe();
     });
+    this.userFollowService.followersModel = new BehaviorSubject([]);
+    this.userFollowService.followingModel = new BehaviorSubject([]);
   }
 
   ngOnInit(): void {
-
     this.user = {
       birthDate: new Date(),
       description: '',
@@ -84,9 +86,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.userInfoService.getInfo(this.username).subscribe(
           (data) => {
             this.user = data;
-            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(
-              'data:image/png;base64,' + data.profilePicture
-            );
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + data.profilePicture);
             this.getFollowers();
             this.getFollowing();
             this.loadInitPhotos();
@@ -118,7 +118,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       (error) => {
         console.log(error);
       }
-    )
+    );
   }
 
   getFollowing() {
@@ -129,7 +129,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       (error) => {
         console.log(error);
       }
-    )
+    );
   }
 
   public isHisPage(): boolean {
@@ -148,7 +148,17 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.subscribedUser = false;
     var subscribedUserUsername = this.user.username;
     this.userFollowService.unfollowUser(subscribedUserUsername).subscribe(
-      (error) => { console.log(error); }
+      (data) => {
+        if (data.status == 200) {
+          let newFollowers = this.userFollowService.followersModel
+            .getValue()
+            .filter((model) => model.username !== this.jwtDecoder.getUsername());
+          this.userFollowService.followersModel = new BehaviorSubject(newFollowers);
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
     );
   }
 
@@ -156,7 +166,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.subscribedUser = true;
     var subscribedUserUsername = this.user.username;
     this.userFollowService.followUser(subscribedUserUsername).subscribe(
-      (error) => { console.log(error); }
+      (data) => {
+        if (data.status == 201) {
+          this.userFollowService.followersModel
+                .getValue()
+                .push({ username: this.jwtDecoder.getUsername(), profilePicture: this.sessionStorageService.get("profilePicture") });
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
     );
   }
 
@@ -170,42 +189,40 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   openFollowersDialog() {
     let currentUserFollowModel = this.userFollowService.followersModel.getValue();
-    this.openFollowDialog("Followers", currentUserFollowModel);
+    this.openFollowDialog('Followers', currentUserFollowModel);
   }
 
   openFollowingDialog() {
     let currentUserFollowModel = this.userFollowService.followingModel.getValue();
-    this.openFollowDialog("Following", currentUserFollowModel);
+    this.openFollowDialog('Following', currentUserFollowModel);
   }
 
   openFollowDialog(dialogTitle: string, currentUserFollowModel: FollowModel[]) {
     this.userFollowService.getUsersFollowingMe(this.jwtDecoder.getUsername()).subscribe(
       (loggedInUserFollowingModel) => {
         let _dialogTitle = dialogTitle;
-        this.dialogService.openFollowDialog(currentUserFollowModel, loggedInUserFollowingModel, _dialogTitle)
+        this.dialogService.openFollowDialog(currentUserFollowModel, loggedInUserFollowingModel, _dialogTitle);
       },
       (error) => {
         console.log(error);
       }
-    )
+    );
   }
 
   openAddPinDialog() {
-    this.dialogService.openAddPinDialog().subscribe(
-      () => {
-        this.getBoards();
-      }
-    )
+    this.dialogService.openAddPinDialog().subscribe(() => {
+      this.getBoards();
+    });
   }
 
   openAddBoardDialog() {
-    this.dialogService.openAddBoardDialog({
-      userId: this.jwtDecoder.getId()
-    }).subscribe(
-      () => {
+    this.dialogService
+      .openAddBoardDialog({
+        userId: this.jwtDecoder.getId(),
+      })
+      .subscribe(() => {
         this.getBoards();
-      }
-    )
+      });
   }
 
   getBoardsOnClick() {
@@ -223,31 +240,27 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.setBoardsImageUrl();
         this.areBoardsLoading = false;
       },
-      (error) => console.log(error));
+      (error) => console.log(error)
+    );
   }
 
   setBoardsImageUrl() {
-    this.selectBoardModel.forEach(board => {
+    this.selectBoardModel.forEach((board) => {
       if (board.numberOfPictures != 0) {
-        board.firstPicture = this.sanitizer.bypassSecurityTrustUrl(
-          'data:image/png;base64,' + board.firstPicture);
-      }
-      else {
+        board.firstPicture = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + board.firstPicture);
+      } else {
         board.firstPicture = null;
       }
-    })
+    });
   }
 
   openDeleteBoardDialog(index) {
     let boardId = this.selectBoardModel[index].boardId;
-    this.dialogService.openDeleteBoardDialog(
-      { boardId: boardId }).subscribe(
-        (result) => {
-          if (result == true) {
-            this.selectBoardModel = this.selectBoardModel.filter(it => it.boardId != boardId);
-          }
-        }
-      )
+    this.dialogService.openDeleteBoardDialog({ boardId: boardId }).subscribe((result) => {
+      if (result == true) {
+        this.selectBoardModel = this.selectBoardModel.filter((it) => it.boardId != boardId);
+      }
+    });
   }
 
   getPhotosOnClick() {
@@ -260,39 +273,34 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   loadInitPhotos() {
-    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
-      (data) => {
-        this.readPhotoModel = data;
-        this.notEmptyPost = data.length != 0;
-        this.arePicturesLoaded = true;
-        this.readPhotoModel = this.setPhotosImageUrl(this.readPhotoModel);
-        this.arePicturesLoading = false;
-        this.getPhotosButtonDisableProp = false;
-      }
-    )
+    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe((data) => {
+      this.readPhotoModel = data;
+      this.notEmptyPost = data.length != 0;
+      this.arePicturesLoaded = true;
+      this.readPhotoModel = this.setPhotosImageUrl(this.readPhotoModel);
+      this.arePicturesLoading = false;
+      this.getPhotosButtonDisableProp = false;
+    });
   }
 
   loadNextPhotos() {
     this.lastPhotoSendId = this.readPhotoModel[this.readPhotoModel.length - 1].photoId;
 
-    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe(
-      (data) => {
-        this.spinner.hide();
-        this.notEmptyPost = data.length != 0;
-        var nextPhotos = data;
-        nextPhotos = this.setPhotosImageUrl(nextPhotos);
-        this.readPhotoModel = this.readPhotoModel.concat(nextPhotos);
-        this.notscrolly = true;
-        this.getPhotosButtonDisableProp = false;
-      }
-    )
+    this.photosService.getUserPhotos(this.user.username, this.photoNumber, this.lastPhotoSendId).subscribe((data) => {
+      this.spinner.hide();
+      this.notEmptyPost = data.length != 0;
+      var nextPhotos = data;
+      nextPhotos = this.setPhotosImageUrl(nextPhotos);
+      this.readPhotoModel = this.readPhotoModel.concat(nextPhotos);
+      this.notscrolly = true;
+      this.getPhotosButtonDisableProp = false;
+    });
   }
 
   setPhotosImageUrl(photos: ReadPhotoModel[]) {
-    photos.forEach(photo => {
-      photo.pictureData = this.sanitizer.bypassSecurityTrustUrl(
-        'data:image/png;base64,' + photo.pictureData);
-    })
+    photos.forEach((photo) => {
+      photo.pictureData = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + photo.pictureData);
+    });
 
     return photos;
   }
@@ -307,12 +315,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   navigateToBoard(index) {
-    let boardName = this.selectBoardModel[index].title
+    let boardName = this.selectBoardModel[index].title;
     this.router.navigate([`${this.user.username}/boards/${boardName}`]);
   }
 
-  goToPhoto(index){
+  goToPhoto(index) {
     this.router.navigate([`pin/${index}`]);
   }
-
 }
